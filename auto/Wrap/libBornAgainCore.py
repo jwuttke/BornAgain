@@ -22140,15 +22140,15 @@ class IntensityData(_object):
 IntensityData_swigregister = _libBornAgainCore.IntensityData_swigregister
 IntensityData_swigregister(IntensityData)
 
-class ParameterDistribution(IParameterized):
+class ParameterDistribution(INamed):
     """Proxy of C++ ParameterDistribution class."""
 
     __swig_setmethods__ = {}
-    for _s in [IParameterized]:
+    for _s in [INamed]:
         __swig_setmethods__.update(getattr(_s, '__swig_setmethods__', {}))
     __setattr__ = lambda self, name, value: _swig_setattr(self, ParameterDistribution, name, value)
     __swig_getmethods__ = {}
-    for _s in [IParameterized]:
+    for _s in [INamed]:
         __swig_getmethods__.update(getattr(_s, '__swig_getmethods__', {}))
     __getattr__ = lambda self, name: _swig_getattr(self, ParameterDistribution, name)
     __repr__ = _swig_repr

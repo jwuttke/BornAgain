@@ -24,7 +24,7 @@
 
 class IDistribution1D;
 
-class BA_CORE_API_ ParameterDistribution : public IParameterized
+class BA_CORE_API_ ParameterDistribution : public INamed
 {
 public:
     ParameterDistribution(const std::string& par_name,
