@@ -22182,18 +22182,6 @@ class ParameterDistribution(INamed):
         return _libBornAgainCore.ParameterDistribution_linkParameter(self, par_name)
 
 
-    def getMainParameterName(self):
-        """
-        getMainParameterName(ParameterDistribution self) -> std::string
-
-        std::string ParameterDistribution::getMainParameterName() const
-
-        get the main parameter's name 
-
-        """
-        return _libBornAgainCore.ParameterDistribution_getMainParameterName(self)
-
-
     def getNbrSamples(self):
         """
         getNbrSamples(ParameterDistribution self) -> size_t

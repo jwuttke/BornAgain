@@ -20,8 +20,7 @@
 ParameterDistribution::ParameterDistribution(
     const std::string& par_name, const IDistribution1D& distribution, size_t nbr_samples,
     double sigma_factor, const RealLimits &limits)
-    : INamed("ParameterDistribution")
-    , m_name(par_name)
+    : INamed(par_name)
     , m_nbr_samples(nbr_samples)
     , m_sigma_factor(sigma_factor)
     , m_limits(limits)
@@ -42,8 +41,7 @@ ParameterDistribution::ParameterDistribution(
 ParameterDistribution::ParameterDistribution(
     const std::string& par_name, const IDistribution1D& distribution, size_t nbr_samples,
     double xmin, double xmax)
-    : INamed("ParameterDistribution")
-    , m_name(par_name)
+    : INamed(par_name)
     , m_nbr_samples(nbr_samples)
     , m_sigma_factor(0.0)
     , m_xmin(xmin)
@@ -55,22 +53,19 @@ ParameterDistribution::ParameterDistribution(
                 "ParameterDistribution::ParameterDistribution() -> Error."
                 "sigma factor cannot be negative");
     }
-    if(nbr_samples == 0) {
+    if(nbr_samples == 0)
         throw Exceptions::RuntimeErrorException(
-                    "ParameterDistribution::ParameterDistribution() -> Error."
-                    "Number of samples can't be zero.");
-    }
-    if(xmin >=xmax) {
+            "ParameterDistribution::ParameterDistribution() -> Error."
+            "Number of samples can't be zero.");
+    if(xmin >=xmax)
         throw Exceptions::RuntimeErrorException(
-                    "ParameterDistribution::ParameterDistribution() -> Error."
-                    "xmin>=xmax");
-    }
+            "ParameterDistribution::ParameterDistribution() -> Error."
+            "xmin>=xmax");
 }
 
 
 ParameterDistribution::ParameterDistribution(const ParameterDistribution& other)
-: INamed("ParameterDistribution")
-    , m_name(other.m_name)
+    : INamed(other.getName())
     , m_nbr_samples(other.m_nbr_samples)
     , m_sigma_factor(other.m_sigma_factor)
     , m_linked_par_names(other.m_linked_par_names)
@@ -88,7 +83,7 @@ ParameterDistribution::~ParameterDistribution()
 ParameterDistribution& ParameterDistribution::operator=(const ParameterDistribution& other)
 {
     if (this != &other) {
-        this->m_name = other.m_name;
+        this->setName( other.getName() );
         m_nbr_samples = other.m_nbr_samples;
         m_sigma_factor = other.m_sigma_factor;
         mP_distribution.reset(other.mP_distribution->clone());

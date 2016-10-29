@@ -66,14 +66,13 @@ double DistributionHandler::setParameterValues(ParameterPool* p_parameter_pool, 
         size_t remainder = index % m_distributions[param_index].getNbrSamples();
         index /= m_distributions[param_index].getNbrSamples();
         int changed = p_parameter_pool->setMatchedParametersValue(
-                m_distributions[param_index].getMainParameterName(),
+                m_distributions[param_index].getName(),
                 m_cached_samples[param_index][remainder].value);
-        if (changed != 1) {
+        if (changed != 1)
             throw Exceptions::RuntimeErrorException(
                     "DistributionWeighter::setParameterValues: "
                     "parameter name matches nothing or more than "
                     "one parameter");
-        }
         weight *= m_cached_samples[param_index][remainder].weight;
         if (param_index==0) break;
     }

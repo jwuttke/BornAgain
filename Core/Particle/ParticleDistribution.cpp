@@ -72,7 +72,7 @@ const IMaterial* ParticleDistribution::getAmbientMaterial() const
 std::vector<const IParticle*> ParticleDistribution::generateParticles() const
 {
     std::unique_ptr<ParameterPool> P_pool(createDistributedParameterPool());
-    std::string main_par_name = m_par_distribution.getMainParameterName();
+    std::string main_par_name = m_par_distribution.getName();
     std::vector<RealParameter*> matched_pars
         = P_pool->getMatchedParameters(main_par_name);
     if (matched_pars.size() != 1)
