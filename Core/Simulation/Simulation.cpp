@@ -35,7 +35,7 @@ Simulation::Simulation(const MultiLayer& p_sample)
     mP_sample.reset(p_sample.clone());
 }
 
-Simulation::Simulation(std::shared_ptr<IMultiLayerBuilder> p_sample_builder)
+Simulation::Simulation(const std::shared_ptr<IMultiLayerBuilder> p_sample_builder)
     : mP_sample_builder(p_sample_builder)
 {}
 
@@ -62,9 +62,9 @@ void Simulation::setTerminalProgressMonitor()
     m_progress.subscribe( [] (int percentage_done) -> bool {
             if (percentage_done<100)
                 std::cout << std::setprecision(2)
-                          << "... " << percentage_done << "%\r" << std::flush;
+                          << "\r... " << percentage_done << "%" << std::flush;
             else // wipe out
-                std::cout << "        \n" << std::flush;
+                std::cout << "\r... 100%\n";
             return true;
         } );
 }
@@ -80,8 +80,8 @@ void Simulation::removeDetectorResolutionFunction()
 }
 
 //! Sets the polarization analyzer characteristics of the detector
-void Simulation::setAnalyzerProperties(
-    const kvector_t direction, double efficiency, double total_transmission)
+void Simulation::setAnalyzerProperties(const kvector_t direction, double efficiency,
+                                       double total_transmission)
 {
     m_instrument.setAnalyzerProperties(direction, efficiency, total_transmission);
 }
@@ -166,7 +166,7 @@ void Simulation::setSample(const MultiLayer& sample)
     mP_sample.reset(sample.clone());
 }
 
-void Simulation::setSampleBuilder(std::shared_ptr<class IMultiLayerBuilder> p_sample_builder)
+void Simulation::setSampleBuilder(const std::shared_ptr<class IMultiLayerBuilder> p_sample_builder)
 {
     if (!p_sample_builder)
         throw Exceptions::NullPointerException("Simulation::setSampleBuilder() -> "

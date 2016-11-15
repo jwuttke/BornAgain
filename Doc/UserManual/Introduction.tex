@@ -61,7 +61,7 @@ It is entirely in the responsibility of users
 to convince themselves that their data interpretation
 is physically meaningful and plausible.}
 \Work{\indent\BornAgain\ is still under intense development.
-New major versions are released about every two months.
+New major versions are released about every few months.
 When need arises, bugfix versions are released in between.
 It is strongly recommended that users regularly update their installations.}
 
@@ -144,50 +144,24 @@ It does not duplicate information that is more conveniently read online.
 The online documentation covers in particular
 how to download and install \BornAgain.
 
-This User Manual containes of three parts:
-\Cref{PPHYS} provides some physics background
+This User Manual containes of two parts:
+\Cref{PPHYS} provides physics background
 on the scattering theory and on the sample models implemented in \BornAgain.
-\Cref{PUSE} describes how to use \BornAgain\ through its three different interfaces:
-C$++$, Python, and graphical.
-\index{C++!using BornAgain from}
-\index{Python!using BornAgain from}
-\index{GUI|see {Graphical User Interface}}
-\index{Graphical User Interface}
-It then continues with a detailed tutorial on the Python interface.
-Finally, \cref{PREF} is a partial reference of the C$++$ and Python interfaces;
+\cref{PREF} is a partial reference of the C$++$ and Python interfaces;
 it concentrates on physics related component,
 and thereby complements the automatically generated interface documentation
-that can be found online at \url{http://www.bornagainproject.org/???}. % TODO.
+that can be found online at \url{http://apps.jcns.fz-juelich.de/doxy/BornAgain/index.html}.
 
 \Work{\indent This manual is incomplete.
-Several important chapters are still missing.}
-Specifically,
-we plan to provide documentation on
-\begin{itemize}
-\item X-ray propagation and scattering,
-\index{X-rays!propagation and scattering}%
-\index{Wave propagation!X-rays}%
-\item polarized neutron propagation and magnetic scattering,
-\index{Neutrons!polarization}%
-\index{Wave propagation!neutrons, polarized}%
-\index{Polarized neutron!propagation and magnetic scattering}%
-\item mapping of $\partial\sigma/\partial\Omega$ onto flat detectors,
-\index{Detector!mapping the cross section}%
-\item scattering by rough interfaces,
-\index{Roughness}%
-\item scattering by particle assemblies.
-\index{Particle assemblies}%
-\end{itemize}
-We intend to publish these chapters successively,
+Several important chapters are still incomplete, or only consist of a placeholder.}
+We intend to publish the missing material successively,
 along with new software release.
-To avoid confusion, the manual carries
-the same version number as the software,
-even though it is in a less mature state.
 
-In this manual, we use the following colored boxes to highlight
+\pagebreak[3]
+We use the following colored boxes to highlight
 certain information:
 
-\def\demobox#1{\hspace{5em}\begin{minipage}{.75\textwidth}#1
+\def\demobox#1{\noindent\strut\hspace{.2\TW}\begin{minipage}{.75\textwidth}#1
 \end{minipage}\hfill\strut}
 
 \medskip
@@ -199,18 +173,29 @@ with the software or the documentation.}}
 \demobox{\Work{\indent This road sign in the margin indicates \textbf{work in progress}.}}
 
 \medskip
-\demobox{\Emph{\indent Such a box contains
+\demobox{\Emph{\indent A green box highlights
   an \textbf{important fact}, for instance an equation
-  that has a central role in
+  that is central in
   the further development of the theory.}}
 
 \medskip
-\demobox{\Note{\indent Such a box contains
-  an \textbf{implementation note} that explains
+\demobox{\Note{\indent
+  An \textbf{implementation note} explains
   how the theory exposed in this manual is actually used in \BornAgain.}}
 
 \medskip
-\demobox{\Link{\indent This is a link to the online docs.}}
+\noindent\strut\hspace{.2\TW}This is a \tuto{1}{link to the online docs}.
+
+\medskip
+\setCpp
+\begin{lstlisting}[linewidth=.95\TW,xleftmargin=.2\TW]
+C++ code, mainly used for API documentation.
+\end{lstlisting}
+
+\setPy
+\begin{lstlisting}[linewidth=.95\TW,xleftmargin=.2\TW]
+Python code.
+\end{lstlisting}
 
 \bigskip
 Mathematical notations are explained in the symbol index, page~\pageref{Snomencl}.

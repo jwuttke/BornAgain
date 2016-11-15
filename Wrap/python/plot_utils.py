@@ -25,9 +25,15 @@ def standardIntensityPlot(result):
     import matplotlib
     import sys
     from matplotlib import pyplot as plt
+
+    zmin, zmax = 1.0, result.getMaximum()
+    if zmin >= zmax:
+        zmax = 1.0
+        zmin = 1e-6*zmax
+
     im = plt.imshow(
         result.getArray(),
-        norm=matplotlib.colors.LogNorm(1.0, result.getMaximum()),
+        norm=matplotlib.colors.LogNorm(zmin, zmax),
         extent=[result.getXmin()/deg, result.getXmax()/deg,
                 result.getYmin()/deg, result.getYmax()/deg],
         aspect='auto',
@@ -135,6 +141,25 @@ def simulateThenPlotOrSave(
             save(arg+"."+str(name), subresult)
     else:
         save(arg+".ref", result)
+
+
+def plot_intensity_data(intensity_data, plot=standardIntensityPlot, save=standardIntensitySave):
+    """
+    Plots intensity data (if no command line arguments are provided).
+    If there is an additional command line arguments, silently saves the data into the file for testing purposes.
+    """
+    import sys
+    if len(sys.argv) <= 1:
+        plot(intensity_data)
+
+    else:
+        filename = sys.argv[1]
+        # save result
+        if type(intensity_data) is dict:
+            for name, subresult in intensity_data.items():  # inefficient under Py2, but good enough
+                save(filename+"."+str(name), subresult)
+        else:
+            save(filename+".ref", intensity_data)
 
 
 class DefaultFitObserver(IFitObserver):

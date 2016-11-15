@@ -5937,6 +5937,8 @@ class FitSuite(IObservable):
         addSimulationAndRealData(FitSuite self, GISASSimulation simulation, IntensityData real_data)
         addSimulationAndRealData(FitSuite self, GISASSimulation simulation, IHistogram real_data, double weight=1)
         addSimulationAndRealData(FitSuite self, GISASSimulation simulation, IHistogram real_data)
+        addSimulationAndRealData(FitSuite self, GISASSimulation simulation, vdouble2d_t real_data, double weight=1)
+        addSimulationAndRealData(FitSuite self, GISASSimulation simulation, vdouble2d_t real_data)
 
         void FitSuite::addSimulationAndRealData(const GISASSimulation &simulation, const IHistogram &real_data, double weight=1)
 
@@ -15050,10 +15052,9 @@ class Simulation(ICloneable, IParameterized):
         return _libBornAgainCore.Simulation_removeDetectorResolutionFunction(self)
 
 
-    def setAnalyzerProperties(self, direction, efficiency, total_transmission=1.0):
+    def setAnalyzerProperties(self, direction, efficiency, total_transmission):
         """
-        setAnalyzerProperties(Simulation self, kvector_t direction, double efficiency, double total_transmission=1.0)
-        setAnalyzerProperties(Simulation self, kvector_t direction, double efficiency)
+        setAnalyzerProperties(Simulation self, kvector_t direction, double efficiency, double total_transmission)
 
         void Simulation::setAnalyzerProperties(const kvector_t direction, double efficiency, double total_transmission=1.0)
 
@@ -15087,7 +15088,7 @@ class Simulation(ICloneable, IParameterized):
 
     def setSampleBuilderCpp(self, sample_builder):
         """
-        setSampleBuilderCpp(Simulation self, std::shared_ptr< IMultiLayerBuilder > sample_builder)
+        setSampleBuilderCpp(Simulation self, std::shared_ptr< IMultiLayerBuilder > const sample_builder)
 
         void Simulation::setSampleBuilder(std::shared_ptr< IMultiLayerBuilder > sample_builder)
 
@@ -15419,7 +15420,7 @@ class GISASSimulation(Simulation):
         """
         __init__(GISASSimulation self) -> GISASSimulation
         __init__(GISASSimulation self, MultiLayer p_sample) -> GISASSimulation
-        __init__(GISASSimulation self, std::shared_ptr< IMultiLayerBuilder > p_sample_builder) -> GISASSimulation
+        __init__(GISASSimulation self, std::shared_ptr< IMultiLayerBuilder > const p_sample_builder) -> GISASSimulation
 
         GISASSimulation::GISASSimulation(std::shared_ptr< IMultiLayerBuilder > p_sample_builder)
 
@@ -16085,9 +16086,12 @@ class IHistogram(_object):
         createHistogram = staticmethod(createHistogram)
     __swig_getmethods__["createHistogram"] = lambda x: createHistogram
 
-    def createFrom(filename):
-        """createFrom(std::string const & filename) -> IHistogram"""
-        return _libBornAgainCore.IHistogram_createFrom(filename)
+    def createFrom(*args):
+        """
+        createFrom(std::string const & filename) -> IHistogram
+        createFrom(vdouble2d_t data) -> IHistogram
+        """
+        return _libBornAgainCore.IHistogram_createFrom(*args)
 
     if _newclass:
         createFrom = staticmethod(createFrom)
@@ -16179,9 +16183,12 @@ def IHistogram_createHistogram(source):
     """IHistogram_createHistogram(IntensityData source) -> IHistogram"""
     return _libBornAgainCore.IHistogram_createHistogram(source)
 
-def IHistogram_createFrom(filename):
-    """IHistogram_createFrom(std::string const & filename) -> IHistogram"""
-    return _libBornAgainCore.IHistogram_createFrom(filename)
+def IHistogram_createFrom(*args):
+    """
+    createFrom(std::string const & filename) -> IHistogram
+    IHistogram_createFrom(vdouble2d_t data) -> IHistogram
+    """
+    return _libBornAgainCore.IHistogram_createFrom(*args)
 
 class Histogram1D(IHistogram):
     """Proxy of C++ Histogram1D class."""
@@ -16356,6 +16363,7 @@ class Histogram2D(IHistogram):
         __init__(Histogram2D self, int nbinsx, vdouble1d_t xbins, int nbinsy, vdouble1d_t ybins) -> Histogram2D
         __init__(Histogram2D self, IAxis axis_x, IAxis axis_y) -> Histogram2D
         __init__(Histogram2D self, IntensityData data) -> Histogram2D
+        __init__(Histogram2D self, vdouble2d_t data) -> Histogram2D
 
         Histogram2D::Histogram2D(const OutputData< double > &data)
 
@@ -16461,6 +16469,16 @@ class Histogram2D(IHistogram):
 
         """
         return _libBornAgainCore.Histogram2D_crop(self, xmin, ymin, xmax, ymax)
+
+
+    def setContent(self, data):
+        """setContent(Histogram2D self, vdouble2d_t data)"""
+        return _libBornAgainCore.Histogram2D_setContent(self, data)
+
+
+    def addContent(self, data):
+        """addContent(Histogram2D self, vdouble2d_t data)"""
+        return _libBornAgainCore.Histogram2D_addContent(self, data)
 
 
     def dynamicCast(pHistogram):
@@ -16891,10 +16909,9 @@ class IDetector2D(ICloneable, IParameterized):
         return _libBornAgainCore.IDetector2D_getDetectorResolutionFunction(self)
 
 
-    def setAnalyzerProperties(self, direction, efficiency, total_transmission=1.0):
+    def setAnalyzerProperties(self, direction, efficiency, total_transmission):
         """
-        setAnalyzerProperties(IDetector2D self, kvector_t direction, double efficiency, double total_transmission=1.0)
-        setAnalyzerProperties(IDetector2D self, kvector_t direction, double efficiency)
+        setAnalyzerProperties(IDetector2D self, kvector_t direction, double efficiency, double total_transmission)
 
         void IDetector2D::setAnalyzerProperties(const kvector_t direction, double efficiency, double total_transmission=1.0)
 
@@ -18647,10 +18664,9 @@ class Instrument(IParameterized):
         return _libBornAgainCore.Instrument_setDetectorResolutionFunction(self, p_resolution_function)
 
 
-    def setAnalyzerProperties(self, direction, efficiency, total_transmission=1.0):
+    def setAnalyzerProperties(self, direction, efficiency, total_transmission):
         """
-        setAnalyzerProperties(Instrument self, kvector_t direction, double efficiency, double total_transmission=1.0)
-        setAnalyzerProperties(Instrument self, kvector_t direction, double efficiency)
+        setAnalyzerProperties(Instrument self, kvector_t direction, double efficiency, double total_transmission)
 
         void Instrument::setAnalyzerProperties(const kvector_t direction, double efficiency, double total_transmission=1.0)
 
@@ -21463,7 +21479,7 @@ class OffSpecSimulation(Simulation):
         """
         __init__(OffSpecSimulation self) -> OffSpecSimulation
         __init__(OffSpecSimulation self, MultiLayer p_sample) -> OffSpecSimulation
-        __init__(OffSpecSimulation self, std::shared_ptr< IMultiLayerBuilder > p_sample_builder) -> OffSpecSimulation
+        __init__(OffSpecSimulation self, std::shared_ptr< IMultiLayerBuilder > const p_sample_builder) -> OffSpecSimulation
 
         OffSpecSimulation::OffSpecSimulation(std::shared_ptr< class IMultiLayerBuilder > p_sample_builder)
 
@@ -24031,7 +24047,7 @@ class SpecularSimulation(ICloneable, IParameterized):
         """
         __init__(SpecularSimulation self) -> SpecularSimulation
         __init__(SpecularSimulation self, ISample sample) -> SpecularSimulation
-        __init__(SpecularSimulation self, std::shared_ptr< IMultiLayerBuilder > sample_builder) -> SpecularSimulation
+        __init__(SpecularSimulation self, std::shared_ptr< IMultiLayerBuilder > const sample_builder) -> SpecularSimulation
 
         SpecularSimulation::SpecularSimulation(std::shared_ptr< IMultiLayerBuilder > sample_builder)
 
