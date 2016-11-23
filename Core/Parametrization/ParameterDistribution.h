@@ -24,7 +24,7 @@
 
 class IDistribution1D;
 
-class BA_CORE_API_ ParameterDistribution : public IParameterized
+class BA_CORE_API_ ParameterDistribution : public INamed
 {
 public:
     ParameterDistribution(const std::string& par_name,
@@ -43,9 +43,6 @@ public:
     ParameterDistribution& operator=(const ParameterDistribution& other);
 
     ParameterDistribution& linkParameter(std::string par_name);
-
-    //! get the main parameter's name
-    std::string getMainParameterName() const { return m_name; }
 
     //! get number of samples for this distribution
     size_t getNbrSamples() const;
@@ -67,7 +64,6 @@ public:
     double getMaxValue() const { return m_xmax; }
 
 private:
-    std::string m_name;
     std::unique_ptr<IDistribution1D> mP_distribution;
     size_t m_nbr_samples;
     double m_sigma_factor;

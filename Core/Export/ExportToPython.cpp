@@ -311,7 +311,7 @@ std::string ExportToPython::defineParticleDistributions() const
         s_par_distr << "par_distr_" << index;
 
         result << indent() << s_par_distr.str() << " = ba.ParameterDistribution("
-               << "\"" << par_distr.getMainParameterName() << "\""
+               << "\"" << par_distr.getName() << "\""
                << ", " << s_distr.str() << ", " << par_distr.getNbrSamples() << ", "
                << printDouble(par_distr.getSigmaFactor()) << ")\n";
 
@@ -744,7 +744,7 @@ std::string ExportToPython::defineParameterDistributions(const GISASSimulation* 
             simulation->getDistributionHandler().getDistributions();
     if (distributions.size()==0) return "";
     for (size_t i=0; i<distributions.size(); ++i) {
-        std::string main_par_name = distributions[i].getMainParameterName();
+        std::string main_par_name = distributions[i].getName();
         size_t nbr_samples = distributions[i].getNbrSamples();
         double sigma_factor = distributions[i].getSigmaFactor();
         const IDistribution1D* p_distr = distributions[i].getDistribution();

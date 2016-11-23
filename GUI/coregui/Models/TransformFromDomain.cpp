@@ -171,7 +171,7 @@ void TransformFromDomain::setItemFromSample(SessionItem* item,
     item->setItemValue(ParticleItem::P_ABUNDANCE, sample->getAbundance());
 
     ParameterDistribution par_distr = sample->getParameterDistribution();
-    QString main_distr_par_name = QString::fromStdString(par_distr.getMainParameterName());
+    QString main_distr_par_name = QString::fromStdString(par_distr.getName());
     ComboProperty combo_property
         = item->getItemValue(ParticleDistributionItem::P_DISTRIBUTED_PARAMETER)
               .value<ComboProperty>();
@@ -225,7 +225,7 @@ void TransformFromDomain::setItemFromSample(BeamItem* beamItem, const GISASSimul
         pattern_alpha.beginsWith("*").add(BeamType).add(Inclination);
         ParameterPattern pattern_phi;
         pattern_phi.beginsWith("*").add(BeamType).add(Azimuth);
-        std::string mainParameterName = distributions[i].getMainParameterName();
+        std::string mainParameterName = distributions[i].getName();
         if (mainParameterName == pattern_wavelength.toStdString()) {
             BeamDistributionItem* beamWavelength = dynamic_cast<BeamDistributionItem*>(
                 beamItem->getItem(BeamItem::P_WAVELENGTH));
