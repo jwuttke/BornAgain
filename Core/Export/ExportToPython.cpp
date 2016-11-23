@@ -19,12 +19,12 @@
 #include "Crystal.h"
 #include "Distributions.h"
 #include "GISASSimulation.h"
+#include "HomogeneousMagneticMaterial.h"
 #include "IFormFactor.h"
 #include "InterferenceFunctions.h"
 #include "Layer.h"
 #include "LayerInterface.h"
 #include "LayerRoughness.h"
-#include "Materials.h"
 #include "MesoCrystal.h"
 #include "MultiLayer.h"
 #include "MainComputation.h"
@@ -38,16 +38,18 @@
 #include "ResolutionFunction2DGaussian.h"
 #include "SampleLabelHandler.h"
 #include "SphericalDetector.h"
-#include "Utils.h"
+#include "StringUtils.h"
+#include "RegionOfInterest.h"
 #include <iomanip>
 #include <set>
+#include <functional>
 
 class IFormFactor;
 class LayerRoughness;
 
 using namespace PythonFormatting;
 
-namespace CodeSnippet {
+namespace {
 
     const std::string preamble =
         "import numpy\n"
@@ -68,7 +70,9 @@ namespace CodeSnippet {
         "if __name__ == '__main__': \n"
         "    ba.simulateThenPlotOrSave(simulate, plot)\n";
 
-} // namespace CodeSnippet
+    std::function<std::string(double)> printFunc(const IDetector2D *detector);
+
+}
 
 ExportToPython::ExportToPython(const MultiLayer& multilayer)
     : m_label(new SampleLabelHandler())
@@ -111,12 +115,12 @@ ExportToPython::~ExportToPython()
 
 std::string ExportToPython::simulationToPythonLowlevel(const GISASSimulation* simulation)
 {
-    return CodeSnippet::preamble
+    return preamble
         + defineGetSample()
         + defineGetSimulation(simulation)
         + definePlot(simulation)
-        + CodeSnippet::defineSimulate
-        + CodeSnippet::mainProgram;
+        + defineSimulate
+        + mainProgram;
 }
 
 std::string ExportToPython::defineGetSimulation(const GISASSimulation* simulation) const
@@ -298,7 +302,7 @@ std::string ExportToPython::defineParticleDistributions() const
         s_par_distr << "par_distr_" << index;
 
         result << indent() << s_par_distr.str() << " = ba.ParameterDistribution("
-               << "\"" << par_distr.getMainParameterName() << "\""
+               << "\"" << par_distr.getName() << "\""
                << ", " << s_distr.str() << ", " << par_distr.getNbrSamples() << ", "
                << printDouble(par_distr.getSigmaFactor()) << ")\n";
 
@@ -607,7 +611,7 @@ std::string ExportToPython::defineDetector(const GISASSimulation* simulation) co
         result << indent() << "simulation.setDetectorParameters(";
         for(size_t index=0; index<detector->getDimension(); ++index) {
             if (index != 0) result << ", ";
-            result << detector->getAxis(index).getSize() << ", "
+            result << detector->getAxis(index).size() << ", "
                    << printDegrees(detector->getAxis(index).getMin()) << ", "
                    << printDegrees(detector->getAxis(index).getMax());
         }
@@ -663,10 +667,19 @@ std::string ExportToPython::defineDetector(const GISASSimulation* simulation) co
             throw Exceptions::RuntimeErrorException(
                 "ExportToPython::defineDetector: unknown alignment");
 
-        result << indent() << "simulation.setDetector(detector)\n\n";
+        result << indent() << "simulation.setDetector(detector)\n";
 
     } else
         throw Exceptions::RuntimeErrorException("ExportToPython::defineDetector: unknown detector");
+
+    if(iDetector->regionOfInterest()) {
+        result << indent() << "simulation.setRegionOfInterest("
+               << printFunc(iDetector)(iDetector->regionOfInterest()->getXlow()) << ", "
+               << printFunc(iDetector)(iDetector->regionOfInterest()->getYlow()) << ", "
+               << printFunc(iDetector)(iDetector->regionOfInterest()->getXup()) << ", "
+               << printFunc(iDetector)(iDetector->regionOfInterest()->getYup()) << ")\n";
+    }
+    result << indent() << "\n";
 
     return result.str();
 }
@@ -683,13 +696,8 @@ std::string ExportToPython::defineDetectorResolutionFunction(
                     p_convfunc->getResolutionFunction2D())) {
                 result << indent() << "simulation.setDetectorResolutionFunction(";
                 result << "ba.ResolutionFunction2DGaussian(";
-                if(detector->getDefaultAxesUnits() == IDetector2D::RADIANS) {
-                    result << printDegrees(resfunc->getSigmaX()) << ", ";
-                    result << printDegrees(resfunc->getSigmaY()) << "))\n";
-                } else {
-                    result << printDouble(resfunc->getSigmaX()) << ", ";
-                    result << printDouble(resfunc->getSigmaY()) << "))\n";
-                }
+                result << printFunc(detector)(resfunc->getSigmaX()) << ", ";
+                result << printFunc(detector)(resfunc->getSigmaY()) << "))\n";
             } else {
                 throw Exceptions::RuntimeErrorException(
                     "ExportToPython::defineDetectorResolutionFunction() -> Error. "
@@ -728,7 +736,7 @@ std::string ExportToPython::defineParameterDistributions(const GISASSimulation* 
             simulation->getDistributionHandler().getDistributions();
     if (distributions.size()==0) return "";
     for (size_t i=0; i<distributions.size(); ++i) {
-        std::string main_par_name = distributions[i].getMainParameterName();
+        std::string main_par_name = distributions[i].getName();
         size_t nbr_samples = distributions[i].getNbrSamples();
         double sigma_factor = distributions[i].getSigmaFactor();
         const IDistribution1D* p_distr = distributions[i].getDistribution();
@@ -749,12 +757,12 @@ std::string ExportToPython::defineMasks(const GISASSimulation* simulation) const
 
     const IDetector2D* detector = simulation->getInstrument().getDetector();
     const DetectorMask* detectorMask = detector->getDetectorMask();
-    if(detectorMask && detectorMask->getNumberOfMasks()) {
+    if(detectorMask && detectorMask->numberOfMasks()) {
         result << "\n";
-        for(size_t i_mask=0; i_mask<detectorMask->getNumberOfMasks(); ++i_mask) {
+        for(size_t i_mask=0; i_mask<detectorMask->numberOfMasks(); ++i_mask) {
             bool mask_value(false);
             const Geometry::IShape2D* shape = detectorMask->getMaskShape(i_mask, mask_value);
-            result << representShape2D(indent(), shape, mask_value);
+            result << representShape2D(indent(), shape, mask_value, printFunc(detector));
         }
         result << "\n";
     }
@@ -791,7 +799,7 @@ std::string ExportToPython::definePlot(const GISASSimulation* simulation) const
     for (size_t i=0; i<instrument.getDetectorDimension(); ++ i)
         entries.push_back( printDegrees(instrument.getDetectorAxis(i).getMin()) + ", " +
                            printDegrees(instrument.getDetectorAxis(i).getMax()) );
-    result << Utils::String::join( entries, ", " ) << "]) \n";
+    result << StringUtils::join( entries, ", " ) << "]) \n";
     result <<
         "    plt.colorbar(im)\n"
         "    plt.show()\n\n\n";
@@ -851,4 +859,23 @@ void ExportToPython::setPositionInformation(
                << name << ".setPosition("
                << name << "_position)\n";
     }
+}
+
+//! Returns print function for given detector type.
+namespace {
+std::function<std::string (double)> printFunc(const IDetector2D *detector)
+{
+    std::function<std::string(double)> result;
+
+    if(detector->getDefaultAxesUnits() == IDetector2D::MM) {
+        result = PythonFormatting::printDouble;
+    } else if(detector->getDefaultAxesUnits() == IDetector2D::RADIANS) {
+        result = PythonFormatting::printDegrees;
+    } else {
+        throw Exceptions::RuntimeErrorException("ExportToPython::defineMasks() -> Error. Unknown "
+                                                "detector units.");
+    }
+
+    return result;
+}
 }

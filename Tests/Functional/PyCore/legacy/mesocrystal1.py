@@ -97,8 +97,7 @@ class MySampleBuilder(IMultiLayerBuilder):
         p_multi_layer.addLayer(avg_layer)
         p_multi_layer.addLayerWithTopRoughness(substrate_layer, roughness)
 
-        self.sample = p_multi_layer
-        return self.sample
+        return p_multi_layer
 
     # -------------------------------------------------------------------------
     # building meso crystal
@@ -149,16 +148,13 @@ def runTest():
     # loading reference data
     reference = get_reference_data("mesocrystal01_reference.int.gz")
 
-    # setting detector axis as in reference data
-    simulation.setDetectorParameters(reference)
-
     # running simulation
     simulation.runSimulation()
     result = simulation.getIntensityData()
 
-    # IntensityDataIOFactory.writeIntensityData(result, "mesocrystal01_reference.int.gz")
+    #IntensityDataIOFactory.writeIntensityData(result, "mesocrystal01_reference.int.gz")
 
-    diff = IntensityDataFunctions.getRelativeDifference(result, reference)
+    diff = getRelativeDifference(result, reference)
 
     status = "OK"
     if diff > 1e-10 or numpy.isnan(diff):
@@ -171,6 +167,7 @@ def createSimulation():
     simulation = GISASSimulation()
     simulation.setBeamParameters(1.77*angstrom, 0.4*degree, 0.0*degree)
     simulation.setBeamIntensity(5.0090e+12)
+    simulation.setDetectorParameters(50, 0.2*deg, 2.5*deg, 50, 0.0*deg, 2.5*deg)
     # simulation.setDetectorResolutionFunction(ResolutionFunction2DGaussian(0.0002, 0.0002))
     return simulation
 

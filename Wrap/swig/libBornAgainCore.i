@@ -33,6 +33,7 @@
 %include "shared_pointers.i"
 
 %include "warnings.i"
+%include "extendCore.i"
 %include "ignores.i"
 %include "directors.i"
 
@@ -83,12 +84,13 @@
 #include "FTDecayFunctions.h"
 #include "FTDistributions1D.h"
 #include "FTDistributions2D.h"
-#include "FitKernel.h"
 #include "FitObject.h"
 #include "FitOptions.h"
+#include "FitParameterLinked.h"
 #include "FitSuite.h"
+#include "FitSuiteImpl.h"
 #include "FitSuiteObjects.h"
-#include "FitSuiteParameters.h"
+#include "FitParameterSet.h"
 #include "FixedBinAxis.h"
 #include "FormFactorAnisoPyramid.h"
 #include "FormFactorBox.h"
@@ -186,7 +188,6 @@
 #include "MultiLayer.h"
 #include "OffSpecSimulation.h"
 #include "OutputData.h"
-#include "OutputDataFunctions.h"
 #include "ParameterDistribution.h"
 #include "ParameterPool.h"
 #include "Particle.h"
@@ -217,7 +218,7 @@
 #include "IIntensityNormalizer.h"
 #include "ISquaredFunction.h"
 #include "MathFunctions.h"
-#include "FitStrategyAdjustMinimizer.h"
+#include "AdjustMinimizerStrategy.h"
 %}
 
 // ownership
@@ -233,11 +234,17 @@
 
 %newobject DetectorMask::createHistogram() const;
 
+%newobject IHistogram::createFrom(const std::string& filename);
+%newobject IHistogram::createFrom(const std::vector<std::vector<double>>& data);
+
 // The following goes verbatim from libBornAgainCore.i to libBornAgainCore_wrap.cxx.
 // Note that the order matters, as base classes must be included before derived classes.
 
+%import(module="libBornAgainFit") "AttLimits.h"
 %import(module="libBornAgainFit") "Attributes.h"
 %import(module="libBornAgainFit") "RealLimits.h"
+%import(module="libBornAgainFit") "IFitParameter.h"
+%import(module="libBornAgainFit") "FitParameter.h"
 
 %include "BAVersion.h"
 %include "BasicVector3D.h"
@@ -282,12 +289,11 @@
 %include "ChiSquaredModule.h"
 %include "FitObject.h"
 %include "FitOptions.h"
-
+%include "FitParameterLinked.h"
 %include "FitSuite.h"
 %include "FitSuiteObjects.h"
 %include "MathFunctions.h"
-%include "FitStrategyAdjustMinimizer.h"
-
+%include "AdjustMinimizerStrategy.h"
 %include "IFactory.h"
 %include "IMultiLayerBuilder.h"
 %include "ISampleVisitor.h"
@@ -399,7 +405,6 @@
 %include "IIntensityFunction.h"
 %include "OutputData.h"
 %template(IntensityData) OutputData<double>;
-%include "OutputDataFunctions.h"
 %include "ParameterDistribution.h"
 %include "ParameterPool.h"
 %include "Particle.h"
@@ -416,9 +421,8 @@
 %include "ISelectionRule.h"
 %include "SpecularSimulation.h"
 %include "ThreadInfo.h"
-%template(SampleBuilderFactory) IFactory<std::string, IMultiLayerBuilder>;
-//%include "SampleBuilderFactory.h"
-%template(SimulationFactory) IFactory<std::string, GISASSimulation>;
-//%include "SimulationFactory.h"
+%template(SampleBuilderFactoryTemp) IFactory<std::string, IMultiLayerBuilder>;
+%include "SampleBuilderFactory.h"
+%template(SimulationFactoryTemp) IFactory<std::string, GISASSimulation>;
+%include "SimulationFactory.h"
 
-%include "extendCore.i"

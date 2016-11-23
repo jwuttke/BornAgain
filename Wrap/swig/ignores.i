@@ -41,12 +41,13 @@
 
 
 // need this to play nicely with ctypes
-//%ignore IMultiLayerBuilder::registerParameter(const std::string&, double*, const Limits&);
-//%ignore IMultiLayerBuilder::registerParameter(const std::string&, double*);
 %ignore IParameterized::addParametersToExternalPool(const std::string&, ParameterPool*, int) const;
 %ignore IParameterized::addParametersToExternalPool(const std::string&, ParameterPool*) const;
 %ignore IMultiLayerBuilder::addParametersToExternalPool(const std::string&, ParameterPool*, int) const;
 %ignore IMultiLayerBuilder::addParametersToExternalPool(const std::string&, ParameterPool*) const;
+
+// for determining if clone is neccesary after buildSample() call
+%ignore IMultiLayerBuilder::isPythonBuilder();
 
 // ignored to avoid error (todo: check whether this is really necessary)
 %ignore Crystal::getTransformedLattice(const IRotation*) const;
@@ -54,3 +55,15 @@
 // taken from dev-tools/python-bindings/settings_fit.py
 %ignore FitSuite::setOptions(const FitOptions&);
 %ignore FitSuite::getOptions();
+
+
+// extra ignores for types and methods that shouldn't be visible in Python
+%ignore FormFactorDWBAPol;
+%ignore ISampleVisitor::visit(const FormFactorDWBAPol*);
+%ignore FormFactorDWBA;
+%ignore ISampleVisitor::visit(const FormFactorDWBA*);
+%ignore MainComputation;
+%ignore DecoratedLayerComputation;
+%ignore RoughMultiLayerComputation;
+%ignore SpecularComputation;
+

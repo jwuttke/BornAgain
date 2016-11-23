@@ -24,18 +24,19 @@
 class BA_CORE_API_ FormFactorGauss : public IFormFactorBorn
 {
 public:
-    FormFactorGauss(double volume);
+    FormFactorGauss(double length);
     FormFactorGauss(double width, double height);
 
-    FormFactorGauss* clone() const final { return new FormFactorGauss(m_width, m_height); }
-    void accept(ISampleVisitor* visitor) const final { visitor->visit(this); }
+    FormFactorGauss* clone() const override final {
+        return new FormFactorGauss(m_width, m_height); }
+    void accept(ISampleVisitor* visitor) const override final { visitor->visit(this); }
 
     double getWidth() const { return m_width; }
     double getHeight() const { return m_height; }
 
-    double getRadialExtension() const final { return m_width; }
+    double getRadialExtension() const override final { return m_width; }
 
-    complex_t evaluate_for_q(const cvector_t q) const final;
+    complex_t evaluate_for_q(const cvector_t q) const override final;
 
 private:
     double m_width;

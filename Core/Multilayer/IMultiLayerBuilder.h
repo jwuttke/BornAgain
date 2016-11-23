@@ -28,16 +28,20 @@ class IFTDistribution2D;
 class BA_CORE_API_ IMultiLayerBuilder : public IParameterized
 {
 public:
-    IMultiLayerBuilder() : IParameterized("SampleBuilder") {}
+    IMultiLayerBuilder() : IParameterized("SampleBuilder") , m_subtest_item(0) {}
     virtual ~IMultiLayerBuilder() {}
 
-    virtual MultiLayer* buildSample() const = 0;
+    virtual MultiLayer* buildSample() const =0;
 
     void set_subtest(const IParameterized* subtest_item) { m_subtest_item = subtest_item; }
     const IParameterized* m_subtest_item;
 
     const IFormFactor* getFormFactor() const;
     const IFTDistribution2D* getFTDistribution2D() const;
+
+    // this method is extended in the Python wrappers (needed to solve ownership issues with
+    // the created sample in buildSample()
+    static bool isPythonBuilder() { return false; }
 };
 
 #endif // IMULTILAYERBUILDER_H

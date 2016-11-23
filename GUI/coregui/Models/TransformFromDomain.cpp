@@ -47,6 +47,7 @@
 #include "ParticleItem.h"
 #include "Polygon.h"
 #include "Rectangle.h"
+#include "RegionOfInterest.h"
 #include "RectangularDetector.h"
 #include "ResolutionFunctionItems.h"
 #include "SphericalDetector.h"
@@ -170,7 +171,7 @@ void TransformFromDomain::setItemFromSample(SessionItem* item,
     item->setItemValue(ParticleItem::P_ABUNDANCE, sample->getAbundance());
 
     ParameterDistribution par_distr = sample->getParameterDistribution();
-    QString main_distr_par_name = QString::fromStdString(par_distr.getMainParameterName());
+    QString main_distr_par_name = QString::fromStdString(par_distr.getName());
     ComboProperty combo_property
         = item->getItemValue(ParticleDistributionItem::P_DISTRIBUTED_PARAMETER)
               .value<ComboProperty>();
@@ -221,10 +222,10 @@ void TransformFromDomain::setItemFromSample(BeamItem* beamItem, const GISASSimul
         ParameterPattern pattern_wavelength;
         pattern_wavelength.beginsWith("*").add(BeamType).add(Wavelength);
         ParameterPattern pattern_alpha;
-        pattern_alpha.beginsWith("*").add(BeamType).add(Alpha);
+        pattern_alpha.beginsWith("*").add(BeamType).add(Inclination);
         ParameterPattern pattern_phi;
-        pattern_phi.beginsWith("*").add(BeamType).add(Phi);
-        std::string mainParameterName = distributions[i].getMainParameterName();
+        pattern_phi.beginsWith("*").add(BeamType).add(Azimuth);
+        std::string mainParameterName = distributions[i].getName();
         if (mainParameterName == pattern_wavelength.toStdString()) {
             BeamDistributionItem* beamWavelength = dynamic_cast<BeamDistributionItem*>(
                 beamItem->getItem(BeamItem::P_WAVELENGTH));
@@ -279,14 +280,14 @@ void TransformFromDomain::setItemFromSample(SphericalDetectorItem* detectorItem,
     BasicAxisItem* phiAxisItem = dynamic_cast<BasicAxisItem*>(
         detectorItem->getItem(SphericalDetectorItem::P_PHI_AXIS));
     Q_ASSERT(phiAxisItem);
-    phiAxisItem->setItemValue(BasicAxisItem::P_NBINS, (int)phi_axis.getSize());
+    phiAxisItem->setItemValue(BasicAxisItem::P_NBINS, (int)phi_axis.size());
     phiAxisItem->setItemValue(BasicAxisItem::P_MIN, Units::rad2deg(phi_axis.getMin()));
     phiAxisItem->setItemValue(BasicAxisItem::P_MAX, Units::rad2deg(phi_axis.getMax()));
 
     BasicAxisItem* alphaAxisItem = dynamic_cast<BasicAxisItem*>(
         detectorItem->getItem(SphericalDetectorItem::P_ALPHA_AXIS));
     Q_ASSERT(alphaAxisItem);
-    alphaAxisItem->setItemValue(BasicAxisItem::P_NBINS, (int)alpha_axis.getSize());
+    alphaAxisItem->setItemValue(BasicAxisItem::P_NBINS, (int)alpha_axis.size());
     alphaAxisItem->setItemValue(BasicAxisItem::P_MIN, Units::rad2deg(alpha_axis.getMin()));
     alphaAxisItem->setItemValue(BasicAxisItem::P_MAX, Units::rad2deg(alpha_axis.getMax()));
 
@@ -432,31 +433,36 @@ void TransformFromDomain::setDetectorMasks(DetectorItem* detectorItem, const GIS
 {
     Q_ASSERT(detectorItem);
 
+    double scale(1.0);
+    if(detectorItem->getGroupItem(DetectorItem::P_DETECTOR)->modelType()
+            == Constants::SphericalDetectorType)
+        scale = 1./Units::degree;
+
     const IDetector2D* detector = simulation.getInstrument().getDetector();
     const DetectorMask* detectorMask = detector->getDetectorMask();
-    if(detectorMask && detectorMask->getNumberOfMasks()) {
+    if(detectorMask && detectorMask->numberOfMasks()) {
         MaskContainerItem* containerItem = new MaskContainerItem();
         detectorItem->insertItem(-1, containerItem);
-        for(size_t i_mask=0; i_mask<detectorMask->getNumberOfMasks(); ++i_mask) {
+        for(size_t i_mask=0; i_mask<detectorMask->numberOfMasks(); ++i_mask) {
             bool mask_value(false);
             const Geometry::IShape2D* shape = detectorMask->getMaskShape(i_mask, mask_value);
             if(const Geometry::Ellipse* ellipse = dynamic_cast<const Geometry::Ellipse*>(shape)) {
                 EllipseItem* ellipseItem = new EllipseItem();
-                ellipseItem->setItemValue(EllipseItem::P_XCENTER, Units::rad2deg(ellipse->getCenterX()));
-                ellipseItem->setItemValue(EllipseItem::P_YCENTER, Units::rad2deg(ellipse->getCenterY()));
-                ellipseItem->setItemValue(EllipseItem::P_XRADIUS, Units::rad2deg(ellipse->getRadiusX()));
-                ellipseItem->setItemValue(EllipseItem::P_YRADIUS, Units::rad2deg(ellipse->getRadiusY()));
-                ellipseItem->setItemValue(EllipseItem::P_ANGLE, Units::rad2deg(ellipse->getTheta()));
+                ellipseItem->setItemValue(EllipseItem::P_XCENTER, scale*ellipse->getCenterX());
+                ellipseItem->setItemValue(EllipseItem::P_YCENTER, scale*ellipse->getCenterY());
+                ellipseItem->setItemValue(EllipseItem::P_XRADIUS, scale*ellipse->getRadiusX());
+                ellipseItem->setItemValue(EllipseItem::P_YRADIUS, scale*ellipse->getRadiusY());
+                ellipseItem->setItemValue(EllipseItem::P_ANGLE, scale*ellipse->getTheta());
                 ellipseItem->setItemValue(MaskItem::P_MASK_VALUE, mask_value);
                 containerItem->insertItem(0, ellipseItem);
 
             }
             else if(const Geometry::Rectangle* rectangle = dynamic_cast<const Geometry::Rectangle*>(shape)) {
                 RectangleItem* rectangleItem = new RectangleItem();
-                rectangleItem->setItemValue(RectangleItem::P_XLOW, Units::rad2deg(rectangle->getXlow()));
-                rectangleItem->setItemValue(RectangleItem::P_YLOW, Units::rad2deg(rectangle->getYlow()));
-                rectangleItem->setItemValue(RectangleItem::P_XUP, Units::rad2deg(rectangle->getXup()));
-                rectangleItem->setItemValue(RectangleItem::P_YUP, Units::rad2deg(rectangle->getYup()));
+                rectangleItem->setItemValue(RectangleItem::P_XLOW, scale*rectangle->getXlow());
+                rectangleItem->setItemValue(RectangleItem::P_YLOW, scale*rectangle->getYlow());
+                rectangleItem->setItemValue(RectangleItem::P_XUP, scale*rectangle->getXup());
+                rectangleItem->setItemValue(RectangleItem::P_YUP, scale*rectangle->getYup());
                 rectangleItem->setItemValue(MaskItem::P_MASK_VALUE, mask_value);
                 containerItem->insertItem(0, rectangleItem);
 
@@ -467,8 +473,8 @@ void TransformFromDomain::setDetectorMasks(DetectorItem* detectorItem, const GIS
                 polygon->getPoints(xpos, ypos);
                 for(size_t i_point=0; i_point<xpos.size(); ++i_point) {
                     PolygonPointItem* pointItem = new PolygonPointItem();
-                    pointItem->setItemValue(PolygonPointItem::P_POSX, Units::rad2deg(xpos[i_point]));
-                    pointItem->setItemValue(PolygonPointItem::P_POSY, Units::rad2deg(ypos[i_point]));
+                    pointItem->setItemValue(PolygonPointItem::P_POSX, scale*xpos[i_point]);
+                    pointItem->setItemValue(PolygonPointItem::P_POSY, scale*ypos[i_point]);
                     polygonItem->insertItem(-1, pointItem);
                 }
 
@@ -479,13 +485,13 @@ void TransformFromDomain::setDetectorMasks(DetectorItem* detectorItem, const GIS
             }
             else if(const Geometry::VerticalLine* vline = dynamic_cast<const Geometry::VerticalLine*>(shape)) {
                 VerticalLineItem* lineItem = new VerticalLineItem();
-                lineItem->setItemValue(VerticalLineItem::P_POSX, Units::rad2deg(vline->getXpos()));
+                lineItem->setItemValue(VerticalLineItem::P_POSX, scale*vline->getXpos());
                 lineItem->setItemValue(MaskItem::P_MASK_VALUE, mask_value);
                 containerItem->insertItem(0, lineItem);
             }
             else if(const Geometry::HorizontalLine* hline = dynamic_cast<const Geometry::HorizontalLine*>(shape)) {
                 HorizontalLineItem* lineItem = new HorizontalLineItem();
-                lineItem->setItemValue(HorizontalLineItem::P_POSY, Units::rad2deg(hline->getYpos()));
+                lineItem->setItemValue(HorizontalLineItem::P_POSY, scale*hline->getYpos());
                 lineItem->setItemValue(MaskItem::P_MASK_VALUE, mask_value);
                 containerItem->insertItem(0, lineItem);
             }
@@ -500,6 +506,21 @@ void TransformFromDomain::setDetectorMasks(DetectorItem* detectorItem, const GIS
                                         "Unknown shape");
             }
         }
+    }
+
+    if(detector->regionOfInterest()) {
+        SessionItem* containerItem = detectorItem->getChildOfType(Constants::MaskContainerType);
+        if(!containerItem) {
+            containerItem = new MaskContainerItem();
+            detectorItem->insertItem(-1, containerItem);
+        }
+
+        RegionOfInterestItem *roiItem = new RegionOfInterestItem();
+        roiItem->setItemValue(RectangleItem::P_XLOW, scale*detector->regionOfInterest()->getXlow());
+        roiItem->setItemValue(RectangleItem::P_YLOW, scale*detector->regionOfInterest()->getYlow());
+        roiItem->setItemValue(RectangleItem::P_XUP, scale*detector->regionOfInterest()->getXup());
+        roiItem->setItemValue(RectangleItem::P_YUP, scale*detector->regionOfInterest()->getYup());
+        containerItem->insertItem(-1, roiItem);
     }
 }
 
@@ -527,14 +548,15 @@ void TransformFromDomain::setItemFromSample(BeamDistributionItem* beamDistributi
 QString TransformFromDomain::translateParameterNameToGUI(SessionItem* item,
                                                          const QString& par_name)
 {
-    auto gui_par_list = ModelPath::getParameterTreeList(item);
-    for (auto gui_par_name : gui_par_list) {
-        auto domain_par_name = QString::fromStdString(ModelPath::translateParameterName(item, gui_par_name));
+    QStringList gui_par_list = ModelPath::getParameterTreeList(item);
+    for (QString gui_par_name : gui_par_list) {
+        QString domain_par_name = QString::fromStdString(
+                    ModelPath::translateParameterName(item, gui_par_name));
         if (domain_par_name == par_name) {
             return gui_par_name;
         }
     }
-    return QString();
+    return {};
 }
 
 void SetPDF1D(SessionItem* item, const IFTDistribution1D* ipdf, QString group_name)
@@ -580,9 +602,9 @@ void setPDF2D(SessionItem* item, const IFTDistribution2D* pdf, QString group_nam
         = dynamic_cast<const FTDistribution2DCauchy*>(pdf)) {
         SessionItem* pdfItem
             = item->setGroupProperty(group_name, Constants::FTDistribution2DCauchyType);
-        pdfItem->setItemValue(FTDistribution2DCauchyItem::P_CORR_LENGTH_X,
+        pdfItem->setItemValue(FTDistribution2DCauchyItem::P_COHER_LENGTH_X,
                                        pdf_cauchy->getCoherenceLengthX());
-        pdfItem->setItemValue(FTDistribution2DCauchyItem::P_CORR_LENGTH_Y,
+        pdfItem->setItemValue(FTDistribution2DCauchyItem::P_COHER_LENGTH_Y,
                                        pdf_cauchy->getCoherenceLengthY());
         pdfItem->setItemValue(FTDistribution2DCauchyItem::P_GAMMA,
                                        Units::rad2deg(pdf_cauchy->getGamma()));
@@ -590,9 +612,9 @@ void setPDF2D(SessionItem* item, const IFTDistribution2D* pdf, QString group_nam
                = dynamic_cast<const FTDistribution2DGauss*>(pdf)) {
         SessionItem* pdfItem
             = item->setGroupProperty(group_name, Constants::FTDistribution2DGaussType);
-        pdfItem->setItemValue(FTDistribution2DGaussItem::P_CORR_LENGTH_X,
+        pdfItem->setItemValue(FTDistribution2DGaussItem::P_COHER_LENGTH_X,
                                        pdf_gauss->getCoherenceLengthX());
-        pdfItem->setItemValue(FTDistribution2DGaussItem::P_CORR_LENGTH_Y,
+        pdfItem->setItemValue(FTDistribution2DGaussItem::P_COHER_LENGTH_Y,
                                        pdf_gauss->getCoherenceLengthY());
         pdfItem->setItemValue(FTDistribution2DGaussItem::P_GAMMA,
                                        Units::rad2deg(pdf_gauss->getGamma()));
@@ -600,9 +622,9 @@ void setPDF2D(SessionItem* item, const IFTDistribution2D* pdf, QString group_nam
                = dynamic_cast<const FTDistribution2DGate*>(pdf)) {
         SessionItem* pdfItem
             = item->setGroupProperty(group_name, Constants::FTDistribution2DGateType);
-        pdfItem->setItemValue(FTDistribution2DGateItem::P_CORR_LENGTH_X,
+        pdfItem->setItemValue(FTDistribution2DGateItem::P_COHER_LENGTH_X,
                                        pdf_gate->getCoherenceLengthX());
-        pdfItem->setItemValue(FTDistribution2DGateItem::P_CORR_LENGTH_Y,
+        pdfItem->setItemValue(FTDistribution2DGateItem::P_COHER_LENGTH_Y,
                                        pdf_gate->getCoherenceLengthY());
         pdfItem->setItemValue(FTDistribution2DGateItem::P_GAMMA,
                                        Units::rad2deg(pdf_gate->getGamma()));
@@ -610,9 +632,9 @@ void setPDF2D(SessionItem* item, const IFTDistribution2D* pdf, QString group_nam
                = dynamic_cast<const FTDistribution2DCone*>(pdf)) {
         SessionItem* pdfItem
             = item->setGroupProperty(group_name, Constants::FTDistribution2DConeType);
-        pdfItem->setItemValue(FTDistribution2DConeItem::P_CORR_LENGTH_X,
+        pdfItem->setItemValue(FTDistribution2DConeItem::P_COHER_LENGTH_X,
                                        pdf_cone->getCoherenceLengthX());
-        pdfItem->setItemValue(FTDistribution2DConeItem::P_CORR_LENGTH_Y,
+        pdfItem->setItemValue(FTDistribution2DConeItem::P_COHER_LENGTH_Y,
                                        pdf_cone->getCoherenceLengthY());
         pdfItem->setItemValue(FTDistribution2DConeItem::P_GAMMA,
                                        Units::rad2deg(pdf_cone->getGamma()));
@@ -620,9 +642,9 @@ void setPDF2D(SessionItem* item, const IFTDistribution2D* pdf, QString group_nam
                = dynamic_cast<const FTDistribution2DVoigt*>(pdf)) {
         SessionItem* pdfItem
             = item->setGroupProperty(group_name, Constants::FTDistribution2DVoigtType);
-        pdfItem->setItemValue(FTDistribution2DVoigtItem::P_CORR_LENGTH_X,
+        pdfItem->setItemValue(FTDistribution2DVoigtItem::P_COHER_LENGTH_X,
                                        pdf_voigt->getCoherenceLengthX());
-        pdfItem->setItemValue(FTDistribution2DVoigtItem::P_CORR_LENGTH_Y,
+        pdfItem->setItemValue(FTDistribution2DVoigtItem::P_COHER_LENGTH_Y,
                                        pdf_voigt->getCoherenceLengthY());
         pdfItem->setItemValue(FTDistribution2DVoigtItem::P_GAMMA,
                                        Units::rad2deg(pdf_voigt->getGamma()));

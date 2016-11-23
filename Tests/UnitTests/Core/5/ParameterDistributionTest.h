@@ -26,11 +26,11 @@ TEST_F(ParameterDistributionTest, ParameterDistributionConstructor)
 
     // Sigma constructor
     ParameterDistribution pardistr(name, distribution, 1);
-    EXPECT_EQ("ParameterDistribution", pardistr.getName());
+    EXPECT_EQ(name, pardistr.getName());
     EXPECT_EQ(1.5, pardistr.getDistribution()->getMean());
     EXPECT_EQ("DistributionGate", pardistr.getDistribution()->getName());
     EXPECT_EQ(1.0, pardistr.getDistribution()->probabilityDensity(1));
-    EXPECT_EQ(name, pardistr.getMainParameterName());
+    EXPECT_EQ(name, pardistr.getName());
     EXPECT_EQ(size_t(1), pardistr.getNbrSamples());
     EXPECT_EQ(0.0, pardistr.getSigmaFactor());
     EXPECT_EQ(RealLimits(), pardistr.getLimits());
@@ -45,11 +45,11 @@ TEST_F(ParameterDistributionTest, ParameterDistributionConstructor)
 
     // xmin, xmax constructor
     ParameterDistribution pardistr3(name, distribution, 5, 1.0, 2.0);
-    EXPECT_EQ("ParameterDistribution", pardistr3.getName());
+    EXPECT_EQ(name, pardistr3.getName());
     EXPECT_EQ(1.5, pardistr3.getDistribution()->getMean());
     EXPECT_EQ("DistributionGate", pardistr3.getDistribution()->getName());
     EXPECT_EQ(1.0, pardistr3.getDistribution()->probabilityDensity(1));
-    EXPECT_EQ(name, pardistr3.getMainParameterName());
+    EXPECT_EQ(name, pardistr3.getName());
     EXPECT_EQ(size_t(5), pardistr3.getNbrSamples());
     EXPECT_EQ(0.0, pardistr3.getSigmaFactor());
     EXPECT_EQ(RealLimits(), pardistr3.getLimits());
@@ -69,7 +69,7 @@ TEST_F(ParameterDistributionTest, ParameterDistributionCopyConstructor)
     EXPECT_EQ(pardistr.getDistribution()->getName(), pcopy.getDistribution()->getName());
 
     EXPECT_EQ(pardistr.getDistribution()->probabilityDensity(1), pcopy.getDistribution()->probabilityDensity(1));
-    EXPECT_EQ(pardistr.getMainParameterName(), pcopy.getMainParameterName());
+    EXPECT_EQ(pardistr.getName(), pcopy.getName());
     EXPECT_EQ(pardistr.getNbrSamples(), pcopy.getNbrSamples());
     EXPECT_EQ(pardistr.getSigmaFactor(), pcopy.getSigmaFactor());
     EXPECT_EQ(pardistr.getLimits(), pcopy.getLimits());
@@ -93,7 +93,7 @@ TEST_F(ParameterDistributionTest, ParameterDistributionAssignment)
     EXPECT_EQ(pardistr.getDistribution()->getName(), pcopy.getDistribution()->getName());
 
     EXPECT_EQ(pardistr.getDistribution()->probabilityDensity(1), pcopy.getDistribution()->probabilityDensity(1));
-    EXPECT_EQ(pardistr.getMainParameterName(), pcopy.getMainParameterName());
+    EXPECT_EQ(pardistr.getName(), pcopy.getName());
     EXPECT_EQ(pardistr.getNbrSamples(), pcopy.getNbrSamples());
     EXPECT_EQ(pardistr.getSigmaFactor(), pcopy.getSigmaFactor());
     EXPECT_EQ(pardistr.getLimits(), pcopy.getLimits());

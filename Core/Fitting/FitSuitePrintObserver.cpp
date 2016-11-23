@@ -15,32 +15,31 @@
 
 #include "FitSuitePrintObserver.h"
 #include "FitSuite.h"
-#include "FitSuiteParameters.h"
+#include "FitParameterSet.h"
 #include "FitSuiteStrategies.h"
-
+#include "MinimizerUtils.h"
+#include <iostream>
+#include <iomanip>
 
 FitSuitePrintObserver::FitSuitePrintObserver(int print_every_nth)
     : IFitObserver(print_every_nth)
     , m_fit_suite(0)
 {
-    m_last_call_time = boost::posix_time::second_clock::local_time();
 }
 
 void FitSuitePrintObserver::update(FitSuite* fit_suite)
 {
     m_fit_suite = fit_suite;
 
-    if(fit_suite->getNumberOfIterations() == 0) {
-        m_start_time = boost::posix_time::second_clock::local_time();
-        m_last_call_time = boost::posix_time::second_clock::local_time();
+    if(fit_suite->numberOfIterations() == 0) {
+        m_run_time.start();
+        m_last_call_time.start();
     }
 
     if(m_strategy_has_changed) {
-        std::cout <<
-            "-------------------------------------------------------------------------------\n";
-        std::cout << (*m_fit_suite->getFitStrategies()->getCurrentStrategy()) << std::endl;
-        std::cout <<
-            "-------------------------------------------------------------------------------\n";
+        std::cout << MinimizerUtils::sectionString() << "\n";
+        std::cout << (*m_fit_suite->fitStrategies()->currentStrategy()) << std::endl;
+        std::cout << MinimizerUtils::sectionString() << "\n";
     }
 
     printIterationHeader();
@@ -54,35 +53,31 @@ void FitSuitePrintObserver::update(FitSuite* fit_suite)
 void FitSuitePrintObserver::printIterationHeader()
 {
     std::cout << "FitPrintObserver::update() -> Info."
-              << " NCall:" << m_fit_suite->getNumberOfIterations()
-              << " NStrategy:" << m_fit_suite->getCurrentStrategyIndex()
+              << " NCall:" << m_fit_suite->numberOfIterations()
+              << " NStrategy:" << m_fit_suite->currentStrategyIndex()
               << " Chi2:" << std::scientific << std::setprecision(8)
               << m_fit_suite->getChi2() << std::endl;
 }
 
 void FitSuitePrintObserver::printWallTime()
 {
-    boost::posix_time::time_duration diff = boost::posix_time::microsec_clock::local_time() -
-            m_last_call_time;
-    std::cout << "Wall time since last call:"
-              << std::fixed << std::setprecision(2)
-              << diff.total_milliseconds()/1000. << " sec." <<std::endl;
-    m_last_call_time = boost::posix_time::microsec_clock::local_time();
+    m_last_call_time.stop();
+    std::cout << "Wall time since last call:" << std::fixed << std::setprecision(2)
+              << m_last_call_time.runTime() << std::endl;
+    m_last_call_time.start();
 }
 
 void FitSuitePrintObserver::printParameters()
 {
-    m_fit_suite->getFitParameters()->printFitParameters();
+    std::cout << m_fit_suite->fitParameters()->parametersToString() << std::endl;
 }
 
 void FitSuitePrintObserver::printFitResults()
 {
     std::cout << "This was the last iteration." << std::endl;
+    m_run_time.stop();
     m_fit_suite->printResults();
-    boost::posix_time::time_duration  diff = boost::posix_time::second_clock::local_time() -
-            m_start_time;
-    std::cout << "Total time spend: "
-              << std::fixed << std::setprecision(2)
-              << diff.total_milliseconds()/1000. << " sec." <<std::endl;
+    std::cout << "Total time spend: " << std::fixed << std::setprecision(2)
+              << m_run_time.runTime() << " sec." <<std::endl;
     std::cout << std::endl;
 }

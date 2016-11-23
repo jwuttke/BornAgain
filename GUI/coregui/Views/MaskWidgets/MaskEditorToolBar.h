@@ -34,10 +34,8 @@ public:
 
 signals:
     void activityModeChanged(MaskEditorFlags::Activity);
-    void propertyPanelRequest();
     void presentationTypeRequest(MaskEditorFlags::PresentationType);
     void maskValueChanged(MaskEditorFlags::MaskValue);
-    void resetViewRequest();
 
 public slots:
     void onChangeActivityRequest(MaskEditorFlags::Activity value);
@@ -56,7 +54,7 @@ private:
     void setup_extratools_group();
     void add_separator();
 
-    MaskEditorFlags::Activity getCurrentActivity() const;
+    MaskEditorFlags::Activity currentActivity() const;
     void setCurrentActivity(MaskEditorFlags::Activity value);
 
     MaskEditorActions *m_editorActions;

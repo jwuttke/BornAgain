@@ -39,15 +39,6 @@ IsGISAXSDetector::IsGISAXSDetector(const IsGISAXSDetector &other)
     init_parameters();
 }
 
-IsGISAXSDetector &IsGISAXSDetector::operator=(const IsGISAXSDetector &other)
-{
-    if (this != &other) {
-        IsGISAXSDetector tmp(other);
-        tmp.swapContent(*this);
-    }
-    return *this;
-}
-
 IsGISAXSDetector *IsGISAXSDetector::clone() const
 {
     return new IsGISAXSDetector(*this);
@@ -71,4 +62,9 @@ IAxis *IsGISAXSDetector::createAxis(size_t index, size_t n_bins, double min, dou
         throw Exceptions::LogicErrorException(
             "IsGISAXSDetector::createAxis() -> Error! Number n_bins can't be zero.");
     }    return new CustomBinAxis(getAxisName(index), n_bins, min, max);
+}
+
+size_t IsGISAXSDetector::getIndexOfSpecular(const Beam&) const
+{
+    return getTotalSize();
 }

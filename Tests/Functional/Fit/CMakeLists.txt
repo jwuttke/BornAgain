@@ -11,7 +11,8 @@ set(test_cases
     Minuit2_Fumili
     Minuit2_Migrad
     RectDetectorFit
-    ExperimentalFit
+    AdjustMinimizerStrategy
+    StandaloneFit
 )
 
 # for some reason these flags doesn't propagated here by SetUpWindows.cmake
@@ -30,15 +31,10 @@ include_directories(
     ${RootMinimizers_INCLUDE_DIRS}
 )
 
-#file(GLOB source_files "*.cpp")
-#file(GLOB include_files "*.h")
+file(GLOB source_files "*.cpp")
+file(GLOB include_files "*.h")
 
-add_executable(FitTest
-    FitTest.cpp IMinimizerTest.cpp  IMinimizerTest.h  MinimizerTests.cpp
-    MinimizerTests.h RectDetectorFitTest.cpp  RectDetectorFitTest.h
-    StandardFitsFactory.cpp StandardFitsFactory.h
-    ExperimentalFitTest.h ExperimentalFitTest.cpp
-    )
+add_executable(FitTest ${include_files} ${source_files})
 
 target_link_libraries(FitTest BornAgainFit BornAgainCore BornAgainTestMachinery)
 foreach(test_case ${test_cases})

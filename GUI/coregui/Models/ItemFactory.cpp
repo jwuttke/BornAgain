@@ -53,6 +53,7 @@
 #include "SimulationOptionsItem.h"
 #include "TransformationItem.h"
 #include "VectorItem.h"
+#include "LinkInstrumentItem.h"
 #include <QDebug>
 
 namespace {
@@ -176,6 +177,8 @@ ItemFactory::ItemMap_t initializeItemMap() {
     result[Constants::EllipseMaskType] = &createInstance<EllipseItem>;
     result[Constants::MaskAllType] = &createInstance<MaskAllItem>;
 
+    result[Constants::RegionOfInterestType] = &createInstance<RegionOfInterestItem>;
+
     result[Constants::GroupItemType] = &createInstance<GroupItem>;
 
     result[Constants::ParameterContainerType] = &createInstance<ParameterContainerItem>;
@@ -190,6 +193,7 @@ ItemFactory::ItemMap_t initializeItemMap() {
     result[Constants::SimulationOptionsType] = &createInstance<SimulationOptionsItem>;
 
     result[Constants::RealDataType] = &createInstance<RealDataItem>;
+    result[Constants::LinkInstrumentType] = &createInstance<LinkInstrumentItem>;
 
     result[Constants::MinimizerContainerType] = &createInstance<MinimizerContainerItem>;
     result[Constants::MinuitMinimizerType] = &createInstance<MinuitMinimizerItem>;
@@ -221,7 +225,7 @@ ItemFactory::ItemMap_t ItemFactory::m_item_map = initializeItemMap();
 SessionItem *ItemFactory::createItem(const QString &model_name,
                                            SessionItem *parent)
 {
-    qDebug() << "ItemFactory::createItem" << model_name;
+    //qDebug() << "ItemFactory::createItem" << model_name;
 
     if(!m_item_map.contains(model_name))
         throw GUIHelpers::Error("ItemFactory::createItem() -> Error: Model name does not exist: "+model_name);
@@ -230,7 +234,7 @@ SessionItem *ItemFactory::createItem(const QString &model_name,
     if(parent) {
         parent->insertItem(-1, result);
     }
-    qDebug() << "       result:" << result;
+    //qDebug() << "       result:" << result;
     return result;
 }
 

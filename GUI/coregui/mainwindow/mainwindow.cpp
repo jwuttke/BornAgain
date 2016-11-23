@@ -66,6 +66,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 //    m_applicationModels->createTestSample();
 //    m_applicationModels->createTestJob();
+//    m_applicationModels->createTestRealData();
 }
 
 MaterialModel *MainWindow::materialModel()
@@ -194,8 +195,8 @@ void MainWindow::onSessionModelViewActive(bool isActive)
 void MainWindow::closeEvent(QCloseEvent *event)
 {
     if(jobModel()->hasUnfinishedJobs()) {
-        QMessageBox::warning(this, tr("Can't quite the application."),
-                             "Can't quite the application while jobs are running.\n"
+        QMessageBox::warning(this, "Can't quit the application.",
+                             "Can't quit the application while jobs are running.\n"
                              "Cancel running jobs or wait until they are completed.");
         event->ignore();
         return;
@@ -222,7 +223,7 @@ void MainWindow::initApplication()
     QCoreApplication::setApplicationVersion(GUIHelpers::getBornAgainVersionString());
     QCoreApplication::setOrganizationName(QLatin1String(Constants::APPLICATION_NAME));
 
-    if (!Utils::HostOsInfo::isMacHost())
+    if (!GUI_OS_Utils::HostOsInfo::isMacHost())
         QApplication::setWindowIcon(QIcon(":/images/BornAgain.ico"));
 
     QString baseName = QApplication::style()->objectName();

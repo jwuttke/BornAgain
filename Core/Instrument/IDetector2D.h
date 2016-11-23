@@ -19,9 +19,8 @@
 #include "IParameterized.h"
 #include "Beam.h"
 #include "DetectorMask.h"
-#include "EigenCore.h"
 #include "SafePointerVector.h"
-#include "Vectors3D.h"
+#include "DetectionProperties.h"
 #include <memory>
 
 template<class T> class OutputData;
@@ -30,6 +29,8 @@ class IAxis;
 class IDetectorResolution;
 class IPixelMap;
 class SimulationElement;
+class DetectionProperties;
+class RegionOfInterest;
 namespace Geometry {
     class IShape2D;
 }
@@ -38,13 +39,12 @@ namespace Geometry {
 //! @ingroup simulation
 //! @brief The detector interface.
 
-class BA_CORE_API_ IDetector2D : public IParameterized
+class BA_CORE_API_ IDetector2D : public ICloneable, public IParameterized
 {
 public:
     enum EAxesUnits {DEFAULT, NBINS, RADIANS, DEGREES, MM, QYQZ};
 
     IDetector2D();
-    IDetector2D(const IDetector2D& other);
 
     virtual IDetector2D* clone() const=0;
 
@@ -60,9 +60,6 @@ public:
     size_t getDimension() const;
 
     void clear();
-
-    //! Sets detector parameters using axes of output data
-    void matchDetectorAxes(const OutputData<double>& output_data);
 
     //! Sets detector parameters using angle ranges
     void setDetectorParameters(size_t n_x, double x_min, double x_max,
@@ -81,12 +78,7 @@ public:
 
     //! Sets the polarization analyzer characteristics of the detector
     void setAnalyzerProperties(const kvector_t direction, double efficiency,
-                               double total_transmission=1.0);
-
-#ifndef SWIG
-    //! Gets the polarization density matrix (in spin basis along z-axis)
-    Eigen::Matrix2cd getAnalyzerOperator() const;
-#endif
+                               double total_transmission);
 
     //! removes all masks from the detector
     void removeMasks();
@@ -103,8 +95,7 @@ public:
 
     const DetectorMask* getDetectorMask() const;
 
-    int getNumberOfMaskedChannels() const;
-
+    size_t numberOfMaskedChannels() const;
 
     bool isMasked(size_t index) const;
 
@@ -114,6 +105,8 @@ public:
 #ifndef SWIG
     //! Create a vector of SimulationElement objects according to the detector and its mask
     std::vector<SimulationElement> createSimulationElements(const Beam& beam);
+
+    //! Creates single simulation element.
     SimulationElement getSimulationElement(size_t index, const Beam& beam) const;
 #endif
 
@@ -121,8 +114,15 @@ public:
     virtual std::string addParametersToExternalPool(
         const std::string& path, ParameterPool* external_pool, int copy_number = -1) const;
 
-    //! Returns detector map in given axes units
-    virtual OutputData<double>* createDetectorMap(const Beam&, EAxesUnits) const;
+    //! Returns new intensity map with detector resolution applied and axes in requested units
+    OutputData<double>* createDetectorIntensity(const std::vector<SimulationElement> &elements,
+            const Beam& beam, IDetector2D::EAxesUnits units_type=IDetector2D::DEFAULT) const;
+
+    //! Returns empty detector map in given axes units.
+    virtual OutputData<double>* createDetectorMap(const Beam& beam, EAxesUnits units) const;
+
+    //! Inits axes of OutputData to match the detector and sets values to zero.
+    virtual void initOutputData(OutputData<double> &data) const;
 
     //! returns vector of valid axes units
     virtual std::vector<EAxesUnits> getValidAxesUnits() const;
@@ -130,7 +130,27 @@ public:
     //! return default axes units
     virtual EAxesUnits getDefaultAxesUnits() const { return DEFAULT; }
 
+    //! Returns region of  interest if exists.
+    const RegionOfInterest* regionOfInterest() const;
+
+    //! Sets rectangular region of interest with lower left and upper right corners defined.
+    void setRegionOfInterest(double xlow, double ylow, double xup, double yup);
+
+    //! Resets region of interest making whole detector plane available for the simulation.
+    void resetRegionOfInterest();
+
+    //! Returns total number of pixels
+    size_t getTotalSize() const;
+
+    //! Calculate axis index for given global index
+    size_t getAxisBinIndex(size_t index, size_t selected_axis) const;
+
+    //! Returns number of simulation elements.
+    size_t numberOfSimulationElements() const;
+
 protected:
+    IDetector2D(const IDetector2D& other);
+
     //! Create an IPixelMap for the given OutputData object and index
     virtual IPixelMap* createPixelMap(size_t index) const=0;
 
@@ -140,38 +160,36 @@ protected:
     //! Generates an axis with correct name and default binning for given index
     virtual IAxis* createAxis(size_t index, size_t n_bins, double min, double max) const=0;
 
+    //! Constructs axis with min,max corresponding to selected units
+    std::unique_ptr<IAxis> constructAxis(size_t axis_index, const Beam& beam,
+                                         EAxesUnits units) const;
+
+    //! Calculates axis range from original detector axes in given units (mm, rad, etc)
+    virtual void calculateAxisRange(size_t axis_index, const Beam& beam, EAxesUnits units,
+                                    double &amin, double &amax) const;
+
     //! Returns the name for the axis with given index
     virtual std::string getAxisName(size_t index) const=0;
 
     bool isCorrectAxisIndex(size_t index) const;
 
-    //! Returns true if data has a compatible format with the detector.
-    bool dataShapeMatches(const OutputData<double>* p_data) const;
+    //! Calculate global index from two axis indices
+    size_t getGlobalIndex(size_t x, size_t y) const;
 
-    //! Initialize polarization (for constructors)
-    void initPolarizationOperator();
-
-    //! Calculate axis index for given global index
-    size_t getAxisBinIndex(size_t index, size_t selected_axis) const;
-
-    //! swap function
-    void swapContent(IDetector2D& other);
+    //! Returns index of pixel that contains the specular wavevector.
+    //! If no pixel contains this specular wavevector, the number of pixels is
+    //! returned. This corresponds to an overflow index.
+    virtual size_t getIndexOfSpecular(const Beam& beam) const=0;
 
     SafePointerVector<IAxis> m_axes;
     std::unique_ptr<IDetectorResolution> mP_detector_resolution;
-#ifndef SWIG
-    Eigen::Matrix2cd m_analyzer_operator; //!< polarization analyzer operator
-#endif
     DetectorMask m_detector_mask;
-private:
-    //! Verify if the given analyzer properties are physical
-    bool checkAnalyzerProperties(const kvector_t direction, double efficiency,
-                                 double total_transmission) const;
 
-#ifndef SWIG
-    Eigen::Matrix2cd calculateAnalyzerOperator(
-        const kvector_t direction, double efficiency, double total_transmission = 1.0) const;
-#endif
+private:
+    void setDataToDetectorMap(OutputData<double> &detectorMap,
+                              const std::vector<SimulationElement> &elements) const;
+    std::unique_ptr<RegionOfInterest> m_region_of_interest;
+    DetectionProperties m_detection_properties;
 };
 
 #endif // IDETECTOR2D_H

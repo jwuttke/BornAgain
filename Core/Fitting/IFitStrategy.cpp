@@ -14,27 +14,22 @@
 // ************************************************************************** //
 
 #include "IFitStrategy.h"
-#include "FitKernel.h"
-#include "Exceptions.h"
-
-IFitStrategy::IFitStrategy()
-    : m_kernel(nullptr)
-{
-}
+#include "FitSuiteImpl.h"
+#include <stdexcept>
 
 IFitStrategy::IFitStrategy(const std::string &name)
     : INamed(name), m_kernel(nullptr)
 {
 }
 
-void IFitStrategy::init(FitKernel* fit_suite)
+void IFitStrategy::init(FitSuiteImpl* fit_suite)
 {
     m_kernel = fit_suite;
 }
 
-void IFitStrategy::print(std::ostream &ostr) const
+std::string IFitStrategy::toString() const
 {
-    ostr << getName();
+    return getName();
 }
 
 IFitStrategy::IFitStrategy(const IFitStrategy &other)
@@ -50,17 +45,21 @@ FitStrategyDefault::FitStrategyDefault()
 {
 }
 
-IFitStrategy* FitStrategyDefault::clone() const
+FitStrategyDefault *FitStrategyDefault::clone() const
 {
-    return new FitStrategyDefault();
+    return new FitStrategyDefault(*this);
 }
 
 void FitStrategyDefault::execute()
 {
     if( !m_kernel )
-        throw Exceptions::NullPointerException(
-            "FitStrategyDefault::execute() -> FitSuite doesn't exists");
+        throw std::runtime_error("FitStrategyDefault::execute() -> FitSuite doesn't exists");
 
-    // calling minimization
     m_kernel->minimize();
+}
+
+FitStrategyDefault::FitStrategyDefault(const FitStrategyDefault &other)
+    : IFitStrategy(other)
+{
+
 }

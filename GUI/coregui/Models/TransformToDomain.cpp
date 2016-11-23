@@ -311,13 +311,15 @@ std::unique_ptr<Beam> TransformToDomain::createBeam(const SessionItem& item)
     return P_beam;
 }
 
-void TransformToDomain::initInstrumentFromDetectorItem(const SessionItem& item,
+void TransformToDomain::initInstrumentFromDetectorItem(const SessionItem& detectorItem,
                                                        Instrument* instrument)
 {
-    auto subDetector = item.getGroupItem(DetectorItem::P_DETECTOR);
+    auto subDetector = detectorItem.getGroupItem(DetectorItem::P_DETECTOR);
     Q_ASSERT(subDetector);
 
+    double scale(1.0);
     if(auto sphericalDetector = dynamic_cast<SphericalDetectorItem*>(subDetector)) {
+        scale = Units::degree;
         auto detector = sphericalDetector->createDetector();
         instrument->setDetector(*detector);
         auto resfunc = sphericalDetector->createResolutionFunction();
@@ -336,6 +338,26 @@ void TransformToDomain::initInstrumentFromDetectorItem(const SessionItem& item,
             + subDetector->modelType());
     }
 
+    if(auto maskContainerItem = detectorItem.getChildOfType(Constants::MaskContainerType)) {
+        for(int i_row = maskContainerItem->childItems().size(); i_row>0; --i_row) {
+            if(auto maskItem = dynamic_cast<MaskItem*>(
+                   maskContainerItem->childItems().at(i_row-1))) {
+
+                if(maskItem->modelType() == Constants::RegionOfInterestType) {
+                    double xlow = scale*maskItem->getItemValue(RectangleItem::P_XLOW).toDouble();
+                    double ylow = scale*maskItem->getItemValue(RectangleItem::P_YLOW).toDouble();
+                    double xup = scale*maskItem->getItemValue(RectangleItem::P_XUP).toDouble();
+                    double yup = scale*maskItem->getItemValue(RectangleItem::P_YUP).toDouble();
+                    instrument->getDetector()->setRegionOfInterest(xlow, ylow, xup, yup);
+
+                } else {
+                    std::unique_ptr<Geometry::IShape2D > shape(maskItem->createShape(scale));
+                    bool mask_value = maskItem->getItemValue(MaskItem::P_MASK_VALUE).toBool();
+                    instrument->getDetector()->addMask(*shape, mask_value);
+                }
+            }
+        }
+    }
 }
 
 //! adds DistributionParameters to the Simulation
@@ -345,9 +367,9 @@ void TransformToDomain::addDistributionParametersToSimulation(const SessionItem&
     ParameterPattern pattern_wavelength;
     pattern_wavelength.beginsWith("*").add(BeamType).add(Wavelength);
     ParameterPattern pattern_alpha;
-    pattern_alpha.beginsWith("*").add(BeamType).add(Alpha);
+    pattern_alpha.beginsWith("*").add(BeamType).add(Inclination);
     ParameterPattern pattern_phi;
-    pattern_phi.beginsWith("*").add(BeamType).add(Phi);
+    pattern_phi.beginsWith("*").add(BeamType).add(Azimuth);
     if (beam_item.modelType() == Constants::BeamType) {
         if (auto beamWavelength
             = dynamic_cast<BeamWavelengthItem*>(beam_item.getItem(BeamItem::P_WAVELENGTH))) {
@@ -371,31 +393,6 @@ void TransformToDomain::addDistributionParametersToSimulation(const SessionItem&
                 simulation->addParameterDistribution(*P_par_distr);
         }
     }
-}
-
-void TransformToDomain::addMasksToSimulation(const SessionItem& detector_item,
-                                             GISASSimulation* simulation)
-{
-    Q_ASSERT(detector_item.modelType() == Constants::DetectorType);
-
-    if(auto detectorItem = dynamic_cast<const DetectorItem*>(&detector_item)) {
-        double scale = 1.0;
-        if(detectorItem->getGroupItem(DetectorItem::P_DETECTOR)->modelType()
-                == Constants::SphericalDetectorType) scale = Units::degree;
-
-        if(auto maskContainerItem = detectorItem->getMaskContainerItem()) {
-            for(int i_row = maskContainerItem->childItems().size(); i_row>0; --i_row) {
-                if(auto maskItem = dynamic_cast<MaskItem*>(
-                       maskContainerItem->childItems().at(i_row-1))) {
-                    std::unique_ptr<Geometry::IShape2D > shape(maskItem->createShape(scale));
-                    bool mask_value = maskItem->getItemValue(MaskItem::P_MASK_VALUE).toBool();
-                    simulation->addMask(*shape, mask_value);
-                }
-            }
-
-        }
-    }
-
 }
 
 void TransformToDomain::setSimulationOptions(GISASSimulation* simulation,

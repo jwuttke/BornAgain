@@ -53,11 +53,6 @@ void Instrument::setDetector(const IDetector2D& detector)
     initDetector();
 }
 
-void Instrument::matchDetectorAxes(const OutputData<double> &output_data)
-{
-    mP_detector->matchDetectorAxes(output_data);
-}
-
 void Instrument::setDetectorParameters(size_t n_x, double x_min, double x_max,
                                        size_t n_y, double y_min, double y_max)
 {
@@ -119,22 +114,15 @@ void Instrument::applyDetectorResolution(OutputData<double>* p_intensity_map) co
     mP_detector->applyDetectorResolution(p_intensity_map);
 }
 
-OutputData<double>* Instrument::getDetectorIntensity(
-    const OutputData<double> &data, IDetector2D::EAxesUnits units_type) const
+OutputData<double> *Instrument::createDetectorIntensity(
+        const std::vector<SimulationElement> &elements, IDetector2D::EAxesUnits units) const
 {
-    std::unique_ptr<OutputData<double> > result (data.clone());
-    applyDetectorResolution(result.get());
+    return mP_detector->createDetectorIntensity(elements, m_beam, units);
+}
 
-    if(units_type == IDetector2D::DEFAULT) {
-        return result.release();
-    } else {
-        OutputData<double>* detectorMap = mP_detector->createDetectorMap(m_beam, units_type);
-        if(!detectorMap)
-            throw Exceptions::RuntimeErrorException("Instrument::getDetectorIntensity() -> Error."
-                                        "Can't create detector map.");
-        detectorMap->setRawDataVector(result->getRawDataVector());
-        return detectorMap;
-    }
+OutputData<double> *Instrument::createDetectorMap(IDetector2D::EAxesUnits units) const
+{
+    return mP_detector->createDetectorMap(m_beam, units);
 }
 
 void Instrument::print(std::ostream& ostr) const

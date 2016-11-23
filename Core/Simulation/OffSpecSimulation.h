@@ -28,7 +28,7 @@ class BA_CORE_API_ OffSpecSimulation : public Simulation
 public:
     OffSpecSimulation();
     OffSpecSimulation(const MultiLayer& p_sample);
-    OffSpecSimulation(std::shared_ptr<class IMultiLayerBuilder> p_sample_builder);
+    OffSpecSimulation(const std::shared_ptr<class IMultiLayerBuilder> p_sample_builder);
     ~OffSpecSimulation() final {}
 
     OffSpecSimulation* clone() const { return new OffSpecSimulation(*this); }
@@ -37,10 +37,7 @@ public:
     void prepareSimulation() final;
 
     //! Gets the number of elements this simulation needs to calculate
-    int getNumberOfSimulationElements() const final;
-
-    //! Returns detector intensity map
-    const OutputData<double>* getOutputData() const { return &m_intensity_map; }
+    int numberOfSimulationElements() const final;
 
     //! Returns clone of the detector intensity map
     OutputData<double>* getDetectorIntensity(
@@ -52,9 +49,6 @@ public:
 
     //! Sets beam parameters from here (forwarded to Instrument)
     void setBeamParameters(double lambda, const IAxis& alpha_axis, double phi_i);
-
-    //! Sets detector parameters using axes of output data
-    void setDetectorParameters(const OutputData<double>& output_data);
 
     //! Sets detector parameters using angle ranges
     void setDetectorParameters(size_t n_x, double x_min, double x_max,

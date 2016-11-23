@@ -36,7 +36,7 @@ class BA_CORE_API_ Simulation : public ICloneable, public IParameterized
 public:
     Simulation();
     Simulation(const MultiLayer& p_sample);
-    Simulation(std::shared_ptr<IMultiLayerBuilder> p_sample_builder);
+    Simulation(const std::shared_ptr<IMultiLayerBuilder> p_sample_builder);
     virtual ~Simulation();
 
     virtual Simulation* clone() const =0;
@@ -60,15 +60,15 @@ public:
     void removeDetectorResolutionFunction();
 
     void setAnalyzerProperties(const kvector_t direction, double efficiency,
-                               double total_transmission = 1.0);
+                               double total_transmission);
 
     void setSample(const MultiLayer& sample);
     MultiLayer* getSample() const { return mP_sample.get(); }
 
-    void setSampleBuilder(std::shared_ptr<IMultiLayerBuilder> sample_builder);
-    std::shared_ptr<IMultiLayerBuilder> getSampleBuilder() const { return mp_sample_builder; }
+    void setSampleBuilder(const std::shared_ptr<IMultiLayerBuilder> sample_builder);
+    std::shared_ptr<IMultiLayerBuilder> getSampleBuilder() const { return mP_sample_builder; }
 
-    virtual int getNumberOfSimulationElements() const=0;
+    virtual int numberOfSimulationElements() const=0;
 
     //! Clone simulated intensity map
     virtual OutputData<double>* getDetectorIntensity(
@@ -119,7 +119,7 @@ protected:
     std::vector<SimulationElement>::iterator getBatchEnd(int n_batches, int current_batch);
 
     std::unique_ptr<MultiLayer> mP_sample;
-    std::shared_ptr<IMultiLayerBuilder> mp_sample_builder;
+    std::shared_ptr<IMultiLayerBuilder> mP_sample_builder;
     SimulationOptions m_options;
     DistributionHandler m_distribution_handler;
     ProgressHandler m_progress;

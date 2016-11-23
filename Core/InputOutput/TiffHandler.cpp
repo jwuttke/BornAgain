@@ -17,7 +17,7 @@
 
 #include "TiffHandler.h"
 #include "BornAgainNamespace.h"
-#include "Utils.h"
+#include "SysUtils.h"
 
 namespace {
 size_t supported_bitPerSample = 32;
@@ -29,8 +29,7 @@ TiffHandler::TiffHandler()
     : m_tiff(0)
     , m_width(0)
     , m_height(0)
-{
-}
+{}
 
 TiffHandler::~TiffHandler()
 {
@@ -57,8 +56,8 @@ void TiffHandler::write(const OutputData<double> &data, std::ostream &output_str
 {
     m_tiff = TIFFStreamOpen("MemTIFF", &output_stream);
     m_data.reset(data.clone());
-    m_width = m_data->getAxis(BornAgain::X_AXIS_INDEX)->getSize();
-    m_height = m_data->getAxis(BornAgain::Y_AXIS_INDEX)->getSize();
+    m_width = m_data->getAxis(BornAgain::X_AXIS_INDEX).size();
+    m_height = m_data->getAxis(BornAgain::Y_AXIS_INDEX).size();
     write_header();
     write_data();
     close();
@@ -143,7 +142,7 @@ void TiffHandler::write_header()
 {
     assert(m_tiff);
     TIFFSetField(m_tiff, TIFFTAG_ARTIST, "BornAgain.IOFactory");
-    TIFFSetField(m_tiff, TIFFTAG_DATETIME, Utils::System::getCurrentDateAndTime().c_str());
+    TIFFSetField(m_tiff, TIFFTAG_DATETIME, SysUtils::getCurrentDateAndTime().c_str());
     TIFFSetField(m_tiff, TIFFTAG_IMAGEDESCRIPTION,
            "Image converted from BornAgain intensity file.");
     TIFFSetField(m_tiff, TIFFTAG_SOFTWARE, "BornAgain");

@@ -32,13 +32,15 @@ class BA_CORE_API_ SimulationElement
 {
 public:
     SimulationElement(double wavelength, double alpha_i, double phi_i,
-                      const IPixelMap* pixelmap);
+                      std::unique_ptr<IPixelMap> pixelmap);
     SimulationElement(const SimulationElement &other);
     SimulationElement &operator=(const SimulationElement &other);
 
     //! Construct SimulationElement from other element and restrict k_f to specific value in
     //! the original detector pixel
     SimulationElement(const SimulationElement &other, double x, double y);
+
+    SimulationElement(SimulationElement &&other) noexcept;
 
     ~SimulationElement();
 
@@ -76,11 +78,14 @@ public:
 
     double getSolidAngle() const;
 
-    //! get alpha for given detector pixel coordinates
     double getAlpha(double x, double y) const;
-
-    //! get phi for given detector pixel coordinates
     double getPhi(double x, double y) const;
+
+    //! check if element contains given wavevector
+    bool containsSpecularWavevector() const;
+
+    //! indicate that this element contains the specular wavevector
+    void setSpecular(bool contains_specular);
 
 private:
     //! swap function
@@ -96,6 +101,7 @@ private:
     Eigen::Matrix2cd m_analyzer_operator; //!< polarization analyzer operator
 #endif
     std::unique_ptr<IPixelMap> mP_pixel_map;
+    bool m_contains_specular;
 };
 
 
