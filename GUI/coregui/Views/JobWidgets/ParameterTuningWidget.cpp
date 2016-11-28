@@ -160,7 +160,7 @@ void ParameterTuningWidget::onSliderValueChanged(double value)
 void ParameterTuningWidget::onLockZValueChanged(bool value)
 {
     if(!m_currentJobItem) return;
-    if(IntensityDataItem *intensityDataItem = m_currentJobItem->getIntensityDataItem()) {
+    if(IntensityDataItem *intensityDataItem = m_currentJobItem->intensityDataItem()) {
         qDebug() << "ModelTuningWidget::onLockZValueChanged(bool value) ->" << value;
         intensityDataItem->setZAxisLocked(value);
     }
@@ -173,7 +173,7 @@ void ParameterTuningWidget::updateParameterModel()
 
     if(!m_currentJobItem) return;
 
-    if(!m_currentJobItem->getMultiLayerItem() || !m_currentJobItem->getInstrumentItem())
+    if(!m_currentJobItem->multiLayerItem() || !m_currentJobItem->instrumentItem())
         throw GUIHelpers::Error("ModelTuningWidget::updateParameterModel() -> Error."
                                 "JobItem doesn't have sample or instrument model.");
 

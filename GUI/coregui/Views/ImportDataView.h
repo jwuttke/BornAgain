@@ -19,14 +19,12 @@
 
 #include "ItemStackPresenter.h"
 #include "RealDataEditorWidget.h"
+#include "RealDataMaskWidget.h"
 
 class ImportDataToolBar;
-class ItemSelectorWidget;
 class RealDataModel;
-
-namespace Manhattan {
-    class MiniSplitter;
-}
+class RealDataSelectorWidget;
+namespace Manhattan { class MiniSplitter; }
 
 //! The ImportDataView class is a main view for importing experimental data.
 
@@ -45,8 +43,9 @@ private:
 
     ImportDataToolBar *m_toolBar;
     Manhattan::MiniSplitter *m_splitter;
-    ItemSelectorWidget *m_selectorWidget;
-    ItemStackPresenter<RealDataEditorWidget> *m_stackedWidget;
+    RealDataSelectorWidget *m_selectorWidget;
+    ItemStackPresenter<RealDataMaskWidget> *m_stackedWidget;
+//    ItemStackPresenter<RealDataEditorWidget> *m_stackedWidget;
     RealDataModel *m_realDataModel;
 };
 

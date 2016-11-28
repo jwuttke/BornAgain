@@ -31,8 +31,9 @@
 #include "RealParameter.h"
 #include "Rectangle.h"
 #include "MathConstants.h"
-#include "Utils.h"
+#include "StringUtils.h"
 #include "Units.h"
+#include "IDetector2D.h"
 #include <iomanip>
 GCC_DIAG_OFF(missing-field-initializers)
 GCC_DIAG_OFF(unused-parameter)
@@ -58,62 +59,62 @@ namespace PythonFormatting {
 
 //! Returns fixed Python code snippet that defines the function "runSimulation".
 
-std::string representShape2D(
-    const std::string& indent, const Geometry::IShape2D* ishape, bool mask_value)
+std::string representShape2D(const std::string& indent, const IShape2D* ishape,
+                             bool mask_value, std::function<std::string(double)> printValueFunc)
 {
     std::ostringstream result;
     result << std::setprecision(12);
 
-    if (const Geometry::Polygon* shape = dynamic_cast<const Geometry::Polygon*>(ishape)) {
+    if (const Polygon* shape = dynamic_cast<const Polygon*>(ishape)) {
         std::vector<double> xpos, ypos;
         shape->getPoints(xpos, ypos);
         result << indent << "points = [";
         for(size_t i=0; i<xpos.size(); ++i) {
-            result << "[" << printDegrees(xpos[i]) << ", " <<
-                printDegrees(ypos[i]) << "]";
+            result << "[" << printValueFunc(xpos[i]) << ", " <<
+                printValueFunc(ypos[i]) << "]";
             if(i!= xpos.size()-1) result << ", ";
         }
         result << "]\n";
         result << indent << "simulation.addMask(" <<
             "ba.Polygon(points), " << printBool(mask_value) << ")\n";
 
-    } else if(dynamic_cast<const Geometry::InfinitePlane*>(ishape)) {
+    } else if(dynamic_cast<const InfinitePlane*>(ishape)) {
         result << indent << "simulation.maskAll()\n";
 
-    } else if(const Geometry::Ellipse* shape = dynamic_cast<const Geometry::Ellipse*>(ishape)) {
+    } else if(const Ellipse* shape = dynamic_cast<const Ellipse*>(ishape)) {
         result << indent << "simulation.addMask(";
         result << "ba.Ellipse("
-               << printDegrees(shape->getCenterX()) << ", "
-               << printDegrees(shape->getCenterY()) << ", "
-               << printDegrees(shape->getRadiusX()) << ", "
-               << printDegrees(shape->getRadiusY());
+               << printValueFunc(shape->getCenterX()) << ", "
+               << printValueFunc(shape->getCenterY()) << ", "
+               << printValueFunc(shape->getRadiusX()) << ", "
+               << printValueFunc(shape->getRadiusY());
         if(shape->getTheta() != 0.0) result << ", " << printDegrees(shape->getTheta());
         result << "), " << printBool(mask_value) << ")\n";
     }
 
-    else if(const Geometry::Rectangle* shape = dynamic_cast<const Geometry::Rectangle*>(ishape)) {
+    else if(const Rectangle* shape = dynamic_cast<const Rectangle*>(ishape)) {
         result << indent << "simulation.addMask(";
         result << "ba.Rectangle("
-               << printDegrees(shape->getXlow()) << ", "
-               << printDegrees(shape->getYlow()) << ", "
-               << printDegrees(shape->getXup()) << ", "
-               << printDegrees(shape->getYup()) << "), "
+               << printValueFunc(shape->getXlow()) << ", "
+               << printValueFunc(shape->getYlow()) << ", "
+               << printValueFunc(shape->getXup()) << ", "
+               << printValueFunc(shape->getYup()) << "), "
                << printBool(mask_value) << ")\n";
     }
 
-    else if(const Geometry::VerticalLine* shape =
-            dynamic_cast<const Geometry::VerticalLine*>(ishape)) {
+    else if(const VerticalLine* shape =
+            dynamic_cast<const VerticalLine*>(ishape)) {
         result << indent << "simulation.addMask(";
         result << "ba.VerticalLine("
-               << printDegrees(shape->getXpos()) << "), "
+               << printValueFunc(shape->getXpos()) << "), "
                << printBool(mask_value) << ")\n";
     }
 
-    else if(const Geometry::HorizontalLine* shape =
-            dynamic_cast<const Geometry::HorizontalLine*>(ishape)) {
+    else if(const HorizontalLine* shape =
+            dynamic_cast<const HorizontalLine*>(ishape)) {
         result << indent << "simulation.addMask(";
         result << "ba.HorizontalLine("
-               << printDegrees(shape->getYpos()) << "), "
+               << printValueFunc(shape->getYpos()) << "), "
                << printBool(mask_value) << ")\n";
 
     } else
@@ -225,7 +226,7 @@ std::string argumentList(const IParameterized* ip)
     std::vector<std::string> args;
     for(const auto* par: ip->getParameterPool()->getParameters())
         args.push_back( valueTimesUnit(par) );
-    return Utils::String::join( args, ", " );
+    return StringUtils::join( args, ", " );
 }
 
 } // namespace PythonFormatting

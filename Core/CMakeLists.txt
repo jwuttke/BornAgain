@@ -9,7 +9,6 @@ if(POLICY CMP0042)
 endif()
 
 # --- source and include files ---------
-
 include(GlobDirectories)
 GLOB_DIRECTORIES(CORE_SUBDIRS)
 
@@ -24,10 +23,8 @@ set(CORE_SOURCE_DIRS ${CORE_SOURCE_DIRS} ${EIGEN3_INCLUDE_DIR} PARENT_SCOPE)
 set(include_dirs
     ${BUILD_INC_DIR}
     ${CMAKE_SOURCE_DIR}/Wrap
-    ${CMAKE_SOURCE_DIR}/Fit/Utils
-    ${CMAKE_SOURCE_DIR}/Fit/Minimizer
-    ${CMAKE_SOURCE_DIR}/Fit/Parameters
     ${CORE_SOURCE_DIRS}
+    ${BornAgainFit_INCLUDE_DIRS}
     )
 
 include_directories(${include_dirs})
@@ -175,6 +172,7 @@ install (DIRECTORY ${CMAKE_SOURCE_DIR}/Examples/cpp DESTINATION ${destination_ex
 install (TARGETS ${library_name} DESTINATION ${destination_lib} COMPONENT Libraries)
 install (FILES ${CMAKE_BINARY_DIR}/lib/lib${library_name}.py DESTINATION ${destination_lib} COMPONENT Libraries) # required by swig
 install (FILES ${include_files} DESTINATION ${destination_include} COMPONENT Headers)
+install (FILES ${CMAKE_SOURCE_DIR}/Wrap/WinDllMacros.h DESTINATION ${destination_include} COMPONENT Headers)
 
 if(WIN32)
     # python in windows required .pyd extention for the library name

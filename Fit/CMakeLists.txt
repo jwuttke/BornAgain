@@ -10,10 +10,12 @@ endif()
 
 # --- source and include files ------
 set(FIT_SOURCE_DIRS
-    ${CMAKE_CURRENT_SOURCE_DIR}/Utils
+    ${CMAKE_CURRENT_SOURCE_DIR}/Kernel
     ${CMAKE_CURRENT_SOURCE_DIR}/Minimizer
+    ${CMAKE_CURRENT_SOURCE_DIR}/Options
     ${CMAKE_CURRENT_SOURCE_DIR}/Parameters
-    ${CMAKE_CURRENT_SOURCE_DIR}/RootWrapper
+    ${CMAKE_CURRENT_SOURCE_DIR}/RootAdapter
+    ${CMAKE_CURRENT_SOURCE_DIR}/Utils
     )
 
 set(include_dirs ${BUILD_INC_DIR} ${CMAKE_SOURCE_DIR}/Wrap ${FIT_SOURCE_DIRS})
@@ -158,6 +160,7 @@ endif()
 install (TARGETS ${library_name} DESTINATION ${destination_lib} COMPONENT Libraries)
 install (FILES ${fitkernel_include_files} DESTINATION ${destination_include}  COMPONENT Headers)
 install (FILES ${CMAKE_BINARY_DIR}/lib/lib${library_name}.py DESTINATION ${destination_lib} COMPONENT Libraries) # required by SWIG
+install (FILES ${include_files} DESTINATION ${destination_include} COMPONENT Headers)
 
 if(WIN32)
     if(BORNAGAIN_PYTHON)

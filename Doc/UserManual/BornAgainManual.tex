@@ -26,16 +26,18 @@
 %\includeonly{Introduction,Conventions,OnlineDocs,ScatteringTheory,PolarizedScattering,Multilayers,Assemblies,Domains,Roughness,Experiment}
 %\includeonly{FormFactors}
 
-%\documentclass[a4paper,11pt,twoside,fleqn]{report}\usepackage[final]{graphicx}
-\documentclass[a4paper,11pt,fleqn,draft]{report}\usepackage[final]{graphicx}
+\documentclass[a4paper,11pt,fleqn]{report}\usepackage[final]{graphicx}
+%\documentclass[a4paper,11pt,fleqn,draft]{report}\usepackage[final]{graphicx}
 %\documentclass[a4paper,11pt,fleqn,draft]{report}\usepackage[draft]{graphicx}
 
 \def\authors{Jan Burle, Céline Durniak, Jonathan M.\ Fisher, Marina Ganeva, Gennady Pospelov,
 Walter Van Herck, Joachim Wuttke}
+\def\version{1.7.0}
 
 \input{Setup}
 
 \begin{document}
+\ifdraft{\pagenumbering{roman}}{}
 \flushbottom
 
 \input{Macros}
@@ -44,30 +46,36 @@ Walter Van Herck, Joachim Wuttke}
 \tableofcontents\cleardoublepage
 
 \include{Introduction}
+\pagemode{\thechapter}
 
-\include{OnlineDocs}
-\include{SAS}
-\include{GisasFoundations}
-\include{PolarizedScattering}
+%%%%  Part I: Physics
+\include{Scattering}
 \include{Multilayers}
-\include{polMultilayers}
 \include{Assemblies}
-%void \include{Domains}
-%void \include{Roughness}
-%void \include{Experiment}
+\include{Roughness}
+\include{PolarizedScattering}
+\include{Instrument}
 
-\appendix %\addtocontents{toc}{\protect\setcounter{tocdepth}{1}}
-\include{Proofs}
+%%%% Part II: Reference
+\include{ThreeAPIs}
+\include{BasicRef}
+\include{Sample}
+\include{Particles}
 \include{FormFactors}
 
-\otherchapter{Bibliography}
+%\appendix %\addtocontents{toc}{\protect\setcounter{tocdepth}{1}}
+%\include{..}
+
+\otherchapter{Bibliography}{X}
 \bibliographystyle{switch}
 \bibliography{jw7}
 
-\otherchapter{\nomname}\label{Snomencl}
+\otherchapter{List of Symbols}{Y}
+\chapter*{List of Symbols}
+\label{Snomencl}
 \printnomenclature[6em]
 
-\otherchapter{Index}
+\otherchapter{Index}{Z}
 \small
 \printindex
 

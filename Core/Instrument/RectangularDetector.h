@@ -3,7 +3,7 @@
 //  BornAgain: simulate and fit scattering at grazing incidence
 //
 //! @file      Core/Instrument/RectangularDetector.h
-//! @brief     Defines class RectangularDetector.
+//!     Defines class RectangularDetector.
 //!
 //! @homepage  http://www.bornagainproject.org
 //! @license   GNU General Public License v3 or higher (see COPYING)
@@ -19,9 +19,8 @@
 #include "IDetector2D.h"
 #include "IPixelMap.h"
 
-//! @class RectangularDetector
+//! A flat rectangular detector with axes and resolution function.
 //! @ingroup simulation
-//! @brief A rectangular plane detector with axes and resolution function.
 
 class BA_CORE_API_ RectangularDetector : public IDetector2D
 {
@@ -42,13 +41,12 @@ public:
     RectangularDetector(int nxbins, double width, int nybins, double height);
 
     RectangularDetector(const RectangularDetector& other);
-    RectangularDetector& operator=(const RectangularDetector& other);
 
-    virtual RectangularDetector* clone() const;
+    RectangularDetector* clone() const override;
 
-    virtual ~RectangularDetector();
+    ~RectangularDetector();
 
-    virtual void init(const Beam& beam);
+    void init(const Beam& beam) override;
 
     void setPosition(const kvector_t normal_to_detector, double u0, double v0,
                      const kvector_t direction = kvector_t(0.0, -1.0, 0.0));
@@ -60,8 +58,8 @@ public:
     void setDirectBeamPosition(double u0, double v0);
 
     //! Adds parameters from local pool to external pool and recursively calls its direct children.
-    virtual std::string addParametersToExternalPool(
-        const std::string& path, ParameterPool* external_pool, int copy_number = -1) const;
+    std::string addParametersToExternalPool(
+        const std::string& path, ParameterPool* external_pool, int copy_number = -1) const override;
 
     double getWidth() const;
     double getHeight() const;
@@ -76,29 +74,35 @@ public:
     double getDirectBeamV0() const;
     EDetectorArrangement getDetectorArrangment() const;
 
-    //! Returns detector map in given axes units
-    virtual OutputData<double>* createDetectorMap(const Beam& beam, EAxesUnits units_type) const;
-
     //! returns vector of valid axes units
-    virtual std::vector<EAxesUnits> getValidAxesUnits() const;
+    std::vector<EAxesUnits> getValidAxesUnits() const override;
 
     //! return default axes units
-    virtual EAxesUnits getDefaultAxesUnits() const;
+    EAxesUnits getDefaultAxesUnits() const override;
 
 protected:
     //! Create an IPixelMap for the given OutputData object and index
-    virtual IPixelMap* createPixelMap(size_t index) const;
+    IPixelMap* createPixelMap(size_t index) const override;
 
-    virtual void print(std::ostream& ostr) const;
+    void print(std::ostream& ostr) const override;
 
     //! Registers some class members for later access via parameter pool.
-    virtual void init_parameters() {}
+    void init_parameters() override {}
 
     //! Generates an axis with correct name and default binning for given index
-    virtual IAxis* createAxis(size_t index, size_t n_bins, double min, double max) const;
+    IAxis* createAxis(size_t index, size_t n_bins, double min, double max) const override;
+
+    //! Calculates axis range from original detector axes in given units (mm, rad, etc)
+    virtual void calculateAxisRange(size_t axis_index, const Beam& beam, EAxesUnits units,
+                                    double &amin, double &amax) const override;
 
     //! Returns the name for the axis with given index
-    virtual std::string getAxisName(size_t index) const;
+    std::string getAxisName(size_t index) const override;
+
+    //! Returns index of pixel that contains the specular wavevector.
+    //! If no pixel contains this specular wavevector, the number of pixels is
+    //! returned. This corresponds to an overflow index.
+    size_t getIndexOfSpecular(const Beam& beam) const override;
 
     //! swap function
     void swapContent(RectangularDetector& other);
@@ -123,11 +127,11 @@ public:
     RectPixelMap(kvector_t corner_pos, kvector_t width, kvector_t height);
     virtual ~RectPixelMap() {}
 
-    virtual RectPixelMap* clone() const;
-    virtual RectPixelMap* createZeroSizeMap(double x, double y) const;
-    virtual kvector_t getK(double x, double y, double wavelength) const;
-    virtual double getIntegrationFactor(double x, double y) const;
-    virtual double getSolidAngle() const;
+    RectPixelMap* clone() const override;
+    RectPixelMap* createZeroSizeMap(double x, double y) const override;
+    kvector_t getK(double x, double y, double wavelength) const override;
+    double getIntegrationFactor(double x, double y) const override;
+    double getSolidAngle() const override;
 private:
     kvector_t normalizeLength(const kvector_t direction, double length) const;
     double calculateSolidAngle() const;

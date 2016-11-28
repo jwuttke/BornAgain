@@ -17,13 +17,13 @@
 #define PARACRYSTALBUILDER_H
 
 #include "IMultiLayerBuilder.h"
+#include <memory>
 
 class IFTDistribution2D;
 class ISample;
 
-//! @class RadialParaCrystalBuilder
 //! @ingroup standard_samples
-//! @brief Builds sample: cylinders with 1DDL structure factor (IsGISAXS example #4)
+//! Builds sample: cylinders with 1DDL structure factor (IsGISAXS example #4).
 
 class BA_CORE_API_ RadialParaCrystalBuilder : public IMultiLayerBuilder
 {
@@ -42,10 +42,9 @@ private:
     double m_cylinder_radius;
 };
 
-//! @class Basic2DParaCrystalBuilder
-//! @ingroup standard_samples
-//! @brief Builds sample: basic two dimensional paracrystal with various probability
+//! Builds sample: basic two dimensional paracrystal with various probability
 //! distribution functions (PDF's). They are initialized via component service.
+//! @ingroup standard_samples
 
 class BA_CORE_API_ Basic2DParaCrystalBuilder : public IMultiLayerBuilder
 {
@@ -54,12 +53,12 @@ public:
     virtual ~Basic2DParaCrystalBuilder();
     virtual MultiLayer* buildSample() const;
 private:
-    IFTDistribution2D* m_pdf1;
+    std::unique_ptr<IFTDistribution2D> m_pdf1;
+    std::unique_ptr<IFTDistribution2D> m_pdf2;
 };
 
-//! @class HexParaCrystalBuilder
+//! Builds sample: cylinders with 2DDL structure factor (IsGISAXS example #4).
 //! @ingroup standard_samples
-//! @brief Builds sample: cylinders with 2DDL structure factor (IsGISAXS example #4)
 
 class BA_CORE_API_ HexParaCrystalBuilder : public IMultiLayerBuilder
 {
@@ -79,9 +78,8 @@ private:
     double m_cylinder_radius;
 };
 
-//! @class RectParaCrystalBuilder
 //! @ingroup standard_samples
-//! @brief Builds sample:  2D paracrystal lattice (IsGISAXS example #8)
+//! Builds sample: 2D paracrystal lattice (IsGISAXS example #8).
 
 class BA_CORE_API_ RectParaCrystalBuilder : public IMultiLayerBuilder
 {
@@ -90,9 +88,8 @@ public:
     virtual MultiLayer* buildSample() const;
 };
 
-//! @class IsGISAXS08BBuilder
+//! Builds sample:  2D paracrystal lattice with isotropic pdfs (IsGISAXS example #8).
 //! @ingroup standard_samples
-//! @brief Builds sample:  2D paracrystal lattice with isotropic pdfs (IsGISAXS example #8)
 //  TODO remove it completely (why? why not yet done?)
 
 class BA_CORE_API_ IsGISAXS08BBuilder : public IMultiLayerBuilder

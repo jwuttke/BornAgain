@@ -18,6 +18,8 @@
 
 #include <string>
 
+//! Names of minimizer libraries, like Minuit2, GSLLMA, ...
+
 namespace MinimizerNames {
 
 const std::string Minuit2 = "Minuit2";
@@ -28,6 +30,8 @@ const std::string Genetic = "Genetic";
 const std::string Test = "Test";
 
 } // namespace MinimizerNames
+
+//! Names of minimizer algorithms, like Migrad, SteepestDescent, ...
 
 namespace AlgorithmNames {
 
@@ -47,6 +51,7 @@ const std::string Default = "Default";
 
 } // namespace AlgorithmNames
 
+//! Various name constants used in fit library.
 
 namespace OptionNames {
 const std::string Strategy = "Strategy";
@@ -67,4 +72,4 @@ const std::string BoltzmannTmin = "t_min";
 
 } // namespace OptionsNames
 
-#endif
+#endif // MINIMIZERCONSTANTS_H

@@ -81,6 +81,9 @@ QVariant SessionModel::data(const QModelIndex &index, int role) const
                 return item->itemName();
         } else if (role == Qt::DecorationRole && m_iconProvider) {
             return m_iconProvider->icon(item);
+
+        } else if(role == Qt::ToolTipRole) {
+            return item->displayName();
         } else {
             return item->data(role);
         }
@@ -93,9 +96,9 @@ QVariant SessionModel::headerData(int section, Qt::Orientation orientation, int 
     if (orientation == Qt::Horizontal && role == Qt::DisplayRole) {
         switch (section) {
         case ITEM_NAME:
-            return tr("Name");
+            return "Name";
         case ITEM_VALUE:
-            return tr("Value");
+            return "Value";
         }
     }
     return QVariant();

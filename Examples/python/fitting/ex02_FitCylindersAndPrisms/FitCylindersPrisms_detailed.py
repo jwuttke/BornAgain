@@ -126,14 +126,12 @@ class DrawObserver(ba.IFitObserver):
         plt.title('Parameters')
         plt.axis('off')
         plt.text(0.01, 0.85, "Iterations  " + '{:d}     {:s}'.
-                 format(fit_suite.getNumberOfIterations(),
-                        fit_suite.getMinimizer().getMinimizerName()))
+                 format(fit_suite.numberOfIterations(),
+                        fit_suite.minimizer().minimizerName()))
         plt.text(0.01, 0.75, "Chi2       " + '{:8.4f}'.format(fit_suite.getChi2()))
-        fitpars = fit_suite.getFitParameters()
-        for i in range(0, fitpars.size()):
-            plt.text(0.01, 0.55 - i*0.1,
-                     '{:30.30s}: {:6.3f}'.format(fitpars[i].getName(),
-                                                 fitpars[i].getValue()))
+        for index, fitPar in enumerate(fit_suite.fitParameters()):
+            plt.text(0.01, 0.55 - index*0.1,
+                     '{:30.30s}: {:6.3f}'.format(fitPar.name(), fitPar.value()))
         plt.draw()
         plt.pause(0.01)
 
@@ -141,7 +139,7 @@ class DrawObserver(ba.IFitObserver):
             plt.ioff()
 
 
-def create_fit():
+def run_fitting():
     """
     Setup simulation and fit
     """
@@ -162,38 +160,23 @@ def create_fit():
     fit_suite.initPrint(10)
 
     # setting fitting parameters with starting values
-    fit_suite.addFitParameter("*Cylinder/Height", 4.*nm,
-                              ba.RealLimits.lowerLimited(0.01))
-    fit_suite.addFitParameter("*Cylinder/Radius", 6.*nm,
-                              ba.RealLimits.lowerLimited(0.01))
-    fit_suite.addFitParameter("*Prism3/Height", 4.*nm,
-                              ba.RealLimits.lowerLimited(0.01))
-    fit_suite.addFitParameter("*Prism3/BaseEdge", 12.*nm,
-                              ba.RealLimits.lowerLimited(0.01))
+    fit_suite.addFitParameter("*Cylinder/Height", 4.*nm).setLowerLimited(0.01)
+    fit_suite.addFitParameter("*Cylinder/Radius", 6.*nm).setLowerLimited(0.01)
+    fit_suite.addFitParameter("*Prism3/Height", 4.*nm).setLowerLimited(0.01)
+    fit_suite.addFitParameter("*Prism3/BaseEdge", 12.*nm).setLowerLimited(0.01)
+
+    draw_observer = DrawObserver(draw_every_nth=10)
+    fit_suite.attachObserver(draw_observer)
+
+    fit_suite.runFit()
+    print("Fitting completed.")
+    print("chi2:", fit_suite.getChi2())
+    for fitPar in fit_suite.fitParameters():
+        print(fitPar.name(), fitPar.value(), fitPar.error())
 
     return fit_suite
 
 
 if __name__ == '__main__':
-    arg = ba.getFilenameOrPlotflag()
-    fit_suite = create_fit()
-    if arg == "-p":
-        draw_observer = DrawObserver(draw_every_nth=10)
-        fit_suite.attachObserver(draw_observer)
-        plt.show()
-        fit_suite.runFit()
-        print("Fitting completed.")
-        print("chi2:", fit_suite.getChi2())
-        fitpars = fit_suite.getFitParameters()
-        for i in range(fitpars.size()): # workaround #1588
-            par = fitpars[i]
-            print(par.getName(), par.getValue(), par.getError())
-    else:
-        fit_suite.runFit()
-        fitpars = fit_suite.getFitParameters()
-        pars = [ fitpars[i] for i in range(fitpars.size()) ] # workaround #1588
-        from collections import OrderedDict
-        out = [ OrderedDict([('name', par.getName()),
-                             ('value', par.getValue()),
-                             ('error', par.getError())]) for par in pars ]
-        ba.yamlDump(arg+".ref", out)
+    run_fitting()
+    plt.show()

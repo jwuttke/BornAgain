@@ -13,16 +13,13 @@
 //
 // ************************************************************************** //
 
-#ifndef TRIVIALMINIMIZER_H
-#define TRIVIALMINIMIZER_H
+#ifndef TESTMINIMIZER_H
+#define TESTMINIMIZER_H
 
 #include "IMinimizer.h"
-#include "FitSuiteParameters.h"
+class FitParameterSet;
 
-//! @class TestMinimizer
-//! @ingroup fitting_internal
-//! @brief Minimizer which calls minimization function once to test whole chain
-
+//! A trivial minimizer that calls the objective function once. Used to test the whole chain.
 
 class BA_CORE_API_ TestMinimizer : public IMinimizer
 {
@@ -30,32 +27,21 @@ class BA_CORE_API_ TestMinimizer : public IMinimizer
     TestMinimizer() : m_min_value(0) {}
     ~TestMinimizer(){}
 
-    virtual std::string minimizerName() const;
+    std::string minimizerName() const final;
+    std::string algorithmName() const final { return ""; };
 
-    void minimize();
+    void minimize() override;
 
-    void setParameters(const FitSuiteParameters &parameters);
+    void setParameters(const FitParameterSet& parameters) override;
 
-    void setChiSquaredFunction(function_chi2_t fun_chi2, size_t) { m_fcn = fun_chi2; }
+    void setObjectiveFunction(objective_function_t func) override;
 
-    virtual void setGradientFunction(function_gradient_t, size_t, size_t) {}
-
-    virtual size_t getNumberOfVariables() const { return m_parameters.size(); }
-
-    virtual double getValueOfVariableAtMinimum(size_t index) const;
-
-    virtual std::vector<double > getValueOfVariablesAtMinimum() const;
-
-    virtual std::string reportResults() const;
-
-    virtual std::vector<double >  getErrorOfVariables() const;
-
-    virtual void propagateResults(FitSuiteParameters&);
+    std::string reportOutcome() const override;
 
  private:
     double m_min_value;
-    FitSuiteParameters m_parameters; //! minimizer parameters
-    function_chi2_t m_fcn;
+    std::vector<double> m_parameter_values;
+    objective_function_t m_fcn;
 };
 
-#endif // TRIVIALMINIMIZER_H
+#endif // TESTMINIMIZER_H

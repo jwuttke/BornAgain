@@ -26,9 +26,8 @@ class IAxis;
 class IResolutionFunction2D;
 class SimulationElement;
 
-//! @class Instrument
+//! Assembles beam, detector and their relative positions wrt the sample.
 //! @ingroup simulation_internal
-//! @brief Assembles beam, detector and their relative positions wrt the sample.
 
 class BA_CORE_API_ Instrument : public IParameterized
 {
@@ -70,9 +69,6 @@ public:
     //! Sets the detector (axes can be overwritten later)
     void setDetector(const IDetector2D& detector);
 
-    //! Sets detector parameters using axes of output data
-    void matchDetectorAxes(const OutputData<double>& output_data);
-
     //! Sets detector parameters using angle ranges
     void setDetectorParameters(size_t n_x, double x_min, double x_max,
                                size_t n_y, double y_min, double y_max);
@@ -86,16 +82,18 @@ public:
 
     //! Sets the polarization analyzer characteristics of the detector
     void setAnalyzerProperties(const kvector_t direction, double efficiency,
-                               double total_transmission=1.0);
+                               double total_transmission);
 
     //! apply the detector resolution to the given intensity map
     void applyDetectorResolution(OutputData<double>* p_intensity_map) const;
 
-    //! Returns clone of the intensity map with detector resolution applied,
-    //! axes of map will be in requested units
-    OutputData<double>* getDetectorIntensity(
-        const OutputData<double>& data,
-        IDetector2D::EAxesUnits units_type=IDetector2D::DEFAULT) const;
+    //! Returns new intensity map with detector resolution applied and axes in requested units
+    OutputData<double>* createDetectorIntensity(const std::vector<SimulationElement> &elements,
+            IDetector2D::EAxesUnits units=IDetector2D::DEFAULT) const;
+
+    //! Returns empty detector map in given axes units.
+    virtual OutputData<double>* createDetectorMap(
+            IDetector2D::EAxesUnits units=IDetector2D::DEFAULT) const;
 
 #ifndef SWIG
     //! Create a vector of SimulationElement objects according to the beam, detector and its mask

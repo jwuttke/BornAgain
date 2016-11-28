@@ -23,6 +23,7 @@
 #include <QDir>
 #include <QMessageBox>
 #include <QPushButton>
+#include <QUuid>
 
 namespace {
 QMap<QString, QString> initializeCharacterMap()
@@ -107,10 +108,8 @@ bool okToDelete(QWidget *parent, const QString &title, const QString &text, cons
     messageBox->setText(text);
     if (!detailedText.isEmpty())
         messageBox->setInformativeText(detailedText);
-    QAbstractButton *deleteButton = messageBox->addButton(
-            QObject::tr("&Delete"), QMessageBox::AcceptRole);
-    messageBox->addButton(QObject::tr("Do &Not Delete"),
-                          QMessageBox::RejectRole);
+    QAbstractButton *deleteButton = messageBox->addButton("&Delete", QMessageBox::AcceptRole);
+    messageBox->addButton("Do &Not Delete", QMessageBox::RejectRole);
     messageBox->setDefaultButton(
             qobject_cast<QPushButton*>(deleteButton));
     messageBox->exec();
@@ -121,9 +120,8 @@ bool okToDelete(QWidget *parent, const QString &title, const QString &text, cons
 int getVariantType(const QVariant &variant)
 {
     int result = variant.type();
-    if (result == QVariant::UserType) {
+    if (result == QVariant::UserType)
         result = variant.userType();
-    }
     return result;
 }
 
@@ -148,22 +146,6 @@ QString getValidFileName(const QString &proposed_name)
         result.replace(it.key(), it.value());
     }
     return result;
-}
-
-//! Constructs file name there intensity data should be stored in the case of JobItem.
-
-QString intensityDataFileName(JobItem *jobItem)
-{
-    QString bodyName = GUIHelpers::getValidFileName(jobItem->itemName());
-    return QString("jobdata_%1_0.int.gz").arg(bodyName);
-}
-
-//! Constructs file name there intensity data should be stored in the case of RealDataItem.
-
-QString intensityDataFileName(RealDataItem *realDataItem)
-{
-    QString bodyName = GUIHelpers::getValidFileName(realDataItem->itemName());
-    return QString("realdata_%1_0.int.gz").arg(bodyName);
 }
 
 //! parses version string into 3 numbers, returns true in the case of success
@@ -237,6 +219,21 @@ QStringList fromStdStrings(const std::vector<std::string> &container)
         result.append(QString::fromStdString(str));
     }
     return result;
+}
+
+QString createUuid()
+{
+    return  QUuid::createUuid().toString();
+}
+
+bool isTheSame(const QStringList &lhs, const QStringList &rhs)
+{
+    if(lhs.size() != rhs.size()) return false;
+    for(int i=0; i<lhs.size(); ++i)
+        if(lhs.at(i) != rhs.at(i))
+            return false;
+
+    return true;
 }
 
 

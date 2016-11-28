@@ -18,52 +18,47 @@
 
 #include "INamed.h"
 
-class FitKernel;
+class FitSuiteImpl;
 
-//! @class IFitStrategy
+//! Interface to concrete fit strategy.
+//! Concrete implementation should manipulate with fit parameters/data and then call minimizer.
 //! @ingroup fitting_internal
-//! @brief Interface to concrete fit strategy.
-//!
-//!  Concrete implementation should manipulate with fit parameters/data and then call minimizer.
 
 class BA_CORE_API_ IFitStrategy : public INamed
 {
 public:
-    IFitStrategy();
-    IFitStrategy(const std::string& name);
-    virtual IFitStrategy* clone() const = 0;
+    explicit IFitStrategy(const std::string& name);
+    IFitStrategy& operator=(const IFitStrategy &other) = delete;
+    virtual ~IFitStrategy() {}
 
-    virtual ~IFitStrategy() {};
-    virtual void init(FitKernel* fit_suite);
-    virtual void execute() = 0;
+    virtual IFitStrategy* clone() const =0;
 
-    friend std::ostream &operator<<(std::ostream &ostr, const IFitStrategy &m)
-    {
-        m.print(ostr);
-        return ostr;
-    }
+    virtual void init(FitSuiteImpl* fit_suite);
+    virtual void execute() =0;
+
+    friend std::ostream &operator<<(std::ostream &ostr, const IFitStrategy &m) {
+        ostr << m.toString(); return ostr; }
 
 protected:
-    virtual void print(std::ostream &ostr) const;
-
-    FitKernel* m_kernel;
     IFitStrategy(const IFitStrategy &other);
 
-private:
-    IFitStrategy& operator=(const IFitStrategy& );
+    virtual std::string toString() const;
+    FitSuiteImpl* m_kernel;
 };
 
 
-//! @class FitStrategyDefault
+//! Default fit strategy just let FitSuite to run it's minimization round.
 //! @ingroup fitting
-//! @brief Default fit strategy just let FitSuite to run it's minimization round
 
 class BA_CORE_API_ FitStrategyDefault : public IFitStrategy
 {
- public:
+public:
     FitStrategyDefault();
-    virtual IFitStrategy* clone() const;
+    virtual FitStrategyDefault* clone() const;
     virtual void execute();
+
+protected:
+    FitStrategyDefault(const FitStrategyDefault &other);
 };
 
 #endif // IFITSTRATEGY_H

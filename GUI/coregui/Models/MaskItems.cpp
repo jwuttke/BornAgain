@@ -27,9 +27,12 @@ MaskContainerItem::MaskContainerItem()
     : SessionItem(Constants::MaskContainerType)
 {
     const QString T_MASKS = "Mask Tag";
-    registerTag(T_MASKS, 0, -1, QStringList() << Constants::RectangleMaskType << Constants::PolygonMaskType
-                << Constants::EllipseMaskType << Constants::VerticalLineMaskType
-                << Constants::HorizontalLineMaskType << Constants::MaskAllType);
+    QStringList allowedMasks = QStringList()
+            << Constants::RectangleMaskType << Constants::PolygonMaskType
+            << Constants::EllipseMaskType << Constants::VerticalLineMaskType
+            << Constants::HorizontalLineMaskType << Constants::MaskAllType
+            << Constants::RegionOfInterestType;
+    registerTag(T_MASKS, 0, -1, allowedMasks);
     setDefaultTag(T_MASKS);
 }
 
@@ -43,7 +46,7 @@ MaskItem::MaskItem(const QString &name)
     addProperty(P_MASK_VALUE, true);
 }
 
-std::unique_ptr<Geometry::IShape2D> MaskItem::createShape(double scale) const
+std::unique_ptr<IShape2D> MaskItem::createShape(double scale) const
 {
     Q_UNUSED(scale);
     throw GUIHelpers::Error("MaskItem::createShape() -> Not implemented.");
@@ -56,26 +59,35 @@ const QString RectangleItem::P_YLOW = "ylow";
 const QString RectangleItem::P_XUP = "xup";
 const QString RectangleItem::P_YUP = "yup";
 
-RectangleItem::RectangleItem()
-    : MaskItem(Constants::RectangleMaskType)
+RectangleItem::RectangleItem(const QString &modelType)
+    : MaskItem(modelType)
 {
-    setItemName(Constants::RectangleMaskType);
+    setItemName(modelType);
     addProperty(P_XLOW, 0.0)->setLimits(RealLimits::limitless());
     addProperty(P_YLOW, 0.0)->setLimits(RealLimits::limitless());
     addProperty(P_XUP, 0.0)->setLimits(RealLimits::limitless());
     addProperty(P_YUP, 0.0)->setLimits(RealLimits::limitless());
 }
 
-std::unique_ptr<Geometry::IShape2D> RectangleItem::createShape(double scale) const
+std::unique_ptr<IShape2D> RectangleItem::createShape(double scale) const
 {
     double xlow = scale*getItemValue(P_XLOW).toDouble();
     double ylow = scale*getItemValue(P_YLOW).toDouble();
     double xup = scale*getItemValue(P_XUP).toDouble();
     double yup = scale*getItemValue(P_YUP).toDouble();
-    return GUIHelpers::make_unique<Geometry::Rectangle>(xlow, ylow, xup, yup);
+    return GUIHelpers::make_unique<Rectangle>(xlow, ylow, xup, yup);
 }
 
 /* ------------------------------------------------------------------------- */
+
+RegionOfInterestItem::RegionOfInterestItem()
+    : RectangleItem(Constants::RegionOfInterestType)
+{
+    setItemValue(P_MASK_VALUE, false);
+}
+
+/* ------------------------------------------------------------------------- */
+
 const QString PolygonPointItem::P_POSX = "X position";
 const QString PolygonPointItem::P_POSY = "Y position";
 
@@ -101,14 +113,14 @@ PolygonItem::PolygonItem()
     addProperty(P_ISCLOSED, false)->setVisible(false);
 }
 
-std::unique_ptr<Geometry::IShape2D> PolygonItem::createShape(double scale) const
+std::unique_ptr<IShape2D> PolygonItem::createShape(double scale) const
 {
     std::vector<double> x,y;
     foreach(SessionItem *item, this->getChildrenOfType(Constants::PolygonPointType)) {
         x.push_back(scale*item->getItemValue(PolygonPointItem::P_POSX).toDouble());
         y.push_back(scale*item->getItemValue(PolygonPointItem::P_POSY).toDouble());
     }
-    return GUIHelpers::make_unique<Geometry::Polygon>(x, y);
+    return GUIHelpers::make_unique<Polygon>(x, y);
 }
 
 /* ------------------------------------------------------------------------- */
@@ -121,9 +133,9 @@ VerticalLineItem::VerticalLineItem()
     addProperty(P_POSX, 0.0)->setLimits(RealLimits::limitless());
 }
 
-std::unique_ptr<Geometry::IShape2D> VerticalLineItem::createShape(double scale) const
+std::unique_ptr<IShape2D> VerticalLineItem::createShape(double scale) const
 {
-    return GUIHelpers::make_unique<Geometry::VerticalLine>(
+    return GUIHelpers::make_unique<VerticalLine>(
                 scale*getItemValue(VerticalLineItem::P_POSX).toDouble());
 }
 
@@ -137,9 +149,9 @@ HorizontalLineItem::HorizontalLineItem()
     addProperty(P_POSY, 0.0)->setLimits(RealLimits::limitless());
 }
 
-std::unique_ptr<Geometry::IShape2D> HorizontalLineItem::createShape(double scale) const
+std::unique_ptr<IShape2D> HorizontalLineItem::createShape(double scale) const
 {
-    return GUIHelpers::make_unique<Geometry::HorizontalLine>(
+    return GUIHelpers::make_unique<HorizontalLine>(
                 scale*getItemValue(HorizontalLineItem::P_POSY).toDouble());
 }
 
@@ -162,7 +174,7 @@ EllipseItem::EllipseItem()
     addProperty(P_ANGLE, 0.0)->setLimits(RealLimits::limitless());
 }
 
-std::unique_ptr<Geometry::IShape2D> EllipseItem::createShape(double scale) const
+std::unique_ptr<IShape2D> EllipseItem::createShape(double scale) const
 {
     double xcenter = scale*getItemValue(EllipseItem::P_XCENTER).toDouble();
     double ycenter = scale*getItemValue(EllipseItem::P_YCENTER).toDouble();
@@ -170,7 +182,7 @@ std::unique_ptr<Geometry::IShape2D> EllipseItem::createShape(double scale) const
     double yradius = scale*getItemValue(EllipseItem::P_YRADIUS).toDouble();
     double angle = scale*getItemValue(EllipseItem::P_ANGLE).toDouble();
 
-    return GUIHelpers::make_unique<Geometry::Ellipse>(xcenter, ycenter, xradius, yradius, angle);
+    return GUIHelpers::make_unique<Ellipse>(xcenter, ycenter, xradius, yradius, angle);
 }
 
 /* ------------------------------------------------------------------------- */
@@ -182,8 +194,9 @@ MaskAllItem::MaskAllItem()
     getItem(MaskItem::P_MASK_VALUE)->setEnabled(false);
 }
 
-std::unique_ptr<Geometry::IShape2D> MaskAllItem::createShape(double scale) const
+std::unique_ptr<IShape2D> MaskAllItem::createShape(double scale) const
 {
     Q_UNUSED(scale);
-    return GUIHelpers::make_unique<Geometry::InfinitePlane>();
+    return GUIHelpers::make_unique<InfinitePlane>();
 }
+

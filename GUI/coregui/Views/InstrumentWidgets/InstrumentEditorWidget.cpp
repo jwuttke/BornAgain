@@ -70,7 +70,7 @@ InstrumentEditorWidget::InstrumentEditorWidget(QWidget *parent)
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     // main group box with all instrument parameters
-    QGroupBox *instrumentGroup = new QGroupBox(tr("Instrument Parameters"));
+    QGroupBox *instrumentGroup = new QGroupBox("Instrument Parameters");
     QVBoxLayout *instrumentGroupLayout = new QVBoxLayout;
     instrumentGroupLayout->setContentsMargins(0,0,0,0);
     instrumentGroup->setLayout(instrumentGroupLayout);
@@ -140,8 +140,8 @@ void InstrumentEditorWidget::setInstrumentItem(SessionItem *instrument)
     }
     InstrumentItem *instrumentItem = dynamic_cast<InstrumentItem *>(instrument);
 
-    m_instrumentComponents->setBeamItem(instrumentItem->getBeamItem());
-    m_instrumentComponents->setDetectorItem(instrumentItem->getDetectorItem());
+    m_instrumentComponents->setBeamItem(instrumentItem->beamItem());
+    m_instrumentComponents->setDetectorItem(instrumentItem->detectorItem());
 }
 
 void InstrumentEditorWidget::onChangedEditor(const QString &)

@@ -1,12 +1,11 @@
 """
 Test of rotation/positioning of simple cubic particle. Original particle is compared with the one obtained
 """
-from __future__ import print_function
-import unittest
-import utils
-import sys
-import os
 
+from __future__ import print_function
+import os, sys, unittest
+
+import utils
 from libBornAgainCore import *
 
 
@@ -65,7 +64,7 @@ class RotationsCubeTest(unittest.TestCase):
 
     def get_difference(self, reference_data, test_data, add_to="air"):
         intensity = self.get_intensity_data(test_data, add_to)
-        return IntensityDataFunctions.getRelativeDifference(reference_data, intensity)
+        return getRelativeDifference(reference_data, intensity)
 
     def testRotationZ(self):
         """
@@ -166,7 +165,6 @@ class RotationsCubeTest(unittest.TestCase):
             if(diff > 1e-10) : isSuccess=False
 
         self.assertTrue(isSuccess)
-
 
 
 if __name__ == '__main__':

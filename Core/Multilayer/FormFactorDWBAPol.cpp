@@ -20,13 +20,13 @@
 
 
 namespace {
-std::complex<double> myprod(const Eigen::Vector2cd &vec1, const Eigen::Matrix2cd &ff,
-                            const Eigen::Vector2cd &vec2){
-   return vec1.transpose() * ff * vec2;
-}
+    std::complex<double> myprod(const Eigen::Vector2cd& vec1, const Eigen::Matrix2cd& ff,
+                                const Eigen::Vector2cd& vec2){
+        return vec1.transpose() * ff * vec2;
+    }
 }
 
-FormFactorDWBAPol::FormFactorDWBAPol(const IFormFactor &form_factor)
+FormFactorDWBAPol::FormFactorDWBAPol(const IFormFactor& form_factor)
     : mp_form_factor(form_factor.clone())
     , mp_in_coeffs(0)
     , mp_out_coeffs(0)
@@ -48,13 +48,6 @@ complex_t FormFactorDWBAPol::evaluate(const WavevectorInfo&) const
 {
     throw Exceptions::NotImplementedException(
         "FormFactorDWBAPol::evaluate: should never be called for matrix interactions");
-}
-
-void FormFactorDWBAPol::setSpecularInfo(const ILayerRTCoefficients* p_in_coeffs,
-                                        const ILayerRTCoefficients* p_out_coeffs)
-{
-    mp_in_coeffs = p_in_coeffs;
-    mp_out_coeffs = p_out_coeffs;
 }
 
 Eigen::Matrix2cd FormFactorDWBAPol::evaluatePol(const WavevectorInfo& wavevectors) const
@@ -206,4 +199,11 @@ Eigen::Matrix2cd FormFactorDWBAPol::evaluatePol(const WavevectorInfo& wavevector
         M12_S + M12_RS + M12_SR + M12_RSR +
         M21_S + M21_RS + M21_SR + M21_RSR +
         M22_S + M22_RS + M22_SR + M22_RSR;
+}
+
+void FormFactorDWBAPol::setSpecularInfo(const ILayerRTCoefficients* p_in_coeffs,
+                                        const ILayerRTCoefficients* p_out_coeffs)
+{
+    mp_in_coeffs = p_in_coeffs;
+    mp_out_coeffs = p_out_coeffs;
 }

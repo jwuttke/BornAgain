@@ -19,9 +19,8 @@
 #include "Bin.h"
 #include <vector>
 
-//! @class IAxis
+//! Interface for one-dimensional axes.
 //! @ingroup tools_internal
-//! @brief Interface for one-dimensional axes
 
 class BA_CORE_API_ IAxis
 {
@@ -39,7 +38,7 @@ public:
     virtual ~IAxis() {}
 
     //! retrieve the number of bins
-    virtual size_t getSize() const=0;
+    virtual size_t size() const=0;
 
     //! retrieve the label of the axis
     std::string getName() const { return m_name; }
@@ -63,6 +62,10 @@ public:
 
     //! find bin index which is best match for given value
     virtual size_t findClosestIndex(double value) const=0;
+
+    //! find index of bin that contains the given value
+    //! returns size() when value is not found
+    size_t findIndex(double value) const;
 
     //! test for equality
     bool operator==(const IAxis& right) const { return equals(right); }

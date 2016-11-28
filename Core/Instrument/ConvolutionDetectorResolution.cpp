@@ -18,28 +18,28 @@
 
 
 ConvolutionDetectorResolution::ConvolutionDetectorResolution(
-        cumulative_DF_1d res_function_1d)
-: m_dimension(1)
-, m_res_function_1d(res_function_1d)
-, mp_res_function_2d(0)
+    cumulative_DF_1d res_function_1d)
+    : m_dimension(1)
+    , m_res_function_1d(res_function_1d)
+    , mp_res_function_2d(0)
 {
     setName("ConvolutionDetectorResolution");
 }
 
 ConvolutionDetectorResolution::ConvolutionDetectorResolution(
-        IResolutionFunction2D *p_res_function_2d)
-: m_dimension(2)
-, m_res_function_1d(0)
-, mp_res_function_2d(p_res_function_2d)
+    IResolutionFunction2D* p_res_function_2d)
+    : m_dimension(2)
+    , m_res_function_1d(0)
+    , mp_res_function_2d(p_res_function_2d)
 {
     setName("ConvolutionDetectorResolution");
 }
 
 ConvolutionDetectorResolution::ConvolutionDetectorResolution(
-        const IResolutionFunction2D &p_res_function_2d)
-: m_dimension(2)
-, m_res_function_1d(0)
-, mp_res_function_2d(p_res_function_2d.clone())
+    const IResolutionFunction2D &p_res_function_2d)
+    : m_dimension(2)
+    , m_res_function_1d(0)
+    , mp_res_function_2d(p_res_function_2d.clone())
 {
     setName("ConvolutionDetectorResolution");
 }
@@ -61,14 +61,13 @@ ConvolutionDetectorResolution::ConvolutionDetectorResolution(
 
 }
 
-//! clone object
-ConvolutionDetectorResolution *ConvolutionDetectorResolution::clone() const
+ConvolutionDetectorResolution* ConvolutionDetectorResolution::clone() const
 {
     return new ConvolutionDetectorResolution(*this);
 }
 
 void ConvolutionDetectorResolution::applyDetectorResolution(
-        OutputData<double>* p_intensity_map) const
+    OutputData<double>* p_intensity_map) const
 {
     if (p_intensity_map->getRank() != m_dimension) {
         throw Exceptions::RuntimeErrorException(
@@ -117,27 +116,26 @@ void ConvolutionDetectorResolution::apply1dConvolution(OutputData<double>* p_int
         throw Exceptions::LogicErrorException(
             "ConvolutionDetectorResolution::apply1dConvolution() -> Error! "
             "Number of axes for intensity map does not correspond to the dimension of the map." );
-    const IAxis *p_axis = p_intensity_map->getAxis(0);
+    const IAxis &axis = p_intensity_map->getAxis(0);
     // Construct source vector from original intensity map
     std::vector<double> source_vector = p_intensity_map->getRawDataVector();
     size_t data_size = source_vector.size();
     if (data_size < 2)
         return; // No convolution for sets of zero or one element
     // Construct kernel vector from resolution function
-    if (p_axis->getSize() != data_size)
+    if (axis.size() != data_size)
         throw Exceptions::LogicErrorException(
             "ConvolutionDetectorResolution::apply1dConvolution() -> Error! "
             "Size of axis for intensity map does not correspond to size of data in the map." );
-    double step_size = std::abs((*p_axis)[0]-(*p_axis)[p_axis->getSize()-1])/(data_size-1);
-    double mid_value = (*p_axis)[p_axis->getSize()/2]; // because Convolve expects zero at midpoint
+    double step_size = std::abs(axis[0]-axis[axis.size()-1])/(data_size-1);
+    double mid_value = axis[axis.size()/2]; // because Convolve expects zero at midpoint
     std::vector<double> kernel;
     for (size_t index=0; index<data_size; ++index) {
-        kernel.push_back(getIntegratedPDF1d((*p_axis)[index] - mid_value, step_size));
+        kernel.push_back(getIntegratedPDF1d(axis[index] - mid_value, step_size));
     }
     // Calculate convolution
     std::vector<double> result;
-    MathFunctions::Convolve cv;
-    cv.fftconvolve(source_vector, kernel, result);
+    Convolve().fftconvolve(source_vector, kernel, result);
     // Truncate negative values that can arise because of finite precision of Fourier Transform
     std::for_each(result.begin(), result.end(), [](double &val){ val = std::max(0.0, val); });
     // Populate intensity map with results
@@ -154,15 +152,15 @@ void ConvolutionDetectorResolution::apply2dConvolution(OutputData<double>* p_int
         throw Exceptions::LogicErrorException(
             "ConvolutionDetectorResolution::apply2dConvolution() -> Error! "
             "Number of axes for intensity map does not correspond to the dimension of the map." );
-    const IAxis *p_axis_1 = p_intensity_map->getAxis(0);
-    const IAxis *p_axis_2 = p_intensity_map->getAxis(1);
-    size_t axis_size_1 = p_axis_1->getSize();
-    size_t axis_size_2 = p_axis_2->getSize();
+    const IAxis &axis_1 = p_intensity_map->getAxis(0);
+    const IAxis &axis_2 = p_intensity_map->getAxis(1);
+    size_t axis_size_1 = axis_1.size();
+    size_t axis_size_2 = axis_2.size();
     if (axis_size_1 < 2 || axis_size_2 < 2)
         return; // No 2d convolution for 1d data
     // Construct source vector array from original intensity map
     std::vector<double> raw_source_vector = p_intensity_map->getRawDataVector();
-    std::vector<std::vector<double> > source;
+    std::vector<std::vector<double>> source;
     size_t raw_data_size = raw_source_vector.size();
     if (raw_data_size != axis_size_1*axis_size_2)
         throw Exceptions::LogicErrorException(
@@ -173,27 +171,26 @@ void ConvolutionDetectorResolution::apply2dConvolution(OutputData<double>* p_int
         source.push_back(row_vector);
     }
     // Construct kernel vector from resolution function
-    std::vector<std::vector<double> > kernel;
+    std::vector<std::vector<double>> kernel;
     kernel.resize(axis_size_1);
-    double mid_value_1 = (*p_axis_1)[axis_size_1/2]; // because Convolve expects zero at midpoint
-    double mid_value_2 = (*p_axis_2)[axis_size_2/2]; // because Convolve expects zero at midpoint
-    double step_size_1 = std::abs((*p_axis_1)[0]-(*p_axis_1)[axis_size_1-1])/(axis_size_1-1);
-    double step_size_2 = std::abs((*p_axis_2)[0]-(*p_axis_2)[axis_size_2-1])/(axis_size_2-1);
+    double mid_value_1 = axis_1[axis_size_1/2]; // because Convolve expects zero at midpoint
+    double mid_value_2 = axis_2[axis_size_2/2]; // because Convolve expects zero at midpoint
+    double step_size_1 = std::abs(axis_1[0]-axis_1[axis_size_1-1])/(axis_size_1-1);
+    double step_size_2 = std::abs(axis_2[0]-axis_2[axis_size_2-1])/(axis_size_2-1);
     for (size_t index_1=0; index_1<axis_size_1; ++index_1) {
-        double value_1 = (*p_axis_1)[index_1]-mid_value_1;
+        double value_1 = axis_1[index_1]-mid_value_1;
         std::vector<double> row_vector;
         row_vector.resize(axis_size_2, 0.0);
         for (size_t index_2=0; index_2<axis_size_2;++index_2) {
-            double value_2 = (*p_axis_2)[index_2]-mid_value_2;
+            double value_2 = axis_2[index_2]-mid_value_2;
             double z_value = getIntegratedPDF2d(value_1, step_size_1, value_2, step_size_2);
             row_vector[index_2] = z_value;
         }
         kernel[index_1] = row_vector;
     }
     // Calculate convolution
-    std::vector<std::vector<double> > result;
-    MathFunctions::Convolve cv;
-    cv.fftconvolve(source, kernel, result);
+    std::vector<std::vector<double>> result;
+    Convolve().fftconvolve(source, kernel, result);
     // Populate intensity map with results
     std::vector<double> result_vector;
     for (size_t index_1=0; index_1<axis_size_1; ++index_1) {

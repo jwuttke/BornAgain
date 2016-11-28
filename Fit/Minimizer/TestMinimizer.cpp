@@ -2,7 +2,7 @@
 //
 //  BornAgain: simulate and fit scattering at grazing incidence
 //
-//! @file      Fit/Minimizer/TrivialMinimizer.cpp
+//! @file      Fit/Minimizer/TestMinimizer.cpp
 //! @brief     Implements class TrivialMinimizer.
 //!
 //! @homepage  http://www.bornagainproject.org
@@ -14,9 +14,8 @@
 // ************************************************************************** //
 
 #include "TestMinimizer.h"
-#include "FitParameter.h"
 #include "MinimizerConstants.h"
-#include <iostream>
+#include "FitParameterSet.h"
 #include <sstream>
 
 std::string TestMinimizer::minimizerName() const
@@ -27,46 +26,23 @@ std::string TestMinimizer::minimizerName() const
 //! run minimization
 void TestMinimizer::minimize()
 {
-    m_min_value = m_fcn(&m_parameters.getValues()[0]);
+    m_min_value = m_fcn(m_parameter_values);
 }
 
-//! Returns pointer to the parameters values at the minimum
-double TestMinimizer::getValueOfVariableAtMinimum(size_t index) const
+void TestMinimizer::setParameters(const FitParameterSet& parameters)
 {
-    return m_parameters[index]->getValue();
+    m_parameter_values = parameters.values();
 }
 
-//! Returns value of the parameter at the minimum
-std::vector<double > TestMinimizer::getValueOfVariablesAtMinimum() const
+void TestMinimizer::setObjectiveFunction(objective_function_t func)
 {
-    return m_parameters.getValues();
+    m_fcn = func;
 }
 
-void TestMinimizer::setParameters(const FitSuiteParameters& parameters)
-{
-    m_parameters.clear();
-    for(size_t i_par = 0; i_par<parameters.size(); ++i_par)
-        m_parameters.addFitParameter(new FitParameter( *parameters[i_par] ) );
-}
-
-std::string TestMinimizer::reportResults() const
+std::string TestMinimizer::reportOutcome() const
 {
     std::ostringstream result;
-    result << "TestMinimizer::printResult() -> Done. Objective function value = "
+    result << "TestMinimizer::printOutcome() -> Done. Objective function value = "
            << m_min_value << std::endl;
     return result.str();
 }
-
-std::vector<double> TestMinimizer::getErrorOfVariables() const
-{
-    std::vector<double> result;
-    result.resize(m_parameters.size());
-    return result;
-}
-
-void TestMinimizer::propagateResults(FitSuiteParameters &)
-{
-
-}
-
-

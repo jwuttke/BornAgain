@@ -23,7 +23,7 @@ class IMultiLayerBuilder;
 class IHistogram;
 class Histogram2D;
 
-//! Main class to run the simulation.
+//! Main class to run a Grazing-Incidence Small-Angle Scattering simulation.
 //! @ingroup simulation
 
 class BA_CORE_API_ GISASSimulation : public Simulation
@@ -31,7 +31,7 @@ class BA_CORE_API_ GISASSimulation : public Simulation
 public:
     GISASSimulation();
     GISASSimulation(const MultiLayer& p_sample);
-    GISASSimulation(std::shared_ptr<IMultiLayerBuilder> p_sample_builder);
+    GISASSimulation(const std::shared_ptr<IMultiLayerBuilder> p_sample_builder);
 
     ~GISASSimulation() final {}
 
@@ -41,29 +41,20 @@ public:
     void prepareSimulation() final;
 
     //! Gets the number of elements this simulation needs to calculate
-    int getNumberOfSimulationElements() const final;
-
-    //! Returns detector intensity map (no detector resolution)
-    const OutputData<double>* getOutputData() const { return &m_intensity_map; }
+    int numberOfSimulationElements() const final;
 
     //! Returns clone of the detector intensity map with detector resolution applied
     OutputData<double>* getDetectorIntensity(
-        IDetector2D::EAxesUnits units_type = IDetector2D::DEFAULT) const;
+            IDetector2D::EAxesUnits units_type = IDetector2D::DEFAULT) const;
 
-    //! Returns clone of the detector intensity map with detector resolution applied in the form
-    //! of 2D histogram.
-    Histogram2D* getIntensityData(
-        IDetector2D::EAxesUnits units_type = IDetector2D::DEFAULT) const;
+    //! Returns histogram representing intensity map in requested axes units
+    Histogram2D* getIntensityData(IDetector2D::EAxesUnits units_type = IDetector2D::DEFAULT) const;
 
     //! Sets beam parameters from here (forwarded to Instrument)
     void setBeamParameters(double wavelength, double alpha_i, double phi_i);
 
     //! Sets the detector (axes can be overwritten later)
     void setDetector(const IDetector2D& detector);
-
-    //! Sets detector parameters using axes of output data
-    void setDetectorParameters(const OutputData<double>& output_data);
-    void setDetectorParameters(const IHistogram& histogram);
 
     //! Sets spherical detector parameters using angle ranges
     //! @param n_phi number of phi-axis bins
@@ -83,7 +74,7 @@ public:
     //! has priority.
     //! @param shape The shape of mask (Rectangle, Polygon, Line, Ellipse)
     //! @param mask_value The value of mask
-    void addMask(const Geometry::IShape2D& shape, bool mask_value = true);
+    void addMask(const IShape2D& shape, bool mask_value = true);
 
     //! Put the mask for all detector channels (i.e. exclude whole detector from the analysis)
     void maskAll();
@@ -91,6 +82,12 @@ public:
     //! Adds parameters from local pool to external pool and recursively calls its direct children.
     std::string addParametersToExternalPool(
         const std::string& path, ParameterPool* external_pool, int copy_number = -1) const final;
+
+    //! Sets rectangular region of interest with lower left and upper right corners defined.
+    void setRegionOfInterest(double xlow, double ylow, double xup, double yup);
+
+    //! Resets region of interest making whole detector plane available for the simulation.
+    void resetRegionOfInterest();
 
 private:
     GISASSimulation(const GISASSimulation& other);

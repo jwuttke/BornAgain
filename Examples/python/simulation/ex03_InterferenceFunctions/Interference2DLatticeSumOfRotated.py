@@ -52,7 +52,7 @@ def get_simulation():
     return simulation
 
 
-def simulate():
+def run_simulation():
     """
     Runs several simulations,
     sums intensities from different rotated lattices,
@@ -67,7 +67,7 @@ def simulate():
     xi_max = 240.0*deg
     total_weight = 0.0
     xi_distr = ba.DistributionGate(xi_min, xi_max)
-    xi_samples = xi_distr.generateValueList(nbins, 0.0)
+    xi_samples = xi_distr.equidistantPoints(nbins, 0.0)
     for i in range(len(xi_samples)):
         xi_value = xi_samples[i]
         probability = xi_distr.probabilityDensity(xi_value)
@@ -85,4 +85,5 @@ def simulate():
 
 
 if __name__ == '__main__':
-    ba.simulateThenPlotOrSave(simulate)
+    result = run_simulation()
+    ba.plot_intensity_data(result)

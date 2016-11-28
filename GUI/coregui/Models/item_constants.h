@@ -152,9 +152,12 @@ const ModelType VerticalLineMaskType = "VerticalLineMask";
 const ModelType HorizontalLineMaskType = "HorizontalLineMask";
 const ModelType MaskAllType = "MaskAllMask";
 
+const ModelType RegionOfInterestType = "RegionOfInterest";
+
 const ModelType SimulationOptionsType = "SimulationOptions";
 
 const ModelType RealDataType = "RealData";
+const ModelType LinkInstrumentType = "LinkInstrument";
 
 const ModelType MinimizerContainerType = "MinimizerContainer";
 const ModelType MinuitMinimizerType = "Minuit2";

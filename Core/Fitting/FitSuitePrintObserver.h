@@ -17,11 +17,10 @@
 #define FITSUITEPRINTOBSERVER_H
 
 #include "IFitObserver.h"
-#include <boost/date_time/posix_time/posix_time.hpp>
+#include "TimeInterval.h"
 
-//! @class FitSuitePrintObserver
+//! Prints fit progress at the end of each FitSuite's iteration.
 //! @ingroup fitting_internal
-//! @brief Prints fit progress at the end of each FitSuite's iteration
 
 class BA_CORE_API_ FitSuitePrintObserver : public IFitObserver
 {
@@ -38,8 +37,8 @@ protected:
     void printFitResults();
 
     FitSuite* m_fit_suite;
-    boost::posix_time::ptime m_start_time;
-    boost::posix_time::ptime m_last_call_time;
+    TimeInterval m_run_time;
+    TimeInterval m_last_call_time;
 };
 
 #endif // FITSUITEPRINTOBSERVER_H

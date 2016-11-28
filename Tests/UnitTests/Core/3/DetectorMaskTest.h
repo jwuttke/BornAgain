@@ -15,7 +15,7 @@ public:
 TEST_F(DetectorMaskTest, InitialState)
 {
     DetectorMask test;
-    EXPECT_THROW(test.getMask(0), Exceptions::LogicErrorException);
+    EXPECT_FALSE(test.isMasked(0));
     EXPECT_FALSE(test.getMaskData()->isInitialized());
 }
 
@@ -41,7 +41,7 @@ TEST_F(DetectorMaskTest, AddMask)
 
     std::vector<double> x = {4.0, -4.0, -4.0, 4.0, 4.0};
     std::vector<double> y = {2.0, 2.0, -2.0, -2.0, 2.0};
-    Geometry::Polygon polygon(x, y);
+    Polygon polygon(x, y);
 
     SphericalDetector detector;
     detector.addAxis(FixedBinAxis("x-axis", 12, -4.0, 8.0));
@@ -57,36 +57,36 @@ TEST_F(DetectorMaskTest, AddMask)
         double x = detectorMask.getMaskData()->getAxisValue(index, 0);
         double y = detectorMask.getMaskData()->getAxisValue(index, 1);
         if( x>= -4.0 && x <=4.0 && y>=-2.0 && y<=2.0) {
-            EXPECT_TRUE(detectorMask.getMask(index));
+            EXPECT_TRUE(detectorMask.isMasked(index));
         } else {
-            EXPECT_FALSE(detectorMask.getMask(index));
+            EXPECT_FALSE(detectorMask.isMasked(index));
         }
     }
 
-    EXPECT_EQ(detectorMask.getNumberOfMaskedChannels(), 32);
+    EXPECT_EQ(detectorMask.numberOfMaskedChannels(), 32);
 
     // adding second mask of same size which discard previous one
     detectorMask.addMask(polygon, false);
     detectorMask.initMaskData(detector);
 
     for(size_t index=0; index<detectorMask.getMaskData()->getAllocatedSize(); ++index) {
-        EXPECT_FALSE(detectorMask.getMask(index));
+        EXPECT_FALSE(detectorMask.isMasked(index));
     }
-    EXPECT_EQ(detectorMask.getNumberOfMaskedChannels(), 0);
+    EXPECT_EQ(detectorMask.numberOfMaskedChannels(), 0);
 
     // adding third mask
     x = {5.0, 5.0, 8.0, 8.0, 5.0};
     y = {2.0, 4.0, 4.0, 2.0, 2.0};
-    Geometry::Polygon polygon2(x, y);
+    Polygon polygon2(x, y);
     detectorMask.addMask(polygon2, true);
     detectorMask.initMaskData(detector);
     for(size_t index=0; index<detectorMask.getMaskData()->getAllocatedSize(); ++index) {
         double x = detectorMask.getMaskData()->getAxisValue(index, 0);
         double y = detectorMask.getMaskData()->getAxisValue(index, 1);
         if( x>= 5.0 && x <=8.0 && y>=2.0 && y<=4.0) {
-            EXPECT_TRUE(detectorMask.getMask(index));
+            EXPECT_TRUE(detectorMask.isMasked(index));
         } else {
-            EXPECT_FALSE(detectorMask.getMask(index));
+            EXPECT_FALSE(detectorMask.isMasked(index));
         }
     }
 
@@ -94,7 +94,7 @@ TEST_F(DetectorMaskTest, AddMask)
     detectorMask.removeMasks();
     detectorMask.initMaskData(detector);
     for(size_t index=0; index<detectorMask.getMaskData()->getAllocatedSize(); ++index) {
-        EXPECT_FALSE(detectorMask.getMask(index));
+        EXPECT_FALSE(detectorMask.isMasked(index));
     }
 
 }
@@ -106,7 +106,7 @@ TEST_F(DetectorMaskTest, AssignmentOperator)
 
     std::vector<double> x = {4.0, -4.0, -4.0, 4.0, 4.0};
     std::vector<double> y = {2.0, 2.0, -2.0, -2.0, 2.0};
-    Geometry::Polygon polygon(x, y);
+    Polygon polygon(x, y);
 
     SphericalDetector detector;
     detector.addAxis(FixedBinAxis("x-axis", 12, -4.0, 8.0));
@@ -124,12 +124,12 @@ TEST_F(DetectorMaskTest, AssignmentOperator)
         double x = mask.getMaskData()->getAxisValue(index, 0);
         double y = mask.getMaskData()->getAxisValue(index, 1);
         if( x>= -4.0 && x <=4.0 && y>=-2.0 && y<=2.0) {
-            EXPECT_TRUE(mask.getMask(index));
+            EXPECT_TRUE(mask.isMasked(index));
         } else {
-            EXPECT_FALSE(mask.getMask(index));
+            EXPECT_FALSE(mask.isMasked(index));
         }
     }
-    EXPECT_EQ(mask.getNumberOfMaskedChannels(), 32);
+    EXPECT_EQ(mask.numberOfMaskedChannels(), 32);
 
 }
 
@@ -140,7 +140,7 @@ TEST_F(DetectorMaskTest, CopyConstructor)
 
     std::vector<double> x = {4.0, -4.0, -4.0, 4.0, 4.0};
     std::vector<double> y = {2.0, 2.0, -2.0, -2.0, 2.0};
-    Geometry::Polygon polygon(x, y);
+    Polygon polygon(x, y);
 
     SphericalDetector detector;
     detector.addAxis(FixedBinAxis("x-axis", 12, -4.0, 8.0));
@@ -158,9 +158,9 @@ TEST_F(DetectorMaskTest, CopyConstructor)
         double x = mask.getMaskData()->getAxisValue(index, 0);
         double y = mask.getMaskData()->getAxisValue(index, 1);
         if( x>= -4.0 && x <=4.0 && y>=-2.0 && y<=2.0) {
-            EXPECT_TRUE(mask.getMask(index));
+            EXPECT_TRUE(mask.isMasked(index));
         } else {
-            EXPECT_FALSE(mask.getMask(index));
+            EXPECT_FALSE(mask.isMasked(index));
         }
     }
 }

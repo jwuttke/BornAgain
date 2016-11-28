@@ -18,6 +18,7 @@
 
 SimulationOptions::SimulationOptions()
     : m_mc_integration(false)
+    , m_include_specular(false)
     , m_mc_points(1)
 {
     m_thread_info.n_threads = getHardwareConcurrency();
@@ -36,17 +37,12 @@ void SimulationOptions::setMonteCarloIntegration(bool flag, size_t mc_points)
 
 void SimulationOptions::setNumberOfThreads(int nthreads)
 {
-    if(nthreads == 0) {
+    if(nthreads == 0)
         m_thread_info.n_threads = (int)std::thread::hardware_concurrency();
-    }
-
-    else if(nthreads > 0) {
+    else if(nthreads > 0)
         m_thread_info.n_threads = nthreads;
-    }
-
-    else {
+    else
         m_thread_info.n_threads = 1;
-    }
 }
 
 int SimulationOptions::getNumberOfThreads() const
@@ -72,9 +68,4 @@ int SimulationOptions::getCurrentBatch() const
 int SimulationOptions::getHardwareConcurrency() const
 {
     return (int)std::thread::hardware_concurrency();
-}
-
-double SimulationOptions::getDefaultVariability() const
-{
-    return isIntegrate() ? 0.5 : 2e-10;
 }

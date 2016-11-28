@@ -21,7 +21,7 @@
 #include "ParameterPool.h"
 #include "ParameterSample.h"
 #include "SimulationElement.h"
-#include "Utils.h"
+#include "StringUtils.h"
 #include <gsl/gsl_errno.h>
 #include <thread>
 #include <iomanip>
@@ -35,14 +35,14 @@ Simulation::Simulation(const MultiLayer& p_sample)
     mP_sample.reset(p_sample.clone());
 }
 
-Simulation::Simulation(std::shared_ptr<IMultiLayerBuilder> p_sample_builder)
-    : mp_sample_builder(p_sample_builder)
+Simulation::Simulation(const std::shared_ptr<IMultiLayerBuilder> p_sample_builder)
+    : mP_sample_builder(p_sample_builder)
 {}
 
 Simulation::Simulation(const Simulation& other)
     : ICloneable()
     , IParameterized(other)
-    , mp_sample_builder(other.mp_sample_builder)
+    , mP_sample_builder(other.mP_sample_builder)
     , m_options(other.m_options)
     , m_distribution_handler(other.m_distribution_handler)
     , m_progress(other.m_progress)
@@ -56,14 +56,15 @@ Simulation::Simulation(const Simulation& other)
 
 Simulation::~Simulation() {} // forward class declaration prevents move to .h
 
+//! Initializes a progress monitor that prints to stdout.
 void Simulation::setTerminalProgressMonitor()
 {
     m_progress.subscribe( [] (int percentage_done) -> bool {
             if (percentage_done<100)
                 std::cout << std::setprecision(2)
-                          << "... " << percentage_done << "%\r" << std::flush;
+                          << "\r... " << percentage_done << "%" << std::flush;
             else // wipe out
-                std::cout << "        \n" << std::flush;
+                std::cout << "\r... 100%\n";
             return true;
         } );
 }
@@ -79,8 +80,8 @@ void Simulation::removeDetectorResolutionFunction()
 }
 
 //! Sets the polarization analyzer characteristics of the detector
-void Simulation::setAnalyzerProperties(
-    const kvector_t direction, double efficiency, double total_transmission)
+void Simulation::setAnalyzerProperties(const kvector_t direction, double efficiency,
+                                       double total_transmission)
 {
     m_instrument.setAnalyzerProperties(direction, efficiency, total_transmission);
 }
@@ -120,7 +121,7 @@ void Simulation::runSimulation()
     m_progress.reset();
     int prefac = ( mP_sample->totalNofLayouts()>0 ? 1 : 0 )
         + ( mP_sample->hasRoughness() ? 1 : 0 );
-    m_progress.setExpectedNTicks(prefac*param_combinations*getNumberOfSimulationElements());
+    m_progress.setExpectedNTicks(prefac*param_combinations*numberOfSimulationElements());
 
     // no averaging needed:
     if (param_combinations == 1) {
@@ -165,13 +166,13 @@ void Simulation::setSample(const MultiLayer& sample)
     mP_sample.reset(sample.clone());
 }
 
-void Simulation::setSampleBuilder(std::shared_ptr<class IMultiLayerBuilder> p_sample_builder)
+void Simulation::setSampleBuilder(const std::shared_ptr<class IMultiLayerBuilder> p_sample_builder)
 {
     if (!p_sample_builder)
         throw Exceptions::NullPointerException("Simulation::setSampleBuilder() -> "
                                    "Error! Attempt to set null sample builder.");
 
-    mp_sample_builder = p_sample_builder;
+    mP_sample_builder = p_sample_builder;
     mP_sample.reset(nullptr);
 }
 
@@ -180,8 +181,8 @@ std::string Simulation::addSimulationParametersToExternalPool(
 {
     std::string new_path = path;
 
-    if (mp_sample_builder) {
-        new_path = mp_sample_builder->addParametersToExternalPool(new_path, external_pool, -1);
+    if (mP_sample_builder) {
+        new_path = mP_sample_builder->addParametersToExternalPool(new_path, external_pool, -1);
     } else if (mP_sample) {
         new_path = mP_sample->addParametersToExternalPool(new_path, external_pool, -1);
     }
@@ -204,16 +205,12 @@ void Simulation::addParameterDistribution(const ParameterDistribution& par_distr
 
 void Simulation::updateSample()
 {
-    if (!mp_sample_builder)
+    if (!mP_sample_builder)
         return;
-    MultiLayer* p_new_sample = mp_sample_builder->buildSample();
-    std::string builder_type = typeid(*mp_sample_builder).name();
-    if (builder_type.find("IMultiLayerBuilder_wrapper") != std::string::npos) {
-        msglog(MSG::DEBUG2) << "Simulation::updateSample() -> "
-            "OMG, some body has called me from python, what an idea... ";
-        setSample(*p_new_sample);
+    if (mP_sample_builder->isPythonBuilder()) {
+        mP_sample.reset( mP_sample_builder->buildSample()->clone() );
     } else {
-        mP_sample.reset(p_new_sample);
+        mP_sample.reset( mP_sample_builder->buildSample() );
     }
 }
 
@@ -245,7 +242,7 @@ void Simulation::runSingleSimulation()
     } else {
         // Multithreading.
 
-        msglog(MSG::DEBUG) << "Simulation::runSimulation() -> Info. Number of threads "
+        msglog(Logging::DEBUG) << "Simulation::runSimulation() -> Info. Number of threads "
                            << m_options.getNumberOfThreads()
                            << ", n_batches = " << m_options.getNumberOfBatches()
                            << ", current_batch = " << m_options.getCurrentBatch();
@@ -271,14 +268,14 @@ void Simulation::runSingleSimulation()
                 end_it = batch_end;
             else
                 end_it = batch_start + end_thread_index;
-            MainComputation* p_dwba_simulation = new MainComputation(
-                mP_sample.get(), m_options, m_progress, begin_it, end_it);
-            simulations.push_back(p_dwba_simulation);
+            simulations.push_back(
+                new MainComputation(
+                    mP_sample.get(), m_options, m_progress, begin_it, end_it));
         }
 
         // Run simulations in n threads.
-        for (auto it = simulations.begin(); it != simulations.end(); ++it)
-            threads.push_back(new std::thread([] (MainComputation* p_sim) {p_sim->run();} , *it));
+        for (MainComputation* sim: simulations)
+            threads.push_back(new std::thread([sim]() {sim->run();}));
 
         // Wait for threads to complete.
         for (auto thread: threads) {
@@ -297,7 +294,7 @@ void Simulation::runSingleSimulation()
             throw Exceptions::RuntimeErrorException(
                 "Simulation::runSingleSimulation() -> "
                 "At least one simulation thread has terminated unexpectedly.\n"
-                "Messages: " + Utils::String::join(failure_messages, " --- "));
+                "Messages: " + StringUtils::join(failure_messages, " --- "));
     }
     normalize(batch_start, batch_end);
 }
