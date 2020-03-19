@@ -27,6 +27,10 @@
 
 \def\authors{Gennady Pospelov, Walter Van Herck, Joachim Wuttke}
 \def\version{1.16}
+\def\dateLong{\today}
+\def\dateShort{\ifnum\number\day<10 0\fi \number\day%
+\ifcase \month \or jan\or feb\or mar\or apr\or may%
+\or jun\or jul\or aug\or sep\or oct\or nov\or dec\fi\number\year}
 
 \input{Setup}
 
