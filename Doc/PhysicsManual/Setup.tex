@@ -87,45 +87,12 @@
 \def\@makechapterhead#1{\numberedchaptertrue\mychapterhead{#1}}
 \def\@makeschapterhead#1{\numberedchapterfalse\mychapterhead{#1}}
 
-\newif\iffirstchapterinpart
-\firstchapterinpartfalse
-\renewcommand\part{%
-  \clearpage\firstchapterinparttrue
-  %\thispagestyle{plain}%
-  \if@twocolumn
-    \onecolumn
-    \@tempswatrue
-  \else
-    \@tempswafalse
-  \fi
-  \vspace*{50\p@ plus 10\p@ minus 10\p@}%
-  \secdef\@part\@spart}
-
-
-\def\@part[#1]#2{%
-    \refstepcounter{part}%
-    \addcontentsline{toc}{part}{Part~\thepart\hspace{1em}#1}%
-    \markboth{}{}%
-    {\interlinepenalty \@M
-     \normalfont
-     \ifnum \c@secnumdepth >-2\relax
-       \parindent \z@ \Large\bfseries \partname\nobreakspace\thepart
-       \par
-       \vskip 20\p@
-     \fi
-     \parindent \z@ \huge \bfseries #2\par}
-    }
-
 \newif\iffirstsectioninchapter
 \def\sectionclear{\iffirstsectioninchapter\else\ifdraft{\clearpage}{}\fi}
 
 \renewcommand\chapter{
   \firstsectioninchaptertrue
   \pagereset
-  \iffirstchapterinpart\else\clearpage\fi
-  \firstchapterinpartfalse
-  %\thispagestyle{myheadings}
-  %                  \thispagestyle{plain}%
   \global\@topnum\z@
   \@afterindentfalse
   \secdef\@chapter\@schapter}
