@@ -16,13 +16,8 @@
 % TeX/LaTeX macros we will overwrite
 \let\ringaccent\r
 
-% Vectors
-\def\v#1{\ensuremath{\mathbf{#1}}}
-% unused \newcommand{\unitvec}[1]{\ensuremath{\widehat{\vect{#1}}}}
-
-% Tensors
-\def\TENS#1{\ensuremath{\mathsf{#1}}}
-\def\ONE{\TENS{1}}
+% Vectors and tensors
+\def\v#1{\bm{#1}}
 
 % Math operators
 \newcommand{\ggll}{\mathrel{\substack{\ll\\[-.05em]\gg}}}
@@ -55,7 +50,7 @@
 \def\FD{\mathcal{F}}
 \def\GD{\mathcal{G}}
 \def\idest{\E{i.e.\ }}
-\def\k{\v{k}}
+\def\k{{\v{k}}}
 \def\kD{\k_\text{D}}
 \def\mv{\overline{v}}
 \def\nz{\overline{n^2}}
@@ -65,6 +60,7 @@
 \def\hx{\v{\hat x}}
 \def\hy{\v{\hat y}}
 \def\AA{\ringaccent A}
+\def\PauliVec{\v{\hat\sigma}}
 \def\r{\v{r}}
 \def\R{\v{R}}
 \def\rD{\r_\text{D}}
