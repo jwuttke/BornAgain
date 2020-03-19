@@ -248,18 +248,17 @@ To compute scattering cross sections,
 \index{Cross section}%
 \index{Scattering!cross section}%
 we will only need the \E{ratio} of scattered to incident flux.
-Mostly we will assume pure states to be plane waves
+
+In vacuum, far away from the sample, the pure states are plane waves
 \index{Plane wave}%
 \index{Wave!plane}%
 \begin{equation}\label{EplaneWave}
   \psi_\k(\r)\coloneqq\e^{i\k\r}.
 \end{equation}
-In vacuum, the wavevector~$\k$ purely real.
-\index{Damping}%
-We replace the sum in~\cref{EdefRho} by an integral,
-and find that the flux is simply
+The sum in~\cref{EdefRho} becomes an integral over the real wavevector~$\k$,
+and the flux is
 \begin{equation}
-  \v{J}(\r) = \int\!\d^3k\; p_\k\, |\psi_\k(\r)|^2 \k.
+  \v{J} = \int\!\d^3k\; p_\k\, \k.
 \end{equation}
 
 %===============================================================================
@@ -318,14 +317,21 @@ to rewrite the Schrödinger equation in analogy to~\cref{ESchrodi2} as
   \left\{\Nabla^2+K^2-4\pi v(\r)-4\pi\v{b}(\r)\PauliVec\right\} \v\Psi(\r) = 0.
 \end{equation}
 \vspace*{-5pt}}
-The density matrix~\cref{EdefRho} becomes
-\begin{equation}\label{EdefRhoSpinor}
-  \hat\rho \coloneqq \sum_i p_i \ket{\v\Psi_i}\bra{\v\Psi_i}.
+The plane-wave states \cref{EplaneWave} get an additional polarization index~$\alpha$,
+\begin{equation}\label{EPlaneWave}
+  \Psi_{\k\alpha}(\r)\coloneqq\Psi_{\alpha}\e^{i\k\r}.
 \end{equation}
-The total flux is still given by \cref{EdefJ,EdefJop}.
-Beam polarization
-\index{Polarization}%
-is described by an appropriate density matrix.
+The density matrix becomes
+\begin{equation}\label{ERho}
+  \hat\rho
+  \coloneqq \sum_\alpha \int\!\d^3k\; p_{\k\alpha}\ket{\v\Psi_{\k\alpha}}\bra{\v\Psi_{\k\alpha}}.
+\end{equation}
+In particular, a suitable density matrix is used to describe
+the polarization of the incoming beam.
+The total flux is
+\begin{equation}\label{EFlux}
+  \v{J} = \sum_\alpha \int\!\d^3k\; p_{\k\alpha}\, \k.
+\end{equation}
 \index{Neutron!spin|)}%
 \index{Spin|)}%
 \index{Magnetic field!neutron propagation|)}%
@@ -431,7 +437,7 @@ the electron number density~$\rho(\r)$,
 and the vacuum wavenumber~$K$,
 given by the dispersion relation
 \begin{equation}
-  K^2 = \mu_0\eps_0\omega^2.
+  K^2 = \mu_0\eps_0\omega^2 = \omega^2/c^2.
 \end{equation}
 \index{Dispersion!X-ray}%
 
@@ -480,6 +486,8 @@ For a plane wave $\v E(\r)=\v E_\k \e^{i\k\r}$, we find
 \end{equation}
 which confirms the common knowledge that the radiation intensity
 counted in a detector is proportional to the squared electric field amplitude.
+At constant frequency, it is proportional to the flux \cref{EFlux}
+from particle-wave theory.
 
 \index{Wave propagation!X-ray|)}%
 \index{X-ray!wave propagation|)}%
@@ -512,7 +520,7 @@ and the potential
 \begin{equation}\label{ETV}
   \TV(\r) \coloneqq \left\{ \begin{array}{ll}
       v(\r)                         &\text{~~~for neutrons (scalar),}\\
-      v(\r)+\v{b}(\r)\v{\sigma}       &\text{~~~for neutrons (spinorial),}\\
+      v(\r)+\v{b}(\r)\PauliVec       &\text{~~~for neutrons (spinorial),}\\
       K^2(\epsilon(\r)-1)/(4\pi) &\text{~~~for X-rays.}
   \end{array}\right.
 \end{equation}
