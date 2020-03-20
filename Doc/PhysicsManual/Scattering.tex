@@ -602,7 +602,7 @@ the following basic idea of DWBA:
 The wave equation~\cref{EWAVE} shall henceforth be written as
 \Emph{
 \begin{equation}\label{EDPsi}
-  \TD(\r)\v\Psi(\r) = 4\pi\v{U}(\r)
+  \TD(\r)\v\Psi(\r) = 4\pi\v{U}(\r)\Psi(\r)
 \end{equation}
 \vspace*{-5pt}}
 with the \E{distorted wave operator}
@@ -731,7 +731,7 @@ by the \E{Lippmann-Schwinger equation}
 \begin{equation}\label{EPsiLS}
   \v\Psi(\r)
   = \v\Psi_\si(\r)
-  + \int\!\d^3r'\, \TG(\r,\r') \TU(\r')\v\Psi(\r').
+  + \int\!\d^3r'\, \TG(\r,\r') 4\pi\TU(\r')\v\Psi(\r').
 \end{equation}
 It involves the Green function~$\TG$,
 \index{Green function}%
@@ -760,7 +760,7 @@ only the linear order in $\TU$ is retained,
 \begin{equation}\label{EBorn}
   \v\Psi(\r)
   = \v\Psi_\si(\r)
-  + \int\!\d^3r'\, \TG(\r,\r') \TU(\r')\v\Psi_\si(\r').
+  + \int\!\d^3r'\, \TG(\r,\r') 4\pi\TU(\r')\v\Psi_\si(\r').
 \end{equation}
 This is the base for material investigations with X-rays or neutrons,
 where sample structures that modulate the perturbation potential $\TU$
@@ -774,7 +774,7 @@ we are only interested in the scattered wave
 \begin{equation}\label{EBornS}
   \v\Psi_\text{s}(\r)
   \coloneqq
-  \int\!\d^3r'\, \TG(\r,\r') \TU(\r') \v\Psi_\si(\r').
+  \int\!\d^3r'\, \TG(\r,\r') 4\pi\TU(\r') \v\Psi_\si(\r').
 \end{equation}
 \vspace*{-5pt}}
 \nomenclature[1ψ034 2s000 0 2r040]{$\psi_\text{s}(\r)$}{Scattered wavefunction}%
@@ -900,7 +900,7 @@ and in all cases
 \end{equation}
 is obtained.
 Following Dietrich and Wagner \cite{DiWa84,DiWa85,DiWa16},
-we write Lippmann-Schwinger equations for a distorted wave
+we write the Lippmann-Schwinger equations for a distorted wave
 \begin{equation}\label{ELS2Psi}
    \Psioa(\r)
    = \int\!\d^3r''\, \left( \delta(\r-\r'') + \TGoa(\r,\r'')4\pi\TL(\r'') \right)
@@ -1030,7 +1030,7 @@ $r^2\d\Omega$ to the incident flux is expressed as a
 % The geometric factors that are needed to
 % convert $\d\sigma/\d\Omega$ into detector counts will be discussed
 % below in \cref{SdetImg}.
-For a plane wave~\cref{EPsi0Plane}, the incident flux is
+For a monochromatic plane incident wave~\cref{EPlaneWave}, the flux is
 \index{Incident radiation!flux|)}%
 \index{Flux!Born approximation}%
 \begin{equation}\label{EJi}
