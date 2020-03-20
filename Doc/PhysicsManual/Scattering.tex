@@ -12,8 +12,7 @@
 %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\def\Do{\overset{o}{D}}
-\def\Go{\overset{o}{G}}
+\def\hu{\v{\hat u}}
 \def\TD{\v{D}}
 \def\Td{\v{\delta}}
 \def\TG{\v{G}}
@@ -319,8 +318,9 @@ to rewrite the Schrödinger equation in analogy to~\cref{ESchrodi2} as
 \vspace*{-5pt}}
 The plane-wave states \cref{EplaneWave} get an additional polarization index~$\alpha$,
 \begin{equation}\label{EPlaneWave}
-  \Psi_{\k\alpha}(\r)\coloneqq\Psi_{\alpha}\e^{i\k\r}.
+  \Psi_{\k\alpha}(\r)\coloneqq\hu_{\alpha}\e^{i\k\r},
 \end{equation}
+with possible polarizations given by the unit vectors $\hu_\alpha$.
 The density matrix becomes
 \begin{equation}\label{ERho}
   \hat\rho
@@ -710,7 +710,7 @@ as discussed later in the context of instrumental resolution effects
 (\cref{SInstr}).
 While discussing scattering theory,
 it is usually represented by a single plane wave
-$\v\Psi_\se(\r)=\e^{i\k_\se\r}$.
+$\v\Psi_\se(\r)=\hu_\se\e^{i\k_\se\r}$.
 \nomenclature[1ψ134 2e000]{$\v\Psi_\se(\r)$}{Exciting wave}%
 This function is defined for all~$\r$,
 but is physical only along the primary beam, upstream of the sample.
