@@ -12,7 +12,7 @@
 %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\def\hu{\v{\hat u}}
+\def\hu{{\v{\hat u}}}
 \def\TD{\v{D}}
 \def\Td{\v{\delta}}
 \def\TG{\v{G}}
@@ -794,7 +794,7 @@ that the distance from the sample to the detector
 is must be much larger than the size of the sample.
 This is just the condition for \E{Fraunhofer diffraction};
 \index{Fraunhofer approximation}%
-In scattering theory,
+in scattering theory,
 it is known as the \E{far-field approximation}.
 \index{Far-field approximation}%
 We choose the coordinate origin
@@ -810,6 +810,33 @@ it is sufficient to solve~\cref{EGREEN} for the far-field Green function
 \end{equation}
 \nomenclature[2g174 2far]{$\TG^\infty(\r,\r')$}{Far-field
    approximation to the Green function $G(\r,\r')$}%
+This solution is\footnote
+{To our knowledge,
+the simple expression \cref{EmyG} has never before been stated.
+Informations about similar results anywhere in the literature would be highly welcome.}
+\Emph{
+\begin{equation}\label{EmyG}
+  \v{G}^\infty(\r,\r') = \phi(r) \sum_\alpha \hu_\alpha\otimes\v\Psi_{\hu_\alpha}^*(\r'),
+\end{equation}
+\vspace*{-5pt}}
+where
+$\alpha=1,2$ is the index of an orthonormal base of polarization vectors~$\hu_\alpha$,
+$\phi$ is an outgoing spherical wave with
+\begin{equation}\label{Effphidef}
+  \phi(r) \coloneqq \frac{\e^{iKr}}{4\pi r},
+\end{equation}
+and $\v{\Psi}_\hu$ is a solution of the unperturbed distorted wave equation
+\begin{equation}
+  \TD(\r)\v{\Psi}_\hu(\r) = 0
+\end{equation}
+with the boundary condition
+\begin{equation}
+  \v{\Psi}_\hu(\r) = \hu\e^{i\k_\sf\r}
+\end{equation}
+for $r\to\infty$ and
+with an outgoing wavevector
+\nomenclature[2f000]{f}{Subscript ``final''}%
+$\k_\sf\coloneqq K \r / r$.
 
 %--------------------------------------------------------------------------------
 \begin{figure}[tb]
@@ -828,61 +855,12 @@ involving refraction and reflection
 at layer interfaces.
 (b) For the far-field
 \index{Far-field approximation!Green function}%
-Green function $G_\infty(\rS,\rD)$,
+Green function $G^\infty(\rS,\rD)$,
 the detector is moved so far away from the sample
 that all trajectories are practically parallel when they leave the sample.}
 \label{Fgreen1}
 \end{figure}
 %--------------------------------------------------------------------------------
-
-In deriving~$\TG^\infty$, it is preferable to work with well-defined
-\E{polarization states}.
-\index{Polarization!state}%
-For either neutron spinors or electric fields,
-the scattered field amplitude in vacuum
-can be written as sum over two orthogonal states~$\alpha$
-\nomenclature[1α010]{$\alpha$}{Polarization state index}%
-with unit amplitudes~$\ue_\alpha$:
-\nomenclature[2u041]{$\ue$}{Polarized field amplitude unit vector}%
-\begin{equation}
-   \v\Psi_\text{s}(\r)
-   = \sum_\alpha\ue_\alpha\psi_\text{s}^\alpha(\r)
-\end{equation}
-with
-\begin{equation}
-  \psi_\text{s}^\alpha(\r)
-  \coloneqq \ue_\alpha^* \v\Psi_\text{s}(\r).
-\end{equation}
-Similarly, we introduce the vectorial Green function with final polarization state~$\alpha$,
-\begin{equation}
-   \v{G}^\alpha(\r,\r')
-   \coloneqq \ue_\alpha^* \TG(\r,\r').
-\end{equation}
-In the far-field limit, it is given by\footnote
-{To our knowledge,
-the simple expression \cref{EmyG} has never before been stated.
-Informations about similar results anywhere in the literature would be highly welcome.}
-\Emph{
-\begin{equation}\label{EmyG}
-  \v{G}^\infty_\alpha(\r,\r') = \phi(r) \v\Psi_\alpha^*(\r'),
-\end{equation}
-\vspace*{-5pt}}
-where $\phi$ is an outgoing spherical wave with
-\begin{equation}\label{Effphidef}
-  \phi(r) \coloneqq \frac{\e^{iKr}}{4\pi r},
-\end{equation}
-and $\v\Psi_\alpha$ is a solution of the unperturbed distorted wave equation
-\begin{equation}
-  \TD(\r)\v\Psi_\alpha(\r) = 0
-\end{equation}
-with the boundary condition
-\begin{equation}
-  \v\Psi_\alpha(\r) = \ue_\alpha\e^{i\k_\sf\r}
-\end{equation}
-for $r\to\infty$ and
-with an outgoing wavevector
-\nomenclature[2f000]{f}{Subscript ``final''}%
-$\k_\sf\coloneqq K \r / r$.
 
 We now outline a proof for~\cref{EmyG}.
 We take for granted that Green functions obye \E{source-detector reciprocity} \cite{Pot04},
@@ -904,13 +882,13 @@ we write the Lippmann-Schwinger equations for a distorted wave
 \begin{equation}\label{ELS2Psi}
    \Psioa(\r)
    = \int\!\d^3r''\, \left( \delta(\r-\r'') + \TGoa(\r,\r'')4\pi\TL(\r'') \right)
-                     \v\Psi_\alpha(\r''),
+                     \v{\Psi}_\hu(\r''),
 \end{equation}
 and for the Green function
 \begin{equation}\label{ELS2G}
    \TGoa(\r,\r')
    = \int\!\d^3r''\, \left( \delta(\r-\r'') + \TGoa(\r,\r'')4\pi\TL(\r'') \right)
-                     \v{G}_\alpha(\r'',\r').
+                     \v{G}_\hu(\r'',\r').
 \end{equation}
 Operate on both sides with~$\TDo(\r)$ to verify that
 \begin{equation}
@@ -918,20 +896,20 @@ Operate on both sides with~$\TDo(\r)$ to verify that
 \end{equation}
 imply
 \begin{equation}
-  \TD(\r)\TG(\r,\r') = \Td(\r-\r') \text{ and } \TD(\r)\v\Psi(r)=0.
+  \TD(\r)\TG(\r,\r') = \Td(\r-\r') \text{ and } \TD(\r)\v{\Psi}(r)=0.
 \end{equation}
 To continue, use the reciprocity of the Green function,
 and take the far-field limit to transform~\cref{ELS2G} into
 \begin{equation}\label{ELS2G2}
    \phi(r')\Psioa^*(\r)
    = \int\!\d^3r''\, \left( \delta(\r-\r'') + \TGoa(\r,\r'')4\pi\TL(\r'') \right)
-                     \v{G}_\alpha^\infty(\r',\r'').
+                     \v{G}_\hu^\infty(\r',\r'').
 \end{equation}
 Take the complex conjugate of~\cref{ELS2Psi},
 multiply with~$\phi(r')$, and compare with \cref{ELS2G2}
 to read off
 \begin{equation}
-   \v{G}_\alpha^\infty(\r',\r'') = \phi(r')\v\Psi_\alpha(\r''),
+   \v{G}_\hu^\infty(\r',\r'') = \phi(r')\v{\Psi}_\hu(\r''),
 \end{equation}
 which is~\cref{EmyG}.
 
