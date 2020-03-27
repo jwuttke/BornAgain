@@ -63,7 +63,7 @@ This provides justification and background
 for Eqns.~1--3 in the BornAgain reference paper~\cite{PoHB20}.
 
 %===============================================================================
-\subsection{Neutrons}\label{SnScalar}
+\subsection{Neutrons in a scalar potential}\label{SnScalar}
 %===============================================================================
 \index{Wave propagation!neutron|(}%
 \index{Neutron!wave propagation|(}%
@@ -80,7 +80,7 @@ in absence of a magnetic field
 is governed by the Schrödinger equation
 \begin{equation}\label{ESchrodi1}
   i\hbar\partial_t \psi(\r,t)
-  = \left\{-\frac{\hbar^2}{2m}\Nabla^2+V(\r)\right\} \psi(\r,t).
+  = \left[-\frac{\hbar^2}{2m}\Nabla^2+V(\r)\right] \psi(\r,t).
 \end{equation}
 Since BornAgain only aims at modelling elastic scattering,
 \index{Scattering!elastic}%
@@ -140,7 +140,7 @@ our 2020 paper \cite{PoHB20}.}
 \end{equation}
 The Schrödinger equation~\cref{ESchrodi1} then takes the simple form
 \begin{equation}\label{ESchrodi2}
-  \left\{\Nabla^2+K^2-v(\r)\right\} \psi(\r) = 0.
+  \left[\Nabla^2+K^2-v(\r)\right] \psi(\r) = 0.
 \end{equation}
 The sum runs over all nuclei exposed to~$\psi$.
 The \E{bound scattering length}~$b_j$
@@ -207,59 +207,6 @@ is just a \E{scattering length density} (SLD)
 \index{SLD|see{Scattering length density}}%
 \cite[eq.\ 2.8.37]{Sea89}.
 
-In general, the incident neutron beam in a scattering experiment
-is not a \E{pure} quantum state,
-\index{Pure quantum state}%
-\index{Quantum state!pure vs mixed}%
-but a statistical mixture of such states,
-\index{Mixed quantum state}%
-and must therefore be described by a density matrix,
-\index{Density matrix}%
-\nomenclature[1ρ020]{$\hat\rho$}{Density matrix operator}%
-\begin{equation}\label{EdefRho}
-  \hat\rho \coloneqq \sum_j p_j \ket{\psi_j}\bra{\psi_j},
-\end{equation}
-where $p_j$ is the probability of pure state~$\psi_j$.
-\nomenclature[2p022 2j000]{$p_j$}{Probability of state~$j$}%
-With the wave vector operator $\v{\hat k}$
-\nomenclature[2k040]{$\k$}{Wave vector}%
-and the flux operator
-\begin{equation}\label{EdefJop}
-  \v{\hat J} \coloneqq  \ket{\r}\bra{\r}\v{\hat k} + \v{\hat k}^\dagger\ket{\r}\bra{\r},
-\end{equation}
-the current density, or \E{flux},
-\index{Flux!neutron}%
-\index{Current density|see{Flux}}%
-is given by
-\begin{equation}\label{EdefJ}
-  \v{J}(\r)
-  \coloneqq \Tr\{\hat\rho \hat{\v{J}}\}
-  \propto \sum_j p_j\left\{ \psi_j(\r)^*\frac{\Nabla}{2i}\psi_j(\r)
-                        - \psi_j(\r)\frac{\Nabla}{2i}\psi_j(\r)^*\right\}.
-\end{equation}
-\nomenclature[2j150 2r040]{$\v{J}(\r)$}{Flux}%
-This is in arbitrary units,
-\index{Unit!neutron wavefunction}%
-since we do not impose a specific normalization
-\index{Normalization!neutron wavefunction}%
-on the unbound wavefunction~$\psi$.
-To compute scattering cross sections,
-\index{Cross section}%
-\index{Scattering!cross section}%
-we will only need the \E{ratio} of scattered to incident flux.
-
-In vacuum, far away from the sample, the pure states are plane waves
-\index{Plane wave}%
-\index{Wave!plane}%
-\begin{equation}\label{EplaneWave}
-  \psi_\k(\r)\coloneqq\e^{i\k\r}.
-\end{equation}
-The sum in~\cref{EdefRho} becomes an integral over the real wavevector~$\k$,
-and the flux is
-\begin{equation}
-  \v{J} = \int\!\d^3k\; p_\k\, \k.
-\end{equation}
-
 %===============================================================================
 \subsection{Neutrons in a magnetic field}\label{SnSpinor}
 %===============================================================================
@@ -288,8 +235,8 @@ With the coupling term, the Schrödinger equation~\cref{ESchrodi1}
 \index{Schrodinger@Schrödinger equation!macroscopic}%
 becomes
 \begin{equation}\label{EHSchrodi}
-  \left\{-\frac{\hbar^2}{2m}\Nabla^2+V(\r)
-         +\mu\v{B}(\r)\PauliVec-\hbar\omega\right\}
+  \left[-\frac{\hbar^2}{2m}\Nabla^2+V(\r)
+         +\mu\v{B}(\r)\PauliVec-\hbar\omega\right]
       \v\Psi(\r) = 0,
 \end{equation}
 \nomenclature[1ψ150 2r040]{$\v\Psi(\r)$}{Stationary coherent spinor wavefunction}%
@@ -312,23 +259,7 @@ We introduce the reduced field
 to rewrite the Schrödinger equation in analogy to~\cref{ESchrodi2} as
 \index{Schrodinger@Schrödinger equation!macroscopic}%
 \begin{equation}\label{ESchrodi2H}
-  \left\{\Nabla^2+K^2-v(\r)-\v{b}(\r)\PauliVec\right\} \v\Psi(\r) = 0.
-\end{equation}
-The plane-wave states \cref{EplaneWave} get an additional polarization index~$\alpha$,
-\begin{equation}\label{EPlaneWave}
-  \Psi_{\k\alpha}(\r)\coloneqq\hu_{\alpha}\e^{i\k\r},
-\end{equation}
-with possible polarizations given by the unit vectors $\hu_\alpha$.
-The density matrix becomes
-\begin{equation}\label{ERho}
-  \hat\rho
-  \coloneqq \sum_\alpha \int\!\d^3k\; p_{\k\alpha}\ket{\v\Psi_{\k\alpha}}\bra{\v\Psi_{\k\alpha}}.
-\end{equation}
-In particular, a suitable density matrix is used to describe
-the polarization of the incoming beam.
-The total flux is
-\begin{equation}\label{EFlux}
-  \v{J} = \sum_\alpha \int\!\d^3k\; p_{\k\alpha}\, \k.
+  \left[\Nabla^2+K^2-v(\r)-\v{b}(\r)\PauliVec\right] \v\Psi(\r) = 0.
 \end{equation}
 \index{Neutron!spin|)}%
 \index{Spin|)}%
@@ -448,42 +379,8 @@ Maxwell's equations yield the wave equation
 \index{X-ray!wave equation}%
 Using a standard identity from vector analysis, it can be brought into the more tractable form
 \begin{equation}\label{ENabNabE}
-  \left\{\Nabla^2-\Nabla\cdot\Nabla+ K^2\eps(\r)\right\}\v{E}(\r)=0.
+  \left[\Nabla^2-\Nabla\cdot\Nabla+ K^2\eps(\r)\right]\v{E}(\r)=0.
 \end{equation}
-
-It is well known that the electromagnetic energy flux is given by the Poynting vector.
-\index{Poynting vector}%
-\index{X-ray!flux}%
-\index{Flux!X-rays}%
-However, its standard definition, $\v{S}\coloneqq\v{E}\times\v{H}$,
-is not applicable here because it only holds for \E{real} fields.
-With our complex notation, it must be replaced by
-\begin{equation}
-  \v{S}\coloneqq \Re\v E(\r,t)\times\Re\v H(\r,t).
-\end{equation}
-\nomenclature[2s150]{$\v S$}{Poyinting vector}%
-For stationary oscillations~\cref{EstationaryX},
-the time average is
-\begin{equation}
-  \braket{\v S} = \frac{1}{4}\braket{\v E(\r) \times \v H(\r)^* + \text{c.~c.}}.
-\end{equation}
-\nomenclature[2c000 2c000]{$\text{c.~c.}$}{Complex conjugate}%
-We specialize to vacuum with $\v\mu(\r)=1$ and $\v\eps(\r)=1$,
-and obtain
-\begin{equation}
-  \braket{\v S}
-  = \frac{1}{4i\omega\mu_0}
-    \left( \v E^*(\r)\times\left(\Nabla\times\v{E}(\r)\right) + \text{c.~c.} \right).
-\end{equation}
-For a plane wave $\v E(\r)=\v E_\k \e^{i\k\r}$, we find
-\begin{equation}
-  \braket{\v S}
-  = \frac{1}{2\omega\mu_0} |\v E_\k|^2 \Re \k,
-\end{equation}
-which confirms the common knowledge that the radiation intensity
-counted in a detector is proportional to the squared electric field amplitude.
-At constant frequency, it is proportional to the flux \cref{EFlux}
-from particle-wave theory.
 
 \index{Wave propagation!X-ray|)}%
 \index{X-ray!wave propagation|)}%
@@ -495,7 +392,7 @@ from particle-wave theory.
 We combine all the above in a unified wave equation
 \index{Wave equation!generic}%
 \begin{equation}\label{EWAVE}
-  \left\{ \TDo(\r) - \TV(\r) \right\} \v\Psi(\r) = 0
+  \left[ \TDo - \TV(\r) \right] \v\Psi(\r) = 0
 \end{equation}
 with the vacuum wave operator
 \index{Vacuum!wave operator}%
@@ -522,7 +419,75 @@ The generic wave amplitude $\v{\Psi}$
   possibly vectorial or spinorial}%
 shall represent
 the scalar neutron wavefunction~$\psi$,
-the spinor $\v{\Psi}$, or the electric field~$\v{E}$, as applicable.
+the spinor $\v{\Psi}$, or the electric vector field~$\v{E}$, as applicable.
+
+%===============================================================================
+\subsection{Density operator, flux}\label{SdensityMatrix}
+%===============================================================================
+
+An eigenfunction of the vacuum wave operator~$\TDo$ is a plane wave
+with real wavevector~$\k$.
+\nomenclature[2k040]{$\k$}{Wavevector}%
+In the spinor or vector case, its polarization shall be expressed
+in an orthonormal base $\{\v{u}_\alpha\}$
+with $\alpha=1,2$
+(for spin 1/2 or for traverse electric field in vacuum).
+The corresponding eigenstate can be written as ket $\ket{\k\alpha}$,
+the real-space coordinate representation as
+\begin{equation}
+   \v\Psi_{\k\alpha}(\r)
+   \equiv \braket{\r|\k\alpha}
+   = {(2\pi)}^{-3/2} \v{u}_\alpha \e^{i\k\r}.
+\end{equation}
+The incident neutron beam in an actual scattering experiment
+is not such a \E{pure} state,
+\index{Pure quantum state}%
+\index{Quantum state!pure vs mixed}%
+but a statistical mixture of states,
+\index{Mixed quantum state}%
+and must therefore be described by the density operator
+\index{Density operator}%
+\nomenclature[1ρ020]{$\hat\rho$}{Density operator}%
+\begin{equation}\label{EdefRho}
+  \v\rho \coloneqq \sum_{\k\alpha} p_{\k\alpha} \ket{\k\alpha}\bra{\k\alpha},
+\end{equation}
+where $p_{\k\alpha}$ quantifies the contribution of pure state~$\ket{\k\alpha}$.
+\nomenclature[2p022 2j000]{$p_{\k\alpha}$}{Weight of state~$ket{\k\alpha}$ in the density operator}%
+
+In quantum mechanics, the current density, or flux, is measured by the operator
+\begin{equation}\label{EdefJop}
+  \v{J}
+  \coloneqq \frac{1}{2}\big[\ket{\r}\bra{\r}\k
+                              + \k\ket{\r}\bra{\r} \big].
+\end{equation}
+\index{Flux!neutron}%
+\index{Current density|see{Flux}}%
+With \cref{EdefRho}, we obtain
+\begin{equation}\label{EJ}
+  \v{J}(\r)
+  \coloneqq \Tr(\v\rho\v{J})
+  = \sum_{\k\alpha} p_{\k\alpha}\, \text{Re}(\k)\, {\left|{\v\Psi_{\k\alpha}}\right|}^2.
+\end{equation}
+\nomenclature[2j150 2r040]{$\v{J}(\r)$}{Flux}%
+In the electromagnetic case, the energy flux is given by the Poynting vector,
+\index{Poynting vector}%
+\index{X-ray!flux}%
+\index{Flux!X-rays}%
+which for complex fields takes the form
+\begin{equation}
+  \v{S}\coloneqq \Re(\v E(\r,t))\times\Re(\v H(\r,t)).
+\end{equation}
+\nomenclature[2s150]{$\v S$}{Poyinting vector}%
+For a stationary plane wave $\v E(\r)=\v E_\k \e^{i\k\r}$ in vacuum,
+we find
+\begin{equation}
+  S = \frac{1}{2\omega\mu_0} |\v E_\k|^2 \Re \k,
+\end{equation}
+which confirms the common knowledge that the radiation intensity
+counted in a detector is proportional to the squared electric field amplitude.
+At constant frequency, the prefactor is ignorable
+so that we can use the quantum-mechanical flux~\cref{EJ} also for x-rays.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Distorted-wave Born approximation}\label{SDWBA}
