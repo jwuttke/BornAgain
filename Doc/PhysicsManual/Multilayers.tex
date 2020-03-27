@@ -226,13 +226,11 @@ The resulting sum
 \end{equation}
 is depicted in \Cref{Fdwba4terms}.
 It can be written in an obvious shorthand notation
-\Emph{%
 \begin{equation}\label{Edwba}
   \braket{\psi_\si|\delta v|\psi_\sf}
   = \sum_{\pm_\si} \sum_{\pm_\sf}
     \bra{\psi^\pm_\si|\delta v|\psi^\pm_\sf}.
 \end{equation}%
-\vspace*{-5pt}}
 This equation contains the essence of
 the DWBA for GISAS,
 and is the base for all scattering models implemented in \BornAgain.
@@ -273,13 +271,11 @@ with the requirement
    \psi_l^\pm(\r) = 0 \text{~for $\r$ outside layer~$l$.}
 \end{equation}
 The DWBA matrix element~\cref{Edwba} then takes the form
-\Emph{%
 \begin{equation}\label{Edwbal}
   \braket{\psi_\si|\delta v|\psi_\sf}
   = \sum_l \sum_{\pm_\si} \sum_{\pm_\sf}
     \braket{\psi^\pm_{\si l}|\delta v|\psi^\pm_{\sf l}}.
-\end{equation}%
-\vspace*{-5pt}}
+\end{equation}
 
 %--------------------------------------------------------------------------------
 \begin{figure}[tb]
@@ -317,13 +313,11 @@ The scattering matrix element~\cref{EtramaE}
 becomes a four-term some over field components $\v{E}^{\pm}_{\text i,f}$.
 In full analogy with~\cref{Edwbal},
 the sum over layers is
-\Emph{%
 \begin{equation}\label{EdwbalE}
   \braket{\v{E}_\si|\delta v|\v{E}_\sf}
   = \sum_l \sum_{\pm_\si} \sum_{\pm_\sf}
     \braket{\v{E}^\pm_{\si l}|\delta v|\v{E}^\pm_{\sf l}}.
-\end{equation}%
-\vspace*{-5pt}}
+\end{equation}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Homogeneous layers}\label{SLayHomo}
@@ -421,12 +415,10 @@ and define the corresponding wavenumbers and amplitude factors and as
   \end{array}
 \end{equation}
 Accordingly, we can write \cref{Edwba_ml0} as
-\Emph{
 \begin{equation}\label{Edwba_ml}
   \braket{\psi_\si|\delta v|\psi_\sf}
   = \sum_l \sum_{u} C^u_l \delta v_l(\q_l^u).
 \end{equation}
-\vspace*{-5pt}}
 Since $\k_\plll=\text{const}$,
  all wavevectors $\q^u_l$ have the same horizontal component~$\q_\plll$;
 they differ only in their vertical component~$q^u_{l\perp}$.

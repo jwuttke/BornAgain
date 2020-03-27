@@ -128,14 +128,12 @@ and inserting the so obtained $\alpha_\sf(y,z)$ and $\phi_\sf(y)$ in
 \end{equation}
 or much more directly by using geometric similarity in Cartesian coordinates.
 The result is rather simple:
-\Emph{
 \begin{equation}\label{Ekf_by_pixel}
   \k_\sf=\frac{K}{\sqrt{L^2+y^2+z^2}}\left(\begin{array}{c}
    L\\
    y\\
    z\end{array}\right).
 \end{equation}
-\vspace*{-5pt}}
 
 
 %-------------------------------------------------------------------------------
@@ -250,10 +248,10 @@ through the following steps:
   and not on our agenda.
   We would, however, like to hear about use cases.}
 
-\Emph{\indent When simulating and fitting experimental data with \BornAgain,
+\indent When simulating and fitting experimental data with \BornAgain,
 detector images remain unchanged.
 All work is done in terms of reduced pixel coordinates $y/L$ and~$z/L$.
-Corrections are applied to the simulated, not to the measured data.}
+Corrections are applied to the simulated, not to the measured data.
 
 \Work{\indent \ldots show how to plot $q$ grid on top of detector image \ldots}
 
@@ -281,12 +279,10 @@ the expected count rate in detector pixel $(i,j)$ is proportional to
 \end{equation}
 where we have omitted constant factors $L^{-2}$, $\Delta y$ and $\Delta z$.
 Using pixel coordinates instead of angles, this can be rewritten as
-\Emph{%
 \begin{equation}\label{EItrafo_pix}
   I_{ij} = \left( 1+\frac{y^2+z^2}{L^2}\right)^{-3/2}
           \frac{\d\sigma}{\d\Omega}\bigl(\q_{ij}(y,z)\bigr).
 \end{equation}
-\vspace*{-2pt}}
 %(usually as the centre between the transmitted
 %and the specularly reflected beam spot).
 

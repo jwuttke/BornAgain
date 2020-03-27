@@ -113,13 +113,11 @@ the scattering matrix element~\cref{Escamatrix2} becomes
   = \sum_j \e^{i\q_\plll \R_{j\plll}}  \FD_{\si\sf}(\q_\plll,\v{T}_j).
 \end{equation}
 The elastic scattering cross section~\cref{Exsection} can be written as
-\Emph{
 \begin{equation}\label{Exsection2}
   \xElas
   = \sum_{jk} \e^{i\q_\plll(\R_{j\plll}-\R_{k\plll})}
          \FD_{\si\sf}(\q_\plll,\v{T}_j) \FD_{\si\sf}^*(\q_\plll,\v{T}_k).
 \end{equation}
-\vspace*{-5pt}}
 
 In the following \Cref{SFormFactor} we discuss the form factor~$\FD_{\si\sf}$.
 The remainder of this chapter is devoted to the
@@ -305,17 +303,15 @@ In consequence, the distribution $\PD$ must have the form
 \end{equation}
 with the conditional position correlation function~$\GD$.
 Inserting this in \cref{Epdm1} we obtain
-\Emph
 {\begin{equation}\label{EIdIc}
   \frac{1}{N_p}\xElas
   = I_\text{d}+I_\text{c}
-\end{equation}\vskip -5pt}
+\end{equation}
 with the \E{diffuse} and \E{coherent} scattering intensities
 \index{Diffuse scattering}%
 \index{Scattering!diffuse}%
 \index{Coherent scattering}%
 \index{Scattering!coherent}%
-\Emph
 {\begin{eqnarray}
   I_\text{d}\label{EIddef}
   &\coloneqq& \braket{\left|\FD\right|^2}-\left|\braket{\FD}\right|^2,
@@ -325,7 +321,7 @@ with the \E{diffuse} and \E{coherent} scattering intensities
   \int\!\d^2r\,   \e^{i\q_{\plll}\r}\!
   \int\! \d\v{\tau}\, \d\v{\tau}'
   \GD(\r|\v\tau,\v\tau')p(\v\tau)p(\v\tau') \FD(\v\tau) \FD^*(\v\tau').
-\end{eqnarray}\vskip -5pt}
+\end{eqnarray}
 The diffuse intensity can be rewritten as
 \begin{equation}\label{EIdDiff}
   I_\text{d}
@@ -360,10 +356,9 @@ the atomic \E{static structure factor}
 (in crystallography also called \E{lattice factor}).
 \index{Lattice factor}%
 The coherent scattering intensity then takes the simple form
-\Emph
 {\begin{equation}\label{EIcFac}
   I_\text{c} = \SD(\q) \left|\braket{\FD}\right|^2.
-\end{equation}\vskip -5pt}
+\end{equation}
 Together, the T-T and R-T decoupling
 make up the \E{decoupling approximation}
 \index{IsGISAXS@\IsGISAXS!decoupling approximation}
@@ -485,18 +480,14 @@ The interference function can then be written as:
 
 In addition, a pseudo-Voigt decay function is available,
 which is a convex combination of the Cauchy and Gauss decay functions.
-\Emph{
 The decay functions are all normalized such that $\int\!\d q_x H(q_x)=2\pi$,
 which is equivalent to $h(0)=1$.
-}
-\Emph{
 If the one-dimensional lattice is rotated with respect to the x-axis by an angle $\xi$,
 the corresponding interference function is calculated
 by using the correct projection of the in-plane reciprocal vector instead of $q_x$:
 \begin{equation}
   q_\xi = q_x \cos\xi + q_y \sin\xi.
 \end{equation}
-}
 
 %===============================================================================
 \subsection{Two-dimensional lattice} \label{sec:sect:2dlattice}
@@ -550,10 +541,8 @@ with $Q \coloneqq \sqrt{q_X^2\lambda_X^2 + q_Y^2\lambda_Y^2}$.
 
 In addition, a pseudo-Voigt decay function is available,
 which is a convex combination of the Cauchy and Gauss decay functions.
-\Emph{
 The decay functions are all normalized such that $\int\!\d^2q_\plll H(\q)= 4\pi^2$,
 which is equivalent to $h(0)=1$.
-}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Paracrystals}\label{SPara}
@@ -609,11 +598,9 @@ interference function:
 \end{equation}
 with $N_p$ the number of particles making up the finite lattice.
 
-\Emph{
 Before embarking on the paracrystal models, implemented in \BornAgain, it has to be stressed that there is no such thing as a
 paracrystal in more than one dimension. The following models are consequently only to be seen as ad hoc approximations of lattices with
 cumulative disorder.
-}
 
 %===============================================================================
 \subsection{The radial paracrystal} \label{SParaR}
