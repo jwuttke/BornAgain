@@ -60,7 +60,7 @@ of neutrons (\cref{SnScalar,SnSpinor}) and X-rays (\cref{SXwave}) in matter,
 and combine them into a unified wave equation (\cref{SuniWave})
 that is the base for the all following analysis.
 This provides justification and background
-for Eqns.~1--3 in the BornAgain reference paper~\cite{PoVB20}.
+for Eqns.~1--3 in the BornAgain reference paper~\cite{PoHB20}.
 
 %===============================================================================
 \subsection{Neutrons}\label{SnScalar}
@@ -126,22 +126,24 @@ given by the dispersion relation
 \begin{equation}
   \hbar\omega = \frac{(\hbar K)^2}{2m}.
 \end{equation}
-The Schrödinger equation~\cref{ESchrodi1} then takes the simple form
-\Emph{
-\begin{equation}\label{ESchrodi2}
-  \left\{\Nabla^2+K^2-4\pi v(\r)\right\} \psi(\r) = 0
-\end{equation}
-\vspace*{-5pt}}
-with the rescaled form of Fermi's pseudopotential
+We shall use Fermi's pseudopotential in the rescaled form\footnote
+{From here on, our notation differs by a factor of $4\pi$ from that in
+our 2020 paper \cite{PoHB20}.}
 \index{Fermi's pseudopotential}%
 \index{Pseudopotential!Fermi's}%
 \index{Potential!neutron}%
 \index{Neutron!potential}%
 \begin{equation}\label{Evrraw}
   v(\r)
-  \coloneqq \frac{m}{2\pi\hbar^2} V(\r)
-  = \sum_j\left\langle b_j \delta\left(\r-\r_j(t)\right)\right\rangle.
+  \coloneqq \frac{2m}{\hbar^2} V(\r)
+  = 4\pi\sum_j\left\langle b_j \delta\left(\r-\r_j(t)\right)\right\rangle.
 \end{equation}
+The Schrödinger equation~\cref{ESchrodi1} then takes the simple form
+\Emph{
+\begin{equation}\label{ESchrodi2}
+  \left\{\Nabla^2+K^2-v(\r)\right\} \psi(\r) = 0.
+\end{equation}
+\vspace*{-5pt}}
 The sum runs over all nuclei exposed to~$\psi$.
 The \E{bound scattering length}~$b_j$
 \index{Scattering length}%
@@ -304,7 +306,7 @@ and $\PauliVec$ is the Pauli vector, composed of the three Pauli matrices.
 \index{Pauli matrix}%
 We introduce the reduced field
 \begin{equation}
-  \v{b} \coloneqq \frac{m\mu_0\mu_\text{n}}{2\pi\hbar^2}\v{B},
+  \v{b} \coloneqq \frac{2m\mu_0\mu_\text{n}}{\hbar^2}\v{B},
 \end{equation}
 \nomenclature[2h050 2r040]{$\v{b}(\r)$}{Rescaled
    field $\v{b}=(m\mu/2\pi\hbar^2)\v{B}$}%
@@ -313,7 +315,7 @@ to rewrite the Schrödinger equation in analogy to~\cref{ESchrodi2} as
 \index{Schrodinger@Schrödinger equation!macroscopic}%
 \Emph{
 \begin{equation}\label{ESchrodi2H}
-  \left\{\Nabla^2+K^2-4\pi v(\r)-4\pi\v{b}(\r)\PauliVec\right\} \v\Psi(\r) = 0.
+  \left\{\Nabla^2+K^2-v(\r)-\v{b}(\r)\PauliVec\right\} \v\Psi(\r) = 0.
 \end{equation}
 \vspace*{-5pt}}
 The plane-wave states \cref{EplaneWave} get an additional polarization index~$\alpha$,
@@ -496,12 +498,11 @@ from particle-wave theory.
 \subsection{Unified wave equation}\label{SuniWave}
 %===============================================================================
 
-As in Eqns.~1--3 of Ref.~\cite{PoVB20},
-we combine all the above in a unified wave equation
+We combine all the above in a unified wave equation
 \index{Wave equation!generic}%
 \Emph{
 \begin{equation}\label{EWAVE}
-  \left( \TDo(\r) - 4\pi\TV(\r) \right) \v\Psi(\r) = 0
+  \left\{ \TDo(\r) - \TV(\r) \right\} \v\Psi(\r) = 0
 \end{equation}
 \vspace*{-5pt}}
 with the vacuum wave operator
@@ -519,9 +520,9 @@ and the potential
 \nomenclature[2v170 2r040]{$\TV(\r)$}{Generic potential}%
 \begin{equation}\label{ETV}
   \TV(\r) \coloneqq \left\{ \begin{array}{ll}
-      v(\r)                         &\text{~~~for neutrons (scalar),}\\
-      v(\r)+\v{b}(\r)\PauliVec       &\text{~~~for neutrons (spinorial),}\\
-      K^2(\epsilon(\r)-1)/(4\pi) &\text{~~~for X-rays.}
+      v(\r)                       &\text{~~~for neutrons (scalar),}\\
+      v(\r)+\v{b}(\r)\PauliVec    &\text{~~~for neutrons (spinorial),}\\
+      K^2(\epsilon(\r)-1)         &\text{~~~for X-rays.}
   \end{array}\right.
 \end{equation}
 The generic wave amplitude $\v{\Psi}$
@@ -602,7 +603,7 @@ the following basic idea of DWBA:
 The wave equation~\cref{EWAVE} shall henceforth be written as
 \Emph{
 \begin{equation}\label{EDPsi}
-  \TD(\r)\v\Psi(\r) = 4\pi\v{U}(\r)\Psi(\r)
+  \TD(\r)\v\Psi(\r) = \v{U}(\r)\Psi(\r)
 \end{equation}
 \vspace*{-5pt}}
 with the \E{distorted wave operator}
@@ -610,7 +611,7 @@ with the \E{distorted wave operator}
 \index{Wave!operator!distorted}%
 \nomenclature[2d138 2r040]{$\TD(\r)$}{Differential operator in the wave equation}%
 \begin{equation}
-  \TD(\r) \coloneqq \TDo - 4\pi\TL(\r).
+  \TD(\r) \coloneqq \TDo - \TL(\r).
 \end{equation}
 Only $\v{U}$ shall be treated as a perturbation.
 The propagation of incident and scattered waves under the influence of~$\TL$,
@@ -731,7 +732,7 @@ by the \E{Lippmann-Schwinger equation}
 \begin{equation}\label{EPsiLS}
   \v\Psi(\r)
   = \v\Psi_\si(\r)
-  + \int\!\d^3r'\, \TG(\r,\r') 4\pi\TU(\r')\v\Psi(\r').
+  + \int\!\d^3r'\, \TG(\r,\r') \TU(\r')\v\Psi(\r').
 \end{equation}
 It involves the Green function~$\TG$,
 \index{Green function}%
@@ -760,7 +761,7 @@ only the linear order in $\TU$ is retained,
 \begin{equation}\label{EBorn}
   \v\Psi(\r)
   = \v\Psi_\si(\r)
-  + \int\!\d^3r'\, \TG(\r,\r') 4\pi\TU(\r')\v\Psi_\si(\r').
+  + \int\!\d^3r'\, \TG(\r,\r') \TU(\r')\v\Psi_\si(\r').
 \end{equation}
 This is the base for material investigations with X-rays or neutrons,
 where sample structures that modulate the perturbation potential $\TU$
@@ -774,7 +775,7 @@ only see the scattered wave
 \begin{equation}\label{EBornS}
   \v\Psi_\text{s}(\r)
   \coloneqq
-  \int\!\d^3r'\, \TG(\r,\r') 4\pi\TU(\r') \v\Psi_\si(\r').
+  \int\!\d^3r'\, \TG(\r,\r') \TU(\r') \v\Psi_\si(\r').
 \end{equation}
 \vspace*{-5pt}}
 \nomenclature[1ψ034 2s000 0 2r040]{$\psi_\text{s}(\r)$}{Scattered wavefunction}%
@@ -881,13 +882,13 @@ Following Dietrich and Wagner \cite{DiWa84,DiWa85,DiWa16},
 we write the Lippmann-Schwinger equations for a distorted wave
 \begin{equation}\label{ELS2Psi}
    \Psioa(\r)
-   = \int\!\d^3r''\, \left( \delta(\r-\r'') + \TGoa(\r,\r'')4\pi\TL(\r'') \right)
+   = \int\!\d^3r''\, \left( \delta(\r-\r'') + \TGoa(\r,\r'')\TL(\r'') \right)
                      \v{\Psi}_\hu(\r''),
 \end{equation}
 and for the Green function
 \begin{equation}\label{ELS2G}
    \TGoa(\r,\r')
-   = \int\!\d^3r''\, \left( \delta(\r-\r'') + \TGoa(\r,\r'')4\pi\TL(\r'') \right)
+   = \int\!\d^3r''\, \left( \delta(\r-\r'') + \TGoa(\r,\r'')\TL(\r'') \right)
                      \v{G}_\hu(\r'',\r').
 \end{equation}
 Operate on both sides with~$\TDo(\r)$ to verify that
@@ -902,7 +903,7 @@ To continue, use the reciprocity of the Green function,
 and take the far-field limit to transform~\cref{ELS2G} into
 \begin{equation}\label{ELS2G2}
    \phi(r')\Psioa^*(\r)
-   = \int\!\d^3r''\, \left( \delta(\r-\r'') + \TGoa(\r,\r'')4\pi\TL(\r'') \right)
+   = \int\!\d^3r''\, \left( \delta(\r-\r'') + \TGoa(\r,\r'')\TL(\r'') \right)
                      \v{G}_\hu^\infty(\r',\r'').
 \end{equation}
 Take the complex conjugate of~\cref{ELS2Psi},
@@ -1197,58 +1198,6 @@ in $y$ or $z$ direction.\footnote
 \section{OLD STUFF}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-NOMENCLATURE STUFF
-\nomenclature[1ε031 2r040]{$\overline\eps(\r)$}{Part of the permittivity~$\eps(\r)$ that can be analytically handled}%
-\nomenclature[1δ030
-  1ε030 2r040]{$\delta\eps(\r)$}{Part of the permittivity~$\eps(\r)$ that causes scattering}%
-
-The SLD fluctuations can typically written as a sum over different materials~$p$,
-\begin{equation}
-  \delta v(\r) = \sum_p (v_p-\mv(\r)) \chi_p(\r),
-\end{equation}
-where $v_p$ is the SLD of the bulk material~$p$,
-and $\chi_p$ is dimensionless function that takes values between 0 and~1.
-Internally, BornAgain computes $v_p$ from the material's refractive index,
-\begin{equation}
-  v_p = \frac{K^2}{4\pi}(1-n_p).
-\end{equation}
-
-Absolute values of~$U(\r)$ are always much smaller than~1.
-This enables us to solve \cref{EDPsi} by a first-order perturbation theory,
-\index{Perturbation expansion}%
-the \E{distorted-wave Born approximation} (DWBA).
-\index{Distorted-wave Born approximation}%
-The DWBA generalizes the standard \E{Born approximation},
-\index{Born approximation}%
-which corresponds to the special case~$\v\Lambda(\r)=0$.
-
-To describe an elastic scattering experiment,
-we need to solve the Schrödinger equation~\cref{ESchrodiK}
-under the asymptotic boundary condition\footnote
-{A more formal variant of this is known as the \E{Sommerfeld radiation condition}.%
-\index{Sommerfeld radiation condition}%
-\index{Radiation condition}%
-}
-\index{Boundary conditions!elastic scattering}%
-\begin{equation}%\label{Escabouco}
-  \psi(\r)
-  \simeq \psi_\si(\r) + f(\vartheta,\varphi)\frac{\e^{iKr}}{4\pi r}
-  \text{~for~}r\to\infty,
-\end{equation}
-
-The Green function of the inhomogeneous Helmholtz equation~\cref{EGreenK}
-with $k(\r)=K$ is well known:\footnote
-{Verification under the condition $\r\ne0$
-is a straightforward exercise in vector analysis.
-For the special case $\r=0$,
-one encloses the origin in a small sphere
-and integrates by means of the Gauss-Ostrogadsky divergence theorem.
-This explains the appearance of the factor $4\pi$.}
-\index{Green function!homogeneous material}%
-\begin{equation}%\label{EGreens1}
-  G(\r,\r') = \frac{\e^{iK|\r-\r'|}}{4\pi |\r-\r'|}.
-\end{equation}
-
 %===============================================================================
 \subsection{Vacuum solution}%\label{Sfarfield}
 %===============================================================================
@@ -1338,82 +1287,3 @@ small-angle neutron scattering basically measures
 the Fourier transform $v(\q)$ of the SLD.
 \index{Scattering!potential!Fourier transform}%
 \index{Fourier transform!scattering potential}%
-
-%===============================================================================
-\subsection{X-ray scattering cross section}%\label{SXscasol}
-%===============================================================================
-
-\def\Ei{\v{E}_\si}
-\def\Eic{\Ei^*}
-\def\Ef{\v{E}_\sf}
-\def\Efc{\Ef^*}
-\def\Eo{\v{E}_0}%\overset{o}{\v{E}}}}
-\def\Efo{\v{E}_{0\sf}}%\Eo_\sf}
-\def\Efoc{\v{E}^*_{0\sf}}%\Eo\vphantom{E}^*_\sf}
-%\def\EA{{\v{\cal E}}}
-\def\he{\v{\hat e}}
-\def\hef{\he_\sf}
-\def\hei{\he_\si}
-\def\sif{\text{i,f}}
-
-The differential cross section
-is defined as in \cref{Exsectiondef},
-namely as the ratio of scattered flux through the unit sphere to incident flux.
-\index{Born approximation!elastic scattering cross section}%
-\index{Cross section!Born approximation}%
-\index{Scattering!cross section}%
-For electromagnetic waves in vacuum, the flux is proportional to~$|\v{E}|^2$.
-So the X-ray scattering cross section for given incoming and detected polarization is
-\begin{equation}%\label{ExsectionXlong}
-  \xElas
-  =  \frac{ {\left|\braket{\Ei|\delta v|\Ef}\right|}^2 }{|\v{e}_\si|^2\,|\v{e}_\sf|^2}
-\end{equation}
-with the scattering matrix element
-\index{Scattering!matrix}%
-\Emph{
-\begin{equation}%\label{EtramaE}
-  \braket{\Ei|\delta v|\Ef}
-  \coloneqq  \int\!\d^3r\, \Eic(\r)\delta v(\r)\Ef(\r).
-\end{equation}\vspace*{-5pt}}
-For lighter notation,
-it is convenient to choose the vacuum plane waves \cref{EEoi,EEof} from the onset
-with normalized polarization vectors,
-\begin{equation}%\label{EbcE}
-  \v{E}_{0\si}(r) = \hei\, \e^{i\k_\si\r}, \text{~and~}
-  \v{E}_{0\sf}(r) = \hef\, \e^{i\k_\sf\r},
-\end{equation}
-so that~\cref{ExsectionXlong}
-takes the simple form
-\begin{equation}%\label{ExsectionX}
-  \xElas
-  =  {\left|\braket{\Ei|\delta v|\Ef}\right|}^2
-\end{equation}
-in full analogy with~\cref{Exsection}.
-Typically, scattered radiation is detected without polarization analysis.
-\index{Polarization!analysis}%
-\index{Scattered radiation!detection}%
-\index{Scattered radiation!polarization}%
-\index{Detector!polarization}%
-Then the measured cross section is an incoherent sum
-\index{Incoherent sum!polarization}%
-\index{Polarization!incoherent sum}%
-\index{Born approximation!elastic scattering cross section}%
-\index{Cross section!Born approximation}%
-\index{Scattering!cross section}%
-\Emph{
-\begin{equation}%\label{ExsectionXsum}
-  \xElas
-  =  \sum_{\hef} {\left|\braket{\Ei|\delta v|\Ef}\right|}^2.
-\end{equation}\vspace*{-5pt}}
-In this equation,
-the dependence of $\Ef$ on $\hef$ is implicit,
-mediated through the boundary condition
-that $\Ef(\r)$ must match $\v{E}_{0\sf}(\r)$ at the detector.
-If the incident radiation is not fully polarized,
-\index{Polarization!incident}%
-an additional summation is performed over~$\hei$,
-weighted with relative intensities.
-
-\index{X-ray!scattering theory|)}%
-
-\index{Small-angle scattering}%
