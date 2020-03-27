@@ -25,7 +25,7 @@
 %\documentclass[a4paper,11pt,fleqn,draft]{report}\usepackage[final]{graphicx}
 %\documentclass[a4paper,11pt,fleqn,draft]{report}\usepackage[draft]{graphicx}
 
-\def\authors{Gennady Pospelov, Walter Van Herck, Joachim Wuttke}
+\def\authors{Marina Ganeva, Gennady Pospelov, Walter Van Herck, Joachim Wuttke}
 \def\version{1.16}
 \def\dateLong{\today}
 \def\dateShort{\ifnum\number\day<10 0\fi \number\day%
@@ -53,8 +53,8 @@
 %\include{PolarizedScattering}
 \include{Instrument}
 
-%\appendix %\addtocontents{toc}{\protect\setcounter{tocdepth}{1}}
-%\include{..}
+\appendix %\addtocontents{toc}{\protect\setcounter{tocdepth}{1}}
+\include{RefractiveIndex}
 
 \otherchapter{Bibliography}{X}
 \bibliographystyle{switch}

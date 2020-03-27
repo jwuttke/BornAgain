@@ -1,0 +1,106 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%%   BornAgain Physics Manual
+%%
+%%   homepage:   http://www.bornagainproject.org
+%%
+%%   copyright:  Forschungszentrum Jülich GmbH 2015-2020
+%%
+%%   license:    Creative Commons CC-BY-SA
+%%
+%%   authors:    Scientific Computing Group at MLZ Garching
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% This chapter is based on an internal report RefractionIndex.tex by MG and GP, 2015.
+
+\chapter{Refractive Indexes for Neutrons and X-Rays}\label{SRefrIndx}
+
+\section{Introduction}
+\par
+For both, neutrons and X-rays, the refractive index $n$ is defined as \cref{Endb1}
+\begin{equation}
+  n\equiv 1-\delta +i \beta.
+\end{equation}
+where $\delta$ and $\beta$ are defined in a different way for neutrons and X-rays.
+\par
+\section{Calculation for neutrons}
+
+For unpolarized neutrons, $\delta$ and $\beta$ are calculated in a following way~\cite{Mue13}:
+\begin{equation}
+\delta = \frac{Nb\lambda^2}{2\pi}, \:\:\:\: \beta = \frac{N\alpha_a\lambda}{4\pi}
+\label{eq:deltabeta}
+\end{equation}
+where $N$ is the atomic number density, $b$ is the coherent scattering length, $\lambda$ is the neutron wavelength, $\alpha_a$ is the absorption cross-section. $Nb$ is also called neutron scattering length density (SLD) and can be calculated using the online calculators. $b$ and $\alpha_a$ are to be found in tables~\cite{Sea92online}. $N$ is calculated as
+\begin{equation}
+N = \frac{N_a}{V}
+\end{equation}
+where $N_a = 6.022\times 10^{23}$~mol$^{-1}$ is the Avogadro constant and $V$ is the molar volume (cm$^3$/mol) evaluated as:
+\begin{equation}
+V = \frac{M}{\rho}
+\end{equation}
+Here $M$ is the molar mass (g/mol) of the material and $\rho$ is the mass density (g/cm$^3$). It is important to mention, that for the complex materials, $M$, $b$ and $\alpha_a$ are calculated as a sum of those for the compounds. $\alpha_a$ in the table~\cite{Sea92online} is given for the neutron velocity of 2200~m/s and must be recalculated for the considered $\lambda$. For this recalculation assumption that $\alpha_a\propto 1/v$, where $v$ is the neutron velocity, is used. Since $v\propto 1/\lambda$, for the given wavelength one can use the following expression:
+\begin{equation}
+\alpha_a(\lambda) = \alpha_a (\text{2200 m/s})\cdot\frac{\lambda}{1.798}
+\end{equation}
+where $\lambda$ is the wavelength in \AA ~and 1.798~\AA ~is the wavelength corresponding to the neutron velocity of 2200~m/s.
+
+
+\paragraph{Example.} In the following example we calculate the $\delta$ and $\beta$ for the GaAs using the aforementioned expressions. Molar masses can be taken from the periodic table.
+\begin{eqnarray*}
+M_{Ga} &=& 69.723 \;\text{g/mol} \\
+M_{As} &=& 74.921595 \;\text{g/mol} \\
+M_{GaAs} &=& M_{Ga} + M_{As} \\
+\rho_{GaAs} &=& 5.32 \;\text{g/cm}^3 \\
+\end{eqnarray*}
+Incoherent scattering lengths and absorption cross-sections are taken from the table~\cite{Sea92online}.
+\begin{eqnarray*}
+b_{Ga} &=& 7.288\times 10^{-13}\;\text{cm} \\
+b_{As} &=& 6.58\times 10^{-13}\;\text{cm} \\
+b_{GaAs} &=& b_{Ga} + b_{As} \\
+\alpha_a(Ga) &=& 2.75\times 10^{-24}\;\text{cm}^2 \\
+\alpha_a(As) &=& 4.5\times 10^{-24}\;\text{cm}^2 \\
+\alpha_a(GaAs) &=& \alpha_a(Ga) + \alpha_a(As) \\
+\end{eqnarray*}
+Let's consider that $\lambda = 12$~\AA. For this wavelength, the $\alpha_a(GaAs)$ is recalculated as
+\begin{equation*}
+\alpha_a(GaAs, 12\;\text{\AA}) = \alpha_a(GaAs)\cdot\frac{12}{1.798} = 48.38179\times 10^{-24}\;\text{cm}^2
+\end{equation*}
+Finally, using these values in the equation~(\ref{eq:deltabeta}), we obtain
+\begin{eqnarray*}
+\delta &=& 7.04\times 10^{-5} \\
+\beta &=& 1.0233\times 10^{-8} \\
+\end{eqnarray*}
+
+
+\paragraph{Comment.} For the case of absorption processes included, $\delta$ and $\beta$ may be expressed in the following form~\cite{RaWa00}:
+
+\begin{equation}
+\delta = \frac{\lambda^2 N}{2\pi}\sqrt{b^2 - \left(\frac{\sigma_r}{2\lambda}\right)^2}, \;\;\;\;\; \beta = \frac{\sigma_rN\lambda}{4\pi}
+\end{equation}
+where $\sigma_r = \alpha_a + \sigma_i$ is the sum of the absorption and incoherent scattering cross sections.
+
+\section{Case of polarized neutrons}
+
+For the spin-polarized neutrons scattered on the magnetic multilayers, the magnetic scattering length $b_m$ must be taken into account. It can be expressed in the form~\cite{WiCa09}
+\begin{equation}
+b_m = 1.913e^2S/m_e
+\end{equation}
+where $S$ is the spin of the magnetic atom in the direction perpendicular to the momentum transfer $\mathbf{q}$ and $e$ and $m_e$ are the charge and mass, respectively, of the electron. The total coherent scattering length is then
+\begin{equation}
+b_{\text{total}} = b_{\text{nuclear}} \pm b_m
+\end{equation}
+where the sign $\pm$ corresponds to the beam being polarized parallel or antiparallel to the magnetization direction of the sample~\cite{WiCa09}. Values for magnetic scattering lengths can be found in tables~\cite{KoRS91,Sea92,RaWa00,Sea92online,RaWa00online}.
+
+\section{Calculation for X-rays}
+
+In the case of X-rays scattering originates from the strong variations of the mean electronic density as a homogeneous medium does not scatter~\cite{Mue09}. Thus, the dispersion $\delta$ and absorption contribution $\beta$ are expressed in the following form~\cite{Mue09}.
+\begin{eqnarray}
+\delta(\mathbf{q}, \lambda) &=& \frac{e^2\lambda^2}{8\pi^2m_e c^2 \varepsilon_0}\cdot \rho \cdot\frac{\sum{\left[f_k^0(\mathbf{q},\lambda) + f_k^{\prime}(\lambda)\right]}}{\sum{M_k}} \\
+\beta &=&  \frac{e^2\lambda^2}{8\pi^2m_e c^2 \varepsilon_0}\cdot \rho \cdot\frac{\sum{f_k^{\prime\prime}(\lambda)}}{\sum{M_k}}
+\end{eqnarray}
+where $c$ is the speed of light, $\varepsilon_0$ is the permittivity constant, $M_k$ is the atomic weight of the atom $k$, and $f_k^{\prime}$ and $f_k^{\prime\prime}$ are the dispersion corrections~\cite{Mue09} or atomic scattering factors~\cite{HeGD93}. The summation is performed over all compound atoms $k$. For the very high photon energies, $f_k^0$ approaches $Z_k^*$, which is expressed as~\cite{HeGD93}:
+\begin{equation}
+Z_k^* = Z_k - \left(\frac{Z_k}{82.5}\right)^{2.37}
+\end{equation}
+where $Z_k$ is the atomic number. Tables for the atomic scattering factors can be found in~\cite{HeGD93}. There are online calculators for the refractive indexes available in~\cite{HeGD93online}.
