@@ -31,6 +31,7 @@
 
 \def\pfo{\overset{o}{\psi}_\sf}
 \def\pfoc{\overset{o}{\psi}\vphantom{\psi}^*_\sf}
+\def\Cdot{\v{\cdot}}
 
 \chapter{Scattering}\label{SSca}%
 \chaptermark{Scattering}%
@@ -774,7 +775,7 @@ In real-space coordinates,
 \begin{equation}\label{EGrspace}
   \TG(\r,\r')
   = (2\pi)^{-3} \sum_\alpha \int\!\d^3k\int\!\d^3r''\,
-        \v\Phi_\ka(\r) \hu_\alpha \e^{-i\k\r''} \TGo(\r'',\r').
+        \v\Phi_\ka(\r)\Cdot \hu_\alpha \e^{-i\k\r''} \TGo(\r'',\r').
 \end{equation}
 At this point, we need the vacuum Green function~$\TGo$.
 In the scalar case, for an outgoing wave, it is
@@ -788,7 +789,7 @@ for polarized neutrons,
 \end{equation}
 for X-rays\footnote{Eqn.~B5 of \cite{DiWa84} has a sign error.}
 \begin{equation}\label{EGo3}
-  \TGo(\r,\r') = (\v1 -K^{-2}\Nabla\otimes\Nabla) G_0(\r,\r').
+  \TGo(\r,\r') = (\v1 -K^{-2}\Nabla\Cdot\Nabla) G_0(\r,\r').
 \end{equation}
 The far-field limit is usually considered in the first argument,
 \begin{equation}\label{EGinftydef}
@@ -814,7 +815,7 @@ We apply this to~\cref{EGo1},
 \index{Green function!homogeneous material}%
 and obtain in leading order the far-field Green function
 \begin{equation}\label{EGoFar1}
-  G^\infty(\r,\r')
+  G_0^\infty(\r,\r')
   = g(r)\psi^*_\sf(\r'),
 \end{equation}
 where $g$ is the outgoing spherical wave introduced in \cref{EGo1},
@@ -825,48 +826,25 @@ where $g$ is the outgoing spherical wave introduced in \cref{EGo1},
   wave propagating from the sample towards the detector}%
 is a plane wave propagating towards the detector,
 and $\psi^*$ designates the complex conjugate of $\psi$.
-The $\Nabla\otimes\Nabla$ term in \cref{EGo3}
+The $\Nabla\Cdot\Nabla$ term in \cref{EGo3}
 is negligible for $Kr\gg1$,
 hence
 \begin{equation}\label{EGoFar2}
   \TGo^\infty(\r,\r') = \v1 G_0(\r,\r')
 \end{equation}
 in the polarized neutron as in the X-ray case.
-
 We apply reciprocity \cref{EGoReci}
-and insert \cref{EGoFar2} into~\cref{EGint} to obtain
-\begin{equation}\label{EGrspace}
-  \lim_{r'\to\infty}\TG(\r,\r')
-  = \v\Phi_\ka(\r) \hu_\alpha
+to \cref{EGoFar2,EGoFar1} and insert the resulting
+\begin{equation}
+  \TGo^\infty(\r,\r')=\v1\psi^*_\sf(\r)g(r')
 \end{equation}
-
+into~\cref{EGrspace} to obtain
 \nomenclature[2g174 2far]{$\TG^\infty(\r,\r')$}{Far-field
    approximation to the Green function $G(\r,\r')$}%
-This solution is\footnote
-{To our knowledge,
-the simple expression \cref{EmyG} has never before been stated.
-Informations about similar results anywhere in the literature would be highly welcome.}
-\begin{equation}\label{EmyG}
-  \v{G}^\infty(\r,\r') = \phi(r) \sum_\alpha \hu_\alpha\otimes\v\Psi_{\hu_\alpha}^*(\r'),
+\begin{equation}\label{EGresult}
+  \lim_{r'\to\infty}\TG(\r,\r')
+  = \v\Phi_{\k_\sf\alpha}(\r)\Cdot \hu_\alpha g(r').
 \end{equation}
-where
-$\alpha=1,2$ is the index of an orthonormal base of polarization vectors~$\hu_\alpha$,
-$\phi$ is an outgoing spherical wave with
-\begin{equation}\label{Effphidef}
-  \phi(r) \coloneqq \frac{\e^{iKr}}{4\pi r},
-\end{equation}
-and $\v{\Psi}_\hu$ is a solution of the unperturbed distorted wave equation
-\begin{equation}
-  \TD(\r)\v{\Psi}_\hu(\r) = 0
-\end{equation}
-with the boundary condition
-\begin{equation}
-  \v{\Psi}_\hu(\r) = \hu\e^{i\k_\sf\r}
-\end{equation}
-for $r\to\infty$ and
-with an outgoing wavevector
-\nomenclature[2f000]{f}{Subscript ``final''}%
-$\k_\sf\coloneqq K \r / r$.
 
 %--------------------------------------------------------------------------------
 \begin{figure}[tb]
@@ -892,56 +870,6 @@ that all trajectories are practically parallel when they leave the sample.}
 \end{figure}
 %--------------------------------------------------------------------------------
 
-We now outline a proof for~\cref{EmyG}.
-We take for granted that Green functions obye \E{source-detector reciprocity} \cite{Pot04},
-\begin{equation}
-  \TG(\r,\r') = \TG(\r',\r).
-\end{equation}
-We first consider wave propagation in vacuum,
-denoted by an overset circle.
-Exact Green functions
-are known.
-The far-field must be taken explicitly,
-and in all cases
-\begin{equation}
-  \TGoa^\infty(\r,\r') = \phi(r)\Psioa^*(\r')
-\end{equation}
-is obtained.
-Following Dietrich and Wagner \cite{DiWa84,DiWa85,DiWa16},
-we write the Lippmann-Schwinger equations for a distorted wave
-\begin{equation}\label{ELS2Psi}
-   \Psioa(\r)
-   = \int\!\d^3r''\, \left( \delta(\r-\r'') + \TGoa(\r,\r'')\TL(\r'') \right)
-                     \v{\Psi}_\hu(\r''),
-\end{equation}
-and for the Green function
-\begin{equation}\label{ELS2G}
-   \TGoa(\r,\r')
-   = \int\!\d^3r''\, \left( \delta(\r-\r'') + \TGoa(\r,\r'')\TL(\r'') \right)
-                     \v{G}_\hu(\r'',\r').
-\end{equation}
-Operate on both sides with~$\TDo(\r)$ to verify that
-\begin{equation}
-  \TDo(\r)\TGo(\r,\r') = \Td(\r-\r') \text{ and } \TDo(\r)\Psio(r)=0
-\end{equation}
-imply
-\begin{equation}
-  \TD(\r)\TG(\r,\r') = \Td(\r-\r') \text{ and } \TD(\r)\v{\Psi}(r)=0.
-\end{equation}
-To continue, use the reciprocity of the Green function,
-and take the far-field limit to transform~\cref{ELS2G} into
-\begin{equation}\label{ELS2G2}
-   \phi(r')\Psioa^*(\r)
-   = \int\!\d^3r''\, \left( \delta(\r-\r'') + \TGoa(\r,\r'')\TL(\r'') \right)
-                     \v{G}_\hu^\infty(\r',\r'').
-\end{equation}
-Take the complex conjugate of~\cref{ELS2Psi},
-multiply with~$\phi(r')$, and compare with \cref{ELS2G2}
-to read off
-\begin{equation}
-   \v{G}_\hu^\infty(\r',\r'') = \phi(r')\v{\Psi}_\hu(\r''),
-\end{equation}
-which is~\cref{EmyG}.
 
 %===============================================================================
 \subsection{Reciprocity of the Green function}\label{SReci}
@@ -1063,42 +991,10 @@ Inside the sample it undergoes refraction and reflection
 or other modifications under the influence of the distortion field~$\TL$.
 
 %===============================================================================
-\subsection*{Vacuum solution}%\label{Sfarfield}
+\subsection*{Scattering vector $\v{q}$}
 %===============================================================================
 
-Read as a function of~$\r$, it is an outgoing spherical wave centered at $\r'$.
-To compute the far-field limit~\cref{EGinftydef},
-
-Inserting \cref{EGreenFar} in \cref{EBornS},
-we obtain the far-field approximation for the scattered wave,
-\index{Scattered radiation!far-field}%
-\begin{equation}%\label{EsandwichC}
-  \psi_{\text{s}\infty}(\r)
-  = \frac{\e^{iKr}}{r}
-    \braket{\psi_\si|\delta v|\psi_\sf}^*
-\end{equation}
-\nomenclature[1ψ034 2s000 2far]{$\psi_{\text{s}\infty}(\r)$}{Far-field
-   approximation to the scattered wavefunction $\psi_\text{s}(\r)$}%
-with the Dirac notation for the scattering matrix element
-\index{Scattering!matrix}%
-\index{Transition matrix|see{Scattering matrix}}%
-\begin{equation}%\label{Etrama}
-  \bra{\psi_\si|\delta v|\psi_\sf}
-  \coloneqq  \int\!\d^3r\, \psi^*_\si(\r)\delta v(\r)\psi_\sf(\r).
-\end{equation}
-\nomenclature[0$\langle$0]{{$\braket{\ldots|\ldots|\ldots}$}}{Matrix
-  element, defined as a volume integral}%
-Since per \cref{EPsi0Plane} and~\cref{EPsisfar} our $\psi_\si$ and~$\psi_\sf$ are plane waves,
-the matrix element can be simplified as
-\begin{equation}%\label{Echiq}
-  \braket{\psi_\si|\delta v|\psi_\sf}
-  = \int\!\d^3r\, {\rm e}^{-i\k_\si\r}\delta v(\r){\rm e}^{i\k_\sf\r}
-  = \int\!\d^3r\, {\rm e}^{i\q\r}\delta v(\r)
-  \eqqcolon v(\q),
-\end{equation}
-\nomenclature[2v030 2q040]{$v(\v{q})$}{Fourier
-   transform of the SLD~$\delta v(\r)$}%
-with the \E{scattering vector}\footnote
+ the \E{scattering vector}\footnote
 {With this choice of sign,
 \index{Sign convention!scattering vector}%
 $\hbar\q$ is the momentum
@@ -1119,11 +1015,6 @@ which can only be achieved by the convention~\cref{Eq}.}
   \q\coloneqq \k_\sf-\k_\si.
 \end{equation}
 \nomenclature[2q040]{$\q$}{Scattering vector}%
-\Cref{Echiq} summarizes the well-known fact that
-small-angle neutron scattering basically measures
-the Fourier transform $v(\q)$ of the SLD.
-\index{Scattering!potential!Fourier transform}%
-\index{Fourier transform!scattering potential}%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Coherent vs incoherent scattering}\label{Scoherlen}
