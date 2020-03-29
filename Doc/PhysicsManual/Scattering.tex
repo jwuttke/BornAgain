@@ -24,6 +24,7 @@
 \def\TGo{\v{G}_0}%{\overset{o}{G}}}
 \def\TGoa{\v{G}_{0\alpha}}%{\overset{o}{G}}}
 \def\vGo{\TGo} %{\v{\overset{o}{G}}\vphantom{\v{G}}}
+\def\TR{\v{R}}
 \def\Psio{\v{\Psi}_0}%\v{\overset{o}{\Psi}}\vphantom{\Psi}}
 \def\Psioa{\v{\Psi}_{0\alpha}}\
 \def\ue{\v{\hat u}}
@@ -665,7 +666,7 @@ we first transform it into a Lippmann-Schwinger equation,
 with the Green function
 \index{Green function}%
 \nomenclature[2g170 2r020 2r021]{$\TG(\r,\r')$}{Generic (possibly tensorial) Green function}%
-\begin{equation}
+\begin{equation}\label{EdefG}
    \TG \coloneqq \TD^{-1}
 \end{equation}
 and with the incident distorted wave~$\ket{\v\Phi_\si}$.
@@ -729,29 +730,116 @@ by a plane wave $\ket{\v\Phi^\infty_\si}=\ket{\k_\se\alpha_\se}$,
 is normalized to unity, ${|\v\Phi^\infty_\si|}^2=1$.
 
 %===============================================================================
-\subsection{Far-field Green function}\label{SDWGreen}
+\subsection{The DWBA far-field Green function}\label{SDWGreen}
 %===============================================================================
 
-In experiments, scattered radiation is measured
-at a detector position~$\r$ so far outside the sample
-that the distance from the sample to the detector
-is must be much larger than the size of the sample.
-This is just the condition for \E{Fraunhofer diffraction};
-\index{Fraunhofer approximation}%
-in scattering theory,
-it is known as the \E{far-field approximation}.
-\index{Far-field approximation}%
-We choose the coordinate origin
-\index{Coordinate system!origin}%
-\index{Origin!coordinate system}%
-inside the sample so that the far-field asymptote corresponds to the limit $r\to\infty$.
-To determine the far-field asymptote $\v\Psi_\text{s}^\infty(\r)$
-of the scattered wave~$\v\Psi_\text{s}$ from~\cref{EBornS},
-\index{Scattered radiation!far field}
-it is sufficient to solve~\cref{EGREEN} for the far-field Green function
-\begin{equation}\label{EGinftydef}
-  \TG^\infty(\r,\r')\coloneqq \lim_{r\to\infty} \TG(\r,\r').
+From \cref{SxDWBA}, the task is left over
+to determine the far-field Green function~$G^\infty$.
+Assume we know the Green function of the undistorted wave equation~\cref{EWave1},
+$\TGo\coloneqq\TDo^{-1}$.
+Write the distorted wave equation~\cref{EWave2}
+as a Lippmann-Schwinger equation
+\begin{equation}\label{ELS2}
+  \ket{\v\Phi}
+  = \ket\ka + \TGo\TU\ket{\v\Phi}.
 \end{equation}
+To verify, operate with $\TDo$ from the left.
+Solve formally through simple algebraic manipulations,
+\begin{equation}\label{EPhi}
+  \ket{\v\Phi} = {(\v1-\TGo\TU)}^{-1}\ket\ka \eqqcolon \TR\ket\ka.
+\end{equation}
+Following Dietrich and Wagner \cite{DiWa84,DiWa85,DiWa16},
+we note that the distorted-wave Green function~\cref{EdefG}
+also obeys a Lippmann-Schwinger equation,
+\begin{equation}
+   \TG = \TGo + \TGo\TU\TG.
+\end{equation}
+To verify, operate again with $\TDo$ from the left.
+Resolve algebraically for
+\begin{equation}
+  \TG  = {(\v1-\TGo\TU)}^{-1} \TGo \eqqcolon \TR\TGo.
+\end{equation}
+To make use of~\cref{EPhi},
+we insert a complete projector,
+\begin{equation}
+  \TG  = \sum_\alpha \int\!\d^3k\,\TR\ket\ka\bra{\ka}\TGo
+       = \sum_\alpha \int\!\d^3k\,\ket{\v\Phi_\ka}\bra{\ka}\TGo
+\end{equation}
+where the dependence of $\v\Phi$ on the boundary condition~$\ka$ is explicitly denoted.
+As $\TGo$ is known in real-space representation, we insert another projector,
+\begin{equation}
+  \TG  = \sum_\alpha \int\!\d^3k\int\!\d^3r''\, \ket{\v\Phi_\ka}\braket{\ka|\r''}\bra{r''}\TGo.
+\end{equation}
+In real-space coordinates,
+\begin{equation}\label{EGrspace}
+  \TG(\r,\r')
+  = (2\pi)^{-3} \sum_\alpha \int\!\d^3k\int\!\d^3r''\,
+        \v\Phi_\ka(\r) \hu_\alpha \e^{-i\k\r''} \TGo(\r'',\r').
+\end{equation}
+At this point, we need the vacuum Green function~$\TGo$.
+In the scalar case, for an outgoing wave, it is
+\begin{equation}\label{EGo1}
+  G_0(\r,\r') = \frac{\e^{iK|\r-\r'|}}{4\pi|\r-\r'|}
+  \eqqcolon g(|\r-\r'|).
+\end{equation}
+for polarized neutrons,
+\begin{equation}\label{EGo2}
+  \TGo(\r,\r') = \v1 G_0(\r,\r');
+\end{equation}
+for X-rays\footnote{Eqn.~B5 of \cite{DiWa84} has a sign error.}
+\begin{equation}\label{EGo3}
+  \TGo(\r,\r') = (\v1 -K^{-2}\Nabla\otimes\Nabla) G_0(\r,\r').
+\end{equation}
+The far-field limit is usually considered in the first argument,
+\begin{equation}\label{EGinftydef}
+  \TGo^\infty(\r,\r')\coloneqq \lim_{r\to\infty} \TGo(\r,\r'),
+\end{equation}
+but it is easily seen from \cref{EGo1,EGo2,EGo3} that
+\begin{equation}\label{EGoReci}
+  \TGo(\r,\r')=\TGo(\r',\r),
+\end{equation}
+as expected from more general reciprocity theorems \cite{Pot04}.
+
+We expand for $\r'$ with $r'\ll r$:
+\begin{equation}
+  \left|\r-\r'\right|
+  \doteq \sqrt{r^2-2\r\,\r'}
+  \doteq r - \frac{\r\,\r'}{r}
+  \equiv r - \frac{\k_\sf \r'}{K},
+\end{equation}
+\nomenclature[2f000]{f}{Subscript ``final''}%
+where we have introduced the outgoing wavevector
+$  \k_\sf\coloneqq K \r / r$.
+We apply this to~\cref{EGo1},
+\index{Green function!homogeneous material}%
+and obtain in leading order the far-field Green function
+\begin{equation}\label{EGoFar1}
+  G^\infty(\r,\r')
+  = g(r)\psi^*_\sf(\r'),
+\end{equation}
+where $g$ is the outgoing spherical wave introduced in \cref{EGo1},
+\begin{equation}%\label{EPsisfar}
+  \psi_\sf(\r) \coloneqq  \e^{i\k_\sf \r}
+\end{equation}
+\nomenclature[1ψ034 2f000 2r040]{$\psi_\sf(\r)$}{Plane
+  wave propagating from the sample towards the detector}%
+is a plane wave propagating towards the detector,
+and $\psi^*$ designates the complex conjugate of $\psi$.
+The $\Nabla\otimes\Nabla$ term in \cref{EGo3}
+is negligible for $Kr\gg1$,
+hence
+\begin{equation}\label{EGoFar2}
+  \TGo^\infty(\r,\r') = \v1 G_0(\r,\r')
+\end{equation}
+in the polarized neutron as in the X-ray case.
+
+We apply reciprocity \cref{EGoReci}
+and insert \cref{EGoFar2} into~\cref{EGint} to obtain
+\begin{equation}\label{EGrspace}
+  \lim_{r'\to\infty}\TG(\r,\r')
+  = \v\Phi_\ka(\r) \hu_\alpha
+\end{equation}
+
 \nomenclature[2g174 2far]{$\TG^\infty(\r,\r')$}{Far-field
    approximation to the Green function $G(\r,\r')$}%
 This solution is\footnote
@@ -980,32 +1068,7 @@ or other modifications under the influence of the distortion field~$\TL$.
 
 Read as a function of~$\r$, it is an outgoing spherical wave centered at $\r'$.
 To compute the far-field limit~\cref{EGinftydef},
-we expand for $\r'$ with $r'\ll r$:
-\begin{equation}
-  \left|\r-\r'\right|
-  \doteq \sqrt{r^2-2\r\,\r'}
-  \doteq r - \frac{\r\,\r'}{r}
-  \equiv r - \frac{\k_\sf \r'}{K},
-\end{equation}
-\nomenclature[2f000]{f}{Subscript ``final''}%
-where we have introduced the outgoing wavevector
-$  \k_\sf\coloneqq K \r / r$.
-We apply this to~\cref{EGreens1},
-\index{Green function!homogeneous material}%
-and obtain in leading order the far-field Green function
-\begin{equation}%\label{EGreenFar}
-  G_\infty(\r,\r')
-  = \frac{\e^{iKr}}{4\pi r}\psi^*_\sf(\r'),
-\end{equation}
-where
-\begin{equation}%\label{EPsisfar}
-  \psi_\sf(\r) \coloneqq  \e^{i\k_\sf \r}
-\end{equation}
-\nomenclature[1ψ034 2f000 2r040]{$\psi_\sf(\r)$}{Plane
-  wave propagating from the sample towards the detector}%
-is a plane wave propagating towards the detector,
-and $\psi^*$ designates the complex conjugate of $\psi$.
-As function of~$\r$, $G_\infty$ is an outgoing spherical wave.
+
 Inserting \cref{EGreenFar} in \cref{EBornS},
 we obtain the far-field approximation for the scattered wave,
 \index{Scattered radiation!far-field}%
