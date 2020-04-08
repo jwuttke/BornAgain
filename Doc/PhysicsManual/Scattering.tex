@@ -486,16 +486,13 @@ the wave equation is solved through a perturbation expansion.
 The ordinary form of this expansion, the \E{Born approximation} (BA),
 \index{BA|see{Born approximation}}%
 \index{Born approximation}%
-is derived in many textbooks.\footnote
-{For a particularly detailed derivation
-see Schober's lecture notes on neutron scattering~\cite{Sch14}.}
-%E.~g.\ \cite{} for neutrons;
-%\cite[Sect 9.7]{Jac75} for electromagnetic radiation}
-For scattering under grazing-incidence,
-\index{Grazing-incidence small-angle scattering}%
-however, the more generic
+describes the scattering of a plane wave.
+Under grazing incidence, however,
+refraction and reflection can distort an incident plane wave
+quite substantially.
+This motivates the
 \index{Distorted-wave Born approximation}%
-\E{distorted-wave Born approximation} (DWBA)\footnote
+\E{distorted-wave Born approximation} (DWBA).\footnote
 {The DWBA was originally devised by Massey and Mott (ca 1933)
 for collisions of charged particles.
 Summaries can be found in some quantum mechanics textbooks (Messiah, Schiff)
@@ -512,7 +509,6 @@ was provided by Dietrich and Wagner (1984/85)
 for X-rays \cite{DiWa84} and neutrons \cite{DiWa85}.
 Unfortunately, their work was overlooked in much of the later literature,
 which often fell back to less convincing derivations.}
-is required.
 In this section, we provide a self-contained derivation
 based on the unified neutron and X-ray wave equation~\cref{EWAVE}.
 
@@ -539,31 +535,31 @@ one ultimately wants to study in a scattering experiment.
 This is vague,
 and in certain situations the decomposition~\cref{Edecompose} is indeed
 to some extent arbitrary.
-However, in most practical cases $\TL$ and $\TU$ are clearly determined by
-the following basic idea of DWBA:
+In our application context,
+$\TL(z)$ is responsible for refractions and reflections
+by multilayer structures,
+whereas $\TU(\r)$ accounts for all lateral fluctuations.
 
-Only $\v{U}$ shall be treated as a perturbation.
-The propagation of incident and scattered waves under the influence of~$\TL$,
-in contrast,
-shall be handled exactly,
-through analytical solution of the unperturbed distorted wave equation
-\index{Unperturbed distorted wave equation}%
-\index{Distorted wave!wave equation}%
-\index{Wave equation!unperturbed distorted}%
-\begin{equation}\label{EDPsi0}
-  \TD(\r)\v\Phi(\r) = 0
-\end{equation}
-with the \E{distorted wave operator}
+The distortion field~$\TL$ is combined
+with the vacuum wave operator~$\TDo$ \cref{EDo}
+into the \E{distorted wave operator}
 \index{Distorted wave!operator}%
 \index{Wave!operator!distorted}%
 \nomenclature[2d138 2r040]{$\TD(\r)$}{Differential operator in the wave equation}%
 \begin{equation}
-  \TD(\r) \coloneqq \TDo - \TL(\r).
+  \TD(\r) \coloneqq \TDo - \TL(\r)
+\end{equation}
+that governs the unperturbed distorted wave equation
+\index{Unperturbed distorted wave equation}%
+\index{Distorted wave!wave equation}%
+\index{Wave equation!unperturbed distorted}%
+\begin{equation}\label{EDPsi0}
+  \TD(\r)\v\Phi(\r) = 0.
 \end{equation}
 The solutions~$\v\Phi$ are the \E{distorted} waves
 \index{Distorted wave}%
 \index{Wave!distorted}%
-that are the base of the distorted-wave Born approximation (DWBA),
+that are scattered by the perturbation $\v{U}$,
 as developed below in Sect.~\ref{SxDWBA}.
 
 %===============================================================================
@@ -597,12 +593,10 @@ Conventionally, $n$ is parameterized by two real numbers:
 \Cref{SRefrIndx} explains how to determine $\delta$ and~$\beta$.
 
 For thermal neutrons and X-rays,
-$\delta$ and $\beta$ are almost always nonnegative,\footnote
-{The plus sign in front of~$i\beta$ is a consequence of
-the quantum-mechanical sign convention \cref{Estationarywave,EstationaryX};
-in the X-ray crystallography convention it would be a minus sign.
+with quantum-mechanical sign convention [\cref{Estationarywave,EstationaryX}],
+$\delta$ and $\beta$ are almost always nonnegative,
 \index{Refractive index!sign convention}%
-\index{Sign convention!refractive index}}
+\index{Sign convention!refractive index}%
 and much smaller than~1.
 This explains why in most scattering geometries
 \index{Scattering!geometry}%
