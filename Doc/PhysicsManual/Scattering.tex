@@ -222,45 +222,40 @@ Furthermore, incoherent scattering, as inelastic scattering,
 \index{H Field@$H$ Field|see{Magnetizing field}}%
 \index{B Field@$B$ Field|see{Magnetic field}}%
 
-In presence of a magnetic field,
+In the presence of a magnetic field,
 the propagation of free neutrons becomes spin dependent.
 Therefore the scalar wavefunction of \cref{SnScalar}
-must be replaced by spinor $\v\Psi$.
+must be replaced by a spinor $\v\Psi$.
 \index{Spinor}%
-The magnetic moment~$\mu$ of the neutron
-\nomenclature[1μ024 2n000]{$\mu_\text{n}$}{Magnetic moment of the neutron}
+The magnetic moment $\v{\mu}$ of the neutron
+\nomenclature[1μ024 2n000]{$\mu$}{Absolute value of the magnetic moment of the neutron,
+  $1.91\mu_\text{N}$}
 \index{Neutron!magnetic moment}%
 \index{Magnetic moment!neutron}%
-couples to the magnetic induction~$\v{B}$ \cite{Mez86,MaOB06}.
+couples to the magnetic induction~$\v{B}$ \cite{Sea89,Mez86,MaOB06}.
 \nomenclature[2h150 2r040 2t020]{$\v{B}(\r,t)$}{Magnetic induction}%
 \index{Magnetizing field!coupling to neutron moment}%
-With the coupling term, the Schrödinger equation~\cref{ESchrodi1}
-\index{Schrodinger@Schrödinger equation!macroscopic}%
-becomes
-\begin{equation}\label{EHSchrodi}
-  \left[-\frac{\hbar^2}{2m}\Nabla^2+V(\r)
-         +\mu\v{B}(\r)\PauliVec-\hbar\omega\right]
-      \v\Psi(\r) = 0,
-\end{equation}
-\nomenclature[1ψ150 2r040]{$\v\Psi(\r)$}{Stationary coherent spinor wavefunction}%
-where $\mu_0$ is the vacuum permeability,
-\nomenclature[1μ024 00]{$\mu_0$}{Vacuum permeability, $4\pi\cdot10^{-7}$ Vs/Am}%
-\index{Permeability}%
-\index{Magnetic permeability}%
-and $\PauliVec$ is the Pauli vector, composed of the three Pauli matrices.
+With the Pauli vector $\PauliVec$, composed of the three Pauli matrices,
 \nomenclature[1σ04]{$\v{\sigma}$}{Pauli
     vector, composed of the three Pauli matrices: $\v{\sigma}=(\sigma_x,\sigma_y,\sigma_z)$}%
 \index{Pauli vector}%
 \index{Pauli matrix}%
+the interaction can be written
+\begin{equation}
+   \hat V_\text{magn} = -\v{\hat \mu}\v{B} = + \mu\PauliVec\v{B},
+\end{equation}
+where a hat indicates operators on spin states, represented by $2\times2$ matrices.
+The final expression has a plus sign because the magnetic moment of the neutron
+is antiparallel to its spin,
+as expressed by the gyromagnetic ratio $-1.91$.
 We introduce the reduced field
 \begin{equation}
-  \v{b} \coloneqq \frac{2m\mu_0\mu_\text{n}}{\hbar^2}\v{B},
+  \v{b} \coloneqq \frac{2m\mu}{\hbar^2}\v{B},
 \end{equation}
-\nomenclature[2h050 2r040]{$\v{b}(\r)$}{Rescaled
-   field $\v{b}=(m\mu/2\pi\hbar^2)\v{B}$}%
+\nomenclature[2h050 2r040]{$\v{b}(\r)$}{Rescaled field $\v{b}=(m\mu/2\pi\hbar^2)\v{B}$}%
 \index{Magnetizing field!reduced}%
-to rewrite the Schrödinger equation in analogy to~\cref{ESchrodi2} as
-\index{Schrodinger@Schrödinger equation!macroscopic}%
+to write the spin-dependent Schrödinger equation as
+\index{Schrodinger@Schrödinger equation}%
 \begin{equation}\label{ESchrodi2H}
   \left[\Nabla^2+K^2-v(\r)-\v{b}(\r)\PauliVec\right] \v\Psi(\r) = 0.
 \end{equation}
