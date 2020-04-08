@@ -25,6 +25,7 @@
 \def\TGoa{\v{G}_{0\alpha}}%{\overset{o}{G}}}
 \def\vGo{\TGo} %{\v{\overset{o}{G}}\vphantom{\v{G}}}
 \def\TR{\v{R}}
+\def\PauliVec{\v{\sigma}}
 \def\Psio{\v{\Psi}_0}%\v{\overset{o}{\Psi}}\vphantom{\Psi}}
 \def\Psioa{\v{\Psi}_{0\alpha}}\
 \def\ue{\v{\hat u}}
@@ -242,9 +243,8 @@ With the Pauli vector $\PauliVec$, composed of the three Pauli matrices,
 \index{Pauli matrix}%
 the interaction can be written
 \begin{equation}
-   \hat V_\text{magn} = -\v{\hat \mu}\v{B} = + \mu\PauliVec\v{B},
+   V_\text{magn} = -\v{\mu}\v{B} = + \mu\PauliVec\v{B}.
 \end{equation}
-where a hat indicates operators on spin states, represented by $2\times2$ matrices.
 The final expression has a plus sign because the magnetic moment of the neutron
 is antiparallel to its spin,
 as expressed by the gyromagnetic ratio $-1.91$.
@@ -273,8 +273,8 @@ to write the spin-dependent Schrödinger equation as
 \index{Wave propagation!X-ray|(}%
 \index{X-ray!wave propagation|(}%
 
-The propagation of X-rays is governed by Maxwell's equations,
-which read in SI units
+The propagation of X-rays is governed by Maxwell's equations.
+We shall use SI units throughout:
 \index{Maxwell's equations}%
 \begin{equation}\label{EMaxwell}
   \begin{array}{@{}l@{\quad}l@{\quad}l}
@@ -288,7 +288,7 @@ which read in SI units
   \end{array}
 \end{equation}
 \nomenclature[2e150 2r040 2t020]{$\v{E}(\r,t)$}{Electric field}%
-\index{Electric field}
+\index{Electric field}%
 \nomenclature[2d150 2r040 2t020]{$\v{D}(\r,t)$}{Displacement field}%
 \nomenclature[2b150 2r040 2t020]{$\v{B}(\r,t)$}{Magnetic field}%
 \index{Magnetic field}%
@@ -302,35 +302,23 @@ Since BornAgain only addresses elastic scattering,
 we assume the permeability and permittivity tensors $\v\mu$ and~$\v\eps$
 to be time-independent.
 \index{Time dependence!dielectric permittivity}%
-Therefore, as in~\cref{SnScalar}, we only need to consider monochromatic waves
+Therefore we only consider monochromatic waves
 \index{Wave!monochromatic}%
 \index{Monochromatic wave}%
 with given frequency~$\omega$,
-and each of the fields $\v{E}$, $\v{D}$, $\v{H}$, $\v{B}$
-factorizes into a stationary field and a time-dependent phase factor.\footnote
-{This phase factor can be defined with a plus or a minus sign in the exponent.
-Most texts on X-ray crystallography,
-including influential texts on GISAXS \cite{ReLL09},
-prefer the \E{crystallographic convention} with a plus sign.
-\index{Wave propagation|seealso {Sign convention}}%
-\index{Convention!sign convention}%
-\index{Sign convention!wave propagation|(}%
-\index{Crystallographic sign convention}%
-In BornAgain, we prefer the opposite \E{quantum-mechanical convention}
-\index{Quantum-mechanical convention}%
-for consistency with the neutron case \cref{Estationarywave},
-where the minus sign is an inevitable consequence
-of the standard form of the Schrödinger equation.%
-\index{Sign convention!wave propagation|)}%
-}
-\index{Phase factor}%
-We will formulate the following in terms of the electric field
-\index{Electric field}%
 \begin{equation}\label{EstationaryX}
-  \v{E}(\r,t) = \v{E}(\r)\e^{-i\omega t}.
+  \v{E}(\r,t) = \v{E}(\r)\e^{-i\omega t},
 \end{equation}
-The other three fields can be obtained from~$\v{E}$
-by straightforward application of~\cref{EMaxwell}.
+and similarly for the other fields $\v{D}$, $\v{H}$, $\v{B}$.
+The minus sign in the exponent has been chosen
+for consistency with the neutron case \cref{Estationarywave},
+where it is an inevitable consequence
+of the standard form of the Schrödinger equation.
+\index{Sign convention!wave propagation|(}%
+Opposite to this \E{quantum-mechanical convention},
+there exists a \E{crystallographic convention},
+which is preferred in most texts on X-ray crystallography,
+including influential texts on GISAXS \cite{ReLL09}.
 
 Since magnetic refraction or scattering is beyond the scope of BornAgain,
 the relative magnetic permeability tensor is always $\v{\mu}(\r)=1$.
@@ -340,10 +328,10 @@ As customary in SAXS and GISAXS,
 \index{Grazing-incidence small-angle scattering!dielectric model}%
 \index{Small-angle scattering!dielectric model}%
 we assume
-that the dielectric properties of the material are those of a polarizable electron cloud.\footnote
-{This is occasionally called the \E{Laue model}
+that the dielectric properties of the material are those of a polarizable electron cloud.
+This is occasionally called the \E{Laue model}
 \index{Laue model}%
- \cite{Lau31}.}
+\cite{Lau31}.
 Thereby the relative dielectric permittivity tensor~$\v{\eps}$
 \index{Dielectric permittivity}%
 \index{Permittivity}%
@@ -367,7 +355,6 @@ given by the dispersion relation
   K^2 = \mu_0\eps_0\omega^2 = \omega^2/c^2.
 \end{equation}
 \index{Dispersion!X-ray}%
-
 With these simplifying assumptions about $\v{\eps}$ and~$\v{\mu}$,
 Maxwell's equations yield the wave equation
 \begin{equation}\label{ENabCrossNabE}
@@ -377,7 +364,7 @@ Maxwell's equations yield the wave equation
 \index{X-ray!wave equation}%
 Using a standard identity from vector analysis, it can be brought into the more tractable form
 \begin{equation}\label{ENabNabE}
-  \left[\Nabla^2-\Nabla\cdot\Nabla+ K^2\eps(\r)\right]\v{E}(\r)=0.
+  \left[\Nabla^2-\Nabla\otimes\Nabla+ K^2\eps(\r)\right]\v{E}(\r)=0.
 \end{equation}
 
 \index{Wave propagation!X-ray|)}%
@@ -398,7 +385,7 @@ with the vacuum wave operator
 \begin{equation}\label{EDo}
   \TDo \coloneqq \left\{ \begin{array}{ll}
       \Nabla^2 + K^2                     &\text{~~~for neutrons,}\\
-      \Nabla^2 - \Nabla\cdot\Nabla + K^2 &\text{~~~for X-rays}
+      \Nabla^2 - \Nabla\otimes\Nabla + K^2 &\text{~~~for X-rays}
   \end{array}\right.
 \end{equation}
 \nomenclature[2d138 0 2r040]{$\TDo(\r)$}{Differential operator in the vacuum wave equation}%
@@ -770,7 +757,7 @@ In real-space coordinates,
 \begin{equation}\label{EGrspace}
   \TG(\r,\r')
   = (2\pi)^{-3} \sum_\alpha \int\!\d^3k\int\!\d^3r''\,
-        \v\Phi_\ka(\r)\Cdot \hu_\alpha \e^{-i\k\r''} \TGo(\r'',\r').
+        \v\Phi_\ka(\r)\otimes \hu_\alpha \e^{-i\k\r''} \TGo(\r'',\r').
 \end{equation}
 At this point, we need the vacuum Green function~$\TGo$.
 In the scalar case, for an outgoing wave, it is
@@ -784,7 +771,7 @@ for polarized neutrons,
 \end{equation}
 for X-rays\footnote{Eqn.~B5 of \cite{DiWa84} has a sign error.}
 \begin{equation}\label{EGo3}
-  \TGo(\r,\r') = (\v1 -K^{-2}\Nabla\Cdot\Nabla) G_0(\r,\r').
+  \TGo(\r,\r') = (\v1 -K^{-2}\Nabla\otimes\Nabla) G_0(\r,\r').
 \end{equation}
 The far-field limit is usually considered in the first argument,
 \begin{equation}\label{EGinftydef}
@@ -821,7 +808,7 @@ where $g$ is the outgoing spherical wave introduced in \cref{EGo1},
   wave propagating from the sample towards the detector}%
 is a plane wave propagating towards the detector,
 and $\psi^*$ designates the complex conjugate of $\psi$.
-The $\Nabla\Cdot\Nabla$ term in \cref{EGo3}
+The $\Nabla\otimes\Nabla$ term in \cref{EGo3}
 is negligible for $Kr\gg1$,
 hence
 \begin{equation}\label{EGoFar2}
@@ -838,7 +825,7 @@ into~\cref{EGrspace} to obtain
    approximation to the Green function $G(\r,\r')$}%
 \begin{equation}\label{EGresult}
   \lim_{r'\to\infty}\TG(\r,\r')
-  = \sum_\alpha \v\Phi_{\k_\sf\alpha}(\r)\Cdot \hu_\alpha g(r').
+  = \sum_\alpha \v\Phi_{\k_\sf\alpha}(\r)\otimes \hu_\alpha g(r').
 \end{equation}
 
 %--------------------------------------------------------------------------------
