@@ -73,7 +73,7 @@ for Eqns.~1--3 in the BornAgain reference paper~\cite{PoHB20}.
 
 \def\Vmac{\tilde{V}}
 
-\index{Schrodinger@Schrödinger equation!microscopic}%
+\index{Wavefunction!scalar}
 The scalar wavefunction $\psi(\r,t)$
 \nomenclature[2t020]{$t$}{Time}%
 \nomenclature[2r040]{$\r$}{Position}%
@@ -81,33 +81,26 @@ The scalar wavefunction $\psi(\r,t)$
 of a free neutron
 in absence of a magnetic field
 is governed by the Schrödinger equation
+\index{Schrodinger@Schrödinger equation}%
 \begin{equation}\label{ESchrodi1}
   i\hbar\partial_t \psi(\r,t)
   = \left[-\frac{\hbar^2}{2m}\Nabla^2+V(\r)\right] \psi(\r,t).
 \end{equation}
-Since BornAgain only aims at modelling elastic scattering,
+BornAgain concentrates on elastic scattering;
 \index{Scattering!elastic}%
-any time dependence of the potential is averaged out in the definition
+inelastic scattering is either neglected,
+\index{Scattering!inelastic}%
+or accounted for by some extra damping as discussed at the end of this subsection.
+\index{Damping!inelastic scattering}%
+Therefore, any time dependence of the potential
 \index{Potential!neutron}%
 \index{Neutron!potential}%
-$V(\r)\coloneqq \langle V(\r,t)\rangle$.
+$V(\r)\coloneqq \langle V(\r,t)\rangle$
 \nomenclature[2v130 2r040]{$V(\r)$}{Neutron potential}%
-\index{Time dependence!neutron potential}%
-Inelastic scattering,
-\index{Inelastic scattering}%
-\index{Scattering!inelastic}%
-\index{Damping!inelastic scattering}%
-\index{Loss terms|see {Damping}}%
-in principle, can be accounted for by an extra contribution
-damping.\footnote
-{This is not explicitly supported in the software,
-but users are free to increase the imaginary part of the refractive index
-\index{Refractive index!losses from inelastic scattering}%
-to emulate damping by inelastic losses.\label{Flosses}}
-Therefore we only need to consider monochromatic waves
-\index{Wave!monochromatic}%
-\index{Monochromatic wave}%
-with given frequency~$\omega$.
+ is averaged out,
+and only monochromatic waves
+with given frequency~$\omega$ are considered.
+\index{Frequency!neutron wavefunction}%
 \nomenclature[1ω 020]{$\omega$}{Frequency of incident radiation}%
 In consequence, the wavefunction
 \begin{equation}\label{Estationarywave}
@@ -115,37 +108,38 @@ In consequence, the wavefunction
 \end{equation}
 \nomenclature[1ψ030 2r040 0]{$\psi(\r)$}{Stationary wavefunction}%
 factorizes into a stationary wave and a time-dependent phase factor.
-\index{Stationary wavefunction}%
 \index{Phase factor}%
 In the following, we will characterize the incoming radiation
 not by its energy~$\hbar\omega$,
 but by its \E{vacuum wavenumber}~$K$,
-\index{Vacuum!neutron wavenumber}%
 \index{Wavenumber!neutron}%
 \nomenclature[2k120]{$K$}{Wavenumber in vacuum}%
 given by the dispersion relation
 \index{Dispersion relation!neutron}%
-\index{Neutron!dispersion relation}%
 \begin{equation}
   \hbar\omega = \frac{(\hbar K)^2}{2m}.
 \end{equation}
-We shall use Fermi's pseudopotential in the rescaled form\footnote
-{From here on, our notation differs by a factor of $4\pi$ from that in
-our 2020 paper \cite{PoHB20}.}
-\index{Fermi's pseudopotential}%
-\index{Pseudopotential!Fermi's}%
-\index{Potential!neutron}%
-\index{Neutron!potential}%
-\begin{equation}\label{Evrraw}
+We rescale the potential as
+\begin{equation}\label{EvScale}
   v(\r)
-  \coloneqq \frac{2m}{\hbar^2} V(\r)
-  = 4\pi\sum_j\left\langle b_j \delta\left(\r-\r_j(t)\right)\right\rangle.
+  \coloneqq \frac{2m}{\hbar^2} V(\r).
 \end{equation}
-The Schrödinger equation~\cref{ESchrodi1} then takes the simple form
+This deviates by a factor~$4\pi$ from our previous choice in~\cite{PoHB20}.
+The Schrödinger equation~\cref{ESchrodi1} now takes the simple form
+\index{Schrodinger@Schrödinger equation}%
 \begin{equation}\label{ESchrodi2}
   \left[\Nabla^2+K^2-v(\r)\right] \psi(\r) = 0.
 \end{equation}
-The sum runs over all nuclei exposed to~$\psi$.
+The microscopic expression for~$v(\r)$ is based on Fermi's pseudopotential,
+\index{Fermi's pseudopotential}%
+\index{Pseudopotential}%
+\index{Potential!neutron}%
+\index{Neutron!pseudopotential}%
+\begin{equation}\label{EvFermi}
+  v(\r)
+  = 4\pi\sum_j\left\langle b_j \delta\left(\r-\r_j(t)\right)\right\rangle.
+\end{equation}
+The sum runs over all nuclei in the scattering target.
 The \E{bound scattering length}~$b_j$
 \index{Scattering length}%
 \index{Bound scattering length|see{Scattering length}}%
@@ -161,13 +155,18 @@ In small-angle scattering,
 as elsewhere in neutron optics \cite{Sea89},
 \index{Neutron!optics}%
 \index{Optics!neutron}%
-the potential can be coarse-grained by spatially averaging over at least a few atomic diameters,
+the potential \cref{EvFermi}
+can be coarse-grained by spatially averaging over at least a few atomic diameters,
+yielding the \E{scattering length density} (SLD)
+\index{Scattering length density}%
+\index{SLD|see{Scattering length density}}%
+\cite[eq.\ 2.8.37]{Sea89}.
 \begin{equation}\label{Evrcoarse}
   v(\r)
-  = \sum_s b_s \rho_s(\r),
+  = \sum_s b_s \rho_s(\r).
 \end{equation}
 \nomenclature[2v030 2r040]{$v(\r)$}{Rescaled neutron potential, scattering length density (SLD)}%
-where the sum now runs over chemical elements,
+Here the sum runs over chemical elements,
 $b_s\coloneqq\langle b_j\rangle_{j\in s}$ is the bound \E{coherent} scattering length,
 \index{Coherent scattering length}%
 \index{Scattering length!coherent}%
@@ -175,7 +174,8 @@ and $\rho_s$ is a number density.
 \index{Number density}%
 \index{Density}%
 \nomenclature[1ρ032 2s010]{$\rho_s$}{Number density of chemical element~$s$}%
-In passing from \cref{Evrraw} to \cref{Evrcoarse},
+
+In passing from \cref{EvFermi} to \cref{Evrcoarse},
 we neglected Bragg scattering
 \index{Scattering!Bragg}%
 \index{Bragg scattering}%
@@ -184,31 +184,31 @@ from atomic-scale correlation,
 \index{Correlation!atomic scale}%
 and incoherent scattering from spin or isotope related fluctuations of $b_j$.
 \index{Scattering!incoherent}%
-\index{Incoherent scattering}%
 \index{Isotope}%
 \index{Spin!neutron}%
 \index{Neutron!spin}%
 In small-angle experiments,
- these types of scattering only matter as loss channels.\footnote
-{Same remark as in \Cref{Flosses}: To model these losses, use the
-\index{Refractive index!losses from Bragg scattering}%
-\index{Refractive index!losses from incoherent scattering}%
-imaginary part of the refractive index.}
+ incoherent scattering only contributes a diffuse background.
+Furthermore, it is possible
+that it causes a noticeable attenuation of the incoming or scattered radiation.
+Other loss channels are elastic wide-angle scattering
+\index{Loss channels}
+\index{Scattering!wide-angle}%
+and inelastic scattering.
+\index{Scattering!inelastic}%
+They can all be lumped into an ad-hoc increment of the
+imaginary part of the refractive index,
+\index{Refractive index!loss terms}%
+which otherwise, at the microscopic level~\cref{EvFermi},
+accounts for absorption
+\index{Absorption}
+only.
 Furthermore, incoherent scattering, as inelastic scattering,
  contributes to the diffuse background in the detector.
 \index{Scattering!diffuse}%
-\index{Scattering!inelastic}%
 \index{Inelastic scattering}%
 \index{Background!diffuse}%
 \index{Detector!background}%
-In conclusion, the coarse-grained neutron optical potential~\cref{Evrcoarse}
-\index{Potential!optical}%
-\index{Neutron!optical potential}%
-\index{Neutron!potential}%
-is just a \E{scattering length density} (SLD)
-\index{Scattering length density}%
-\index{SLD|see{Scattering length density}}%
-\cite[eq.\ 2.8.37]{Sea89}.
 
 %===============================================================================
 \subsection{Neutrons in a magnetic field}\label{SnSpinor}
