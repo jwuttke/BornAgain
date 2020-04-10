@@ -473,20 +473,91 @@ counted in a detector is proportional to the squared electric field amplitude.
 At constant frequency, the prefactor is ignorable
 so that we can use the quantum-mechanical flux~\cref{EJ} also for x-rays.
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Scattering in Born approximation}\label{SBA}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Most neutron and X-ray diffraction experiments
+are adequately described as plane-wave scattering in first order
+Born approximation.
+This is not the case for the grazing-incidence experiments addressed by BornAgain.
+Nonetheless, for the clarity of exposition,
+in this section we review the standard plane-wave scattering theory,
+before in the next section we turn to distorted waves.
+
+%===============================================================================
+\subsection{Born approximation}\label{SxDWBA}
+%===============================================================================
+
+In function-space notation, the perturbed wave equation~\cref{EWAVE} reads
+\begin{equation}\label{E1Wave3}
+  (\TDo-\TV)\ket{\v\Psi} = 0.
+\end{equation}
+Choose an incident plane wave $\v\Phi_\si$ that solves \cref{E1Wave3} in vacuum ($\TV=0$).
+With the Green function
+\index{Green function}%
+\nomenclature[2g170 2r020 2r021]{$\TGo(\r,\r')$}{Generic (possibly tensorial) Green function}%
+\begin{equation}\label{EdefG}
+   \TGo \coloneqq \TDo^{-1}
+\end{equation}
+we can transform~\cref{E1Wave3} into a Lippmann-Schwinger equation,
+\index{Lippmann-Schwinger equation}%
+\begin{equation}\label{E1LS3}
+   \ket{\v\Psi} = \ket{\v\Phi_\si} + \TGo\TV\ket{\v\Psi}.
+\end{equation}
+Operate on both sides from the left with~$\TDo$
+to see how this equation reduces to~\cref{E1Wave3}.
+
+The Lippmann-Schwinger equation can be resolved by iterative substitution
+into an infinite series,
+\begin{equation}\label{E1BornSeries}
+  \ket{\v\Psi}
+  = \ket{\v\Phi_\si}
+  + \TGo\TV \ket{\v\Phi_\si}
+  + \TGo\TV \TGo\TV  \ket{\v\Phi_\si}
+ + \ldots
+\end{equation}
+\index{Perturbation expansion}%
+\index{Born!expansion (or series)}%
+This is the \E{Born expansion} or \E{Born series}.\footnote
+{Named after Max Born who introduced it in quantum mechanics.
+It is actually due to Lord Rayleigh who devised it for sound,
+and later also applied it to electromagnetic waves,
+which resulted in his famous explanation of the blue sky.}
+In \E{first-order Born approximation},
+\index{Born approximation}%
+only the linear order in $\TV$ is retained,
+\begin{equation}\label{E1Born1}
+  \ket{\v\Psi}
+  = (1 + \TGo\TV) \ket{\v\Phi_\si}.
+\end{equation}
+In scattering experiments we are only interested in the scattered
+wave at positions $\r$ that are far away from the sample ($r\to\infty$)
+and that are not illuminated by the distorted (refracted or reflected) incident beam,
+\index{Scattered radiation!Born approximation}%
+\index{Wave!scattered}%
+\begin{equation}\label{E1BornS}
+  \ket{\v\Psi^\infty_\text{s}}
+  \coloneqq \TGo^\infty\TV\ket{\v\Phi_\si}.
+\end{equation}
+\nomenclature[1ψ034 2s000 0 2r040]{$\psi_\text{s}(\r)$}{Scattered wavefunction}%
+\nomenclature[2s000 0]{s}{Subscript ``scattered''}%
+At this point we need the far-field Green function~$\TGo^\infty$.
+
 %===============================================================================
 \subsection{Vacuum Green function}\label{SvacGreen}
 %===============================================================================
 
 The retarded Green function describes the propagation of radiation
 that emanates from a point source.
-It is an essential ingredient for the scattering theory developed below.
-The vacuum Green function~$\TGo$ obyes the differential equation
-\begin{equation}
+The retarded vacuum Green function~$\TGo$ obyes the differential equation
+\begin{equation}\label{EdefGo}
   \TDo \TGo(\r,\r') = \v1 \delta(\r-\r'),
 \end{equation}
 plus a boundary condition to ensure that the solution is an \E{outgoing} wave.
 We write a scalar outgoing spherical wave as
-\begin{equation}
+\begin{equation}\label{Egr}
   g(r)
   \coloneqq \frac{\e^{iKr}}{4\pi r}.
 \end{equation}
@@ -502,7 +573,7 @@ The retarded vacuum Green function is then
 Ultimately, we will be interested in the radiation intensity
 at a detector loction~$\r$ that is far away from the scattering target.
 We expand for $r\gg r'$:
-\begin{equation}
+\begin{equation}\label{Effa}
   \left|\r-\r'\right|
   \doteq \sqrt{r^2-2\r\,\r'}
   \doteq r - \frac{\r\,\r'}{r}
@@ -511,15 +582,48 @@ We expand for $r\gg r'$:
 \nomenclature[2f000]{f}{Subscript ``final''}%
 where we have introduced the outgoing wavevector
 $  \k_\sf\coloneqq K \v{\hat r}$.
+We define the projection operator
+\begin{equation}\label{EdefP}
+  \v{P}
+  = \left\{ \begin{array}{ll}
+      1                                        &\text{~~~for neutrons (scalar),}\\
+      \v1                                      &\text{~~~for neutrons (spinorial),}\\
+      \v1 - \v{\hat k}_\sf\otimes\v{\hat k}_\sf &\text{~~~for X-rays.}
+  \end{array}\right.
+\end{equation}
 With this, we find the far-field asymptote of the Green function,
 \begin{equation}\label{EGoInfty}
   \TGo^\infty(\r,\r')
-  = \left\{ \begin{array}{ll}
-      g(r)\e^{-i\k_\sf\r'}                        &\text{~~~for neutrons (scalar),}\\
-      \v1 g(r)\e^{-i\k_\sf\r'}                    &\text{~~~for neutrons (spinorial),}\\
-      (\v1 - \v{\hat k}_\sf\otimes\v{\hat k}_\sf) g(r) \e^{-i\k_\sf\r'} &\text{~~~for X-rays.}
-  \end{array}\right.
+  = \v{P}g(r)\e^{-i\k_\sf\r'}.
 \end{equation}
+
+%===============================================================================
+\subsection{Differential cross section}\label{Sxsect0}
+%===============================================================================
+
+The differential scattering cross section is defined as
+\index{Cross section}%
+\index{Scattering!cross section}%
+\index{Incident radiation!flux|(}%
+\index{Scattered radiation!flux}%
+\index{Born approximation!elastic scattering cross section}%
+\index{Distorted-wave Born approximation!elastic cross section}%
+\begin{equation}\label{E1xsectiondef}
+  \xElas
+  \coloneqq  \frac{r^2 J_\sf(\r)}{J_\si}.
+\end{equation}
+\nomenclature[1ω120]{$\Omega$}{Solid angle}%
+\nomenclature[1σ020]{$\sigma$}{Scattering or absorption cross section}%
+In Sect.~\ref{SdensityMatrix}, we have discussed how to obtain fluxes~$J$
+from wave amplitudes.
+With \cref{E1BornS} and \cref{EGoInfty}, we find
+\begin{equation}\label{E1xsectiondef}
+  \xElas
+  = \frac{r^2 {|\v\Psi^\infty_\text{s}(\r)|}^2}{|\v\Phi_\si|^2}
+  = \frac{1}{16\pi^2} \frac{\braket{\Phi_\si|\TV^+\v{P}\TV|\Phi_\si}}{\braket{\Phi_\si|\Phi_\si}}
+\end{equation}
+
+Let us assume that the incident wave is normalized to unity, ${|\v\Phi_\si|}^2=1$.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Distorted-wave Born approximation}\label{SDWBA}
@@ -787,7 +891,7 @@ also obeys a Lippmann-Schwinger equation,
 To verify, operate again with $\TDo$ from the left.
 Resolve algebraically for
 \begin{equation}
-  \TG  = {(\v1-\TGo\TU)}^{-1} \TGo \eqqcolon \TR\TGo.
+  \TG  = {(\v1-\TGo\TU)}^{-1} \TGo \equiv \TR\TGo.
 \end{equation}
 To make use of~\cref{EPhi},
 we insert a complete projector,
