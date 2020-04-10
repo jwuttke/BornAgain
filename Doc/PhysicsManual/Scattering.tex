@@ -485,30 +485,23 @@ The vacuum Green function~$\TGo$ obyes the differential equation
   \TDo \TGo(\r,\r') = \v1 \delta(\r-\r'),
 \end{equation}
 plus a boundary condition to ensure that the solution is an \E{outgoing} wave.
-In the scalar case, this solution is
-\begin{equation}\label{EGo1}
-  G_0(\r,\r') = \frac{\e^{iK|\r-\r'|}}{4\pi|\r-\r'|}
-  \eqqcolon g(|\r-\r'|);
+We write a scalar outgoing spherical wave as
+\begin{equation}
+  g(r)
+  \coloneqq \frac{\e^{iKr}}{4\pi r}.
 \end{equation}
-for polarized neutrons,
-\begin{equation}\label{EGo2}
-  \TGo(\r,\r') = \v1 g(|\r-\r'|);
+The retarded vacuum Green function is then
+\begin{equation}\label{EGo}
+  \TGo(\r,\r')
+  = \left\{ \begin{array}{ll}
+      g(|\r-\r'|)                                   &\text{~~~for neutrons (scalar),}\\
+      \v1 g(|\r-\r'|)                               &\text{~~~for neutrons (spinorial),}\\
+      (\v1 + K^{-2}\Nabla\otimes\Nabla) g(|\r-\r'|)  &\text{~~~for X-rays \cite{DiWa84}.}
+  \end{array}\right.
 \end{equation}
-for X-rays \cite{DiWa84}
-\begin{equation}\label{EGo3}
-  \TGo(\r,\r') = (\v1 + K^{-2}\Nabla\otimes\Nabla) g(|\r-\r'|).
-\end{equation}
-All these functions obye source-sink reciprocity,
-\begin{equation}\label{EGoReci}
-  \TGo(\r,\r')=\TGo(\r',\r),
-\end{equation}
-Ultimately, we will be interested in the radiation intensity in a detector
-that is located far away from the scattering target.
-Therefore we need the far-field limit of the Green function,
-\begin{equation}\label{EGinftydef}
-  \TGo^\infty(\r,\r')\coloneqq \lim_{r\to\infty} \TGo(\r,\r').
-\end{equation}
-We expand for $\r'$ with $r'\ll r$:
+Ultimately, we will be interested in the radiation intensity
+at a detector loction~$\r$ that is far away from the scattering target.
+We expand for $r\gg r'$:
 \begin{equation}
   \left|\r-\r'\right|
   \doteq \sqrt{r^2-2\r\,\r'}
@@ -517,38 +510,15 @@ We expand for $\r'$ with $r'\ll r$:
 \end{equation}
 \nomenclature[2f000]{f}{Subscript ``final''}%
 where we have introduced the outgoing wavevector
-$  \k_\sf\coloneqq K \r / r$.
-We apply this to~\cref{EGo1},
-\index{Green function!homogeneous material}%
-and obtain in leading order the far-field Green function
-\begin{equation}\label{EGoFar1}
-  G_0^\infty(\r,\r')
-  = g(r)\psi^*_\sf(\r'),
-\end{equation}
-where $g$ is the outgoing spherical wave introduced in \cref{EGo1},
-\begin{equation}%\label{EPsisfar}
-  \psi_\sf(\r) \coloneqq  \e^{i\k_\sf \r}
-\end{equation}
-\nomenclature[1ψ034 2f000 2r040]{$\psi_\sf(\r)$}{Plane
-  wave propagating from the sample towards the detector}%
-is a plane wave propagating towards the detector,
-and $\psi^*$ designates the complex conjugate of $\psi$.
-
-\begin{equation}\label{EGoFar2}
-  \TGo^\infty(\r,\r') = (\v1 - \v{\hat r}\otimes\v{\hat r}) G_0(\r,\r')
-\end{equation}
-in the polarized neutron as in the X-ray case.
-We apply reciprocity \cref{EGoReci}
-to \cref{EGoFar2,EGoFar1} and insert the resulting
-\begin{equation}
-  \TGo^\infty(\r,\r')=\v1\psi^*_\sf(\r)g(r')
-\end{equation}
-into~\cref{EGrspace} to obtain
-\nomenclature[2g174 2far]{$\TG^\infty(\r,\r')$}{Far-field
-   approximation to the Green function $G(\r,\r')$}%
-\begin{equation}\label{EGresult}
-  \lim_{r'\to\infty}\TG(\r,\r')
-  = \sum_\alpha \v\Phi_{\k_\sf\alpha}(\r)\otimes \hu_\alpha g(r').
+$  \k_\sf\coloneqq K \v{\hat r}$.
+With this, we find the far-field asymptote of the Green function,
+\begin{equation}\label{EGoInfty}
+  \TGo^\infty(\r,\r')
+  = \left\{ \begin{array}{ll}
+      g(r)\e^{-i\k_\sf\r'}                        &\text{~~~for neutrons (scalar),}\\
+      \v1 g(r)\e^{-i\k_\sf\r'}                    &\text{~~~for neutrons (spinorial),}\\
+      (\v1 - \v{\hat k}_\sf\otimes\v{\hat k}_\sf) g(r) \e^{-i\k_\sf\r'} &\text{~~~for X-rays.}
+  \end{array}\right.
 \end{equation}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -838,6 +808,18 @@ In real-space coordinates,
 \end{equation}
 At this point, we need the vacuum Green function~$\TGo$.
 
+We apply reciprocity \cref{EGoReci}
+to \cref{EGoFar2,EGoFar1} and insert the resulting
+\begin{equation}
+  \TGo^\infty(\r,\r')=\v1\psi^*_\sf(\r)g(r')
+\end{equation}
+into~\cref{EGrspace} to obtain
+\nomenclature[2g174 2far]{$\TG^\infty(\r,\r')$}{Far-field
+   approximation to the Green function $G(\r,\r')$}%
+\begin{equation}\label{EGresult}
+  \lim_{r'\to\infty}\TG(\r,\r')
+  = \sum_\alpha \v\Phi_{\k_\sf\alpha}(\r)\otimes \hu_\alpha g(r').
+\end{equation}
 
 %--------------------------------------------------------------------------------
 \begin{figure}[tb]
