@@ -407,71 +407,31 @@ the scalar neutron wavefunction~$\psi$,
 the spinor $\v{\Psi}$, or the electric vector field~$\v{E}$, as applicable.
 
 %===============================================================================
-\subsection{Density operator, flux}\label{SdensityMatrix}
+\subsection{Flux}\label{Sflux}
 %===============================================================================
 
-An eigenfunction of the vacuum wave operator~$\TDo$ is a plane wave
-with real wavevector~$\k$.
-\nomenclature[2k040]{$\k$}{Wavevector}%
-In the spinor or vector case, its polarization shall be expressed
-in an orthonormal base $\{\v{u}_\alpha\}$
-with $\alpha=1,2$
-(for spin 1/2 or for traverse electric field in vacuum).
-The corresponding eigenstate can be written as ket $\ket\ka$,
-the real-space coordinate representation as
-\begin{equation}\label{EvacWave}
-   \v\Psi_\ka(\r)
-   \equiv \braket{\r|\ka}
-   = {(2\pi)}^{-3/2} \v{u}_\alpha \e^{i\k\r}.
-\end{equation}
-The incident neutron beam in an actual scattering experiment
-is not such a \E{pure} state,
-\index{Pure quantum state}%
-\index{Quantum state!pure vs mixed}%
-but a statistical mixture of states,
-\index{Mixed quantum state}%
-and must therefore be described by the density operator
-\index{Density operator}%
-\nomenclature[1ρ020]{$\hat\rho$}{Density operator}%
-\begin{equation}\label{EdefRho}
-  \v\rho \coloneqq \sum_\ka p_\ka \ket\ka\bra\ka,
-\end{equation}
-where $p_\ka$ quantifies the contribution of pure state~$\ket\ka$.
-\nomenclature[2p022 2j000]{$p_\ka$}{Weight of state~$ket\ka$ in the density operator}%
-
-In quantum mechanics, the current density, or flux, is measured by the operator
+In quantum mechanics, the current density, or flux, is
 \begin{equation}\label{EdefJop}
-  \v{J}
-  \coloneqq \frac{1}{2}\big[\ket{\r}\bra{\r}\k
-                              + \k\ket{\r}\bra{\r} \big].
+  \braket{\v{J}}
+  = \Bra{\v\Psi}\frac{\ket{\r}\bra{\r}\k + \k\ket{\r}\bra{\r}}{2}\Ket{\v\Psi}.
 \end{equation}
 \index{Flux!neutron}%
 \index{Current density|see{Flux}}%
-With \cref{EdefRho}, we obtain
-\begin{equation}\label{EJ}
-  \v{J}(\r)
-  \coloneqq \Tr(\v\rho\v{J})
-  = \sum_\ka p_\ka\, \text{Re}(\k)\, {\left|{\v\Psi_\ka}\right|}^2.
-\end{equation}
-\nomenclature[2j150 2r040]{$\v{J}(\r)$}{Flux}%
-In the electromagnetic case, the energy flux is given by the Poynting vector,
+The electromagnetic energy flux is given by the Poynting vector,
 \index{Poynting vector}%
 \index{X-ray!flux}%
 \index{Flux!X-rays}%
-which for complex fields takes the form
 \begin{equation}
   \v{S}\coloneqq \Re(\v E(\r,t))\times\Re(\v H(\r,t)).
 \end{equation}
 \nomenclature[2s150]{$\v S$}{Poyinting vector}%
-For a stationary plane wave $\v E(\r)=\v E_\k \e^{i\k\r}$ in vacuum,
-we find
-\begin{equation}
-  S = \frac{1}{2\omega\mu_0} |\v E_\k|^2 \Re \k,
+In both cases, the flux is proportional to the
+squared modulus of the wave amplitude,
+\begin{equation}\label{EFLUX}
+   J \propto |\v\Psi(\r)|^2.
 \end{equation}
-which confirms the common knowledge that the radiation intensity
-counted in a detector is proportional to the squared electric field amplitude.
-At constant frequency, the prefactor is ignorable
-so that we can use the quantum-mechanical flux~\cref{EJ} also for x-rays.
+Prefactors are ignorable as they cancel
+under the normalization of the scattered to the incoming flux.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -487,7 +447,7 @@ in this section we review the standard plane-wave scattering theory,
 before in the next section we turn to distorted waves.
 
 %===============================================================================
-\subsection{Born approximation}\label{SxDWBA}
+\subsection{Born approximation}\label{SxBA}
 %===============================================================================
 
 In function-space notation, the perturbed wave equation~\cref{EWAVE} reads
@@ -543,7 +503,13 @@ and that are not illuminated by the distorted (refracted or reflected) incident 
 \end{equation}
 \nomenclature[1ψ034 2s000 0 2r040]{$\psi_\text{s}(\r)$}{Scattered wavefunction}%
 \nomenclature[2s000 0]{s}{Subscript ``scattered''}%
-At this point we need the far-field Green function~$\TGo^\infty$.
+Spelled out in real-space representation,
+\begin{equation}\label{E1PsiS}
+  \v\Psi_\text{s}^\infty(\r)
+  = \int\!\d^3r'\,\TGo^\infty(\r,\r')\TV(\r')\v\Phi_\si(\r').
+\end{equation}
+To proceed further,
+we need the far-field Green function~$\TGo^\infty$.
 
 %===============================================================================
 \subsection{Vacuum Green function}\label{SvacGreen}
@@ -614,16 +580,56 @@ The differential scattering cross section is defined as
 \end{equation}
 \nomenclature[1ω120]{$\Omega$}{Solid angle}%
 \nomenclature[1σ020]{$\sigma$}{Scattering or absorption cross section}%
-In Sect.~\ref{SdensityMatrix}, we have discussed how to obtain fluxes~$J$
-from wave amplitudes.
-With \cref{E1BornS} and \cref{EGoInfty}, we find
+With fluxes given by~\cref{EFLUX}
+and with the scattered far-field denoted as in \cref{SxBA},
 \begin{equation}\label{E1xsectiondef}
   \xElas
-  = \frac{r^2 {|\v\Psi^\infty_\text{s}(\r)|}^2}{|\v\Phi_\si|^2}
-  = \frac{1}{16\pi^2} \frac{\braket{\Phi_\si|\TV^+\v{P}\TV|\Phi_\si}}{\braket{\Phi_\si|\Phi_\si}}
+  = \frac{r^2 {|\v\Psi^\infty_\text{s}(\r)|}^2}{|\v\Phi_\si|^2}.
+\end{equation}
+At this point,
+we choose the incident $\v\Phi_\si$ to be
+a normalized plane wave
+\begin{equation}\label{EPlaneIn}
+   \v\Phi_\si(\r)
+   = {(2\pi)}^{-3/2} \v{\hat u}_\si \e^{i\k_\si\r}.
+\end{equation}
+We combine \cref{E1PsiS,EGoInfty,EPlaneIn} to find
+\begin{equation}\label{E1PsiS2}
+  \v\Psi_\text{s}^\infty(\r)
+  = g(r) \v{P} \TV(\v{q})\v{\hat u}_\si
+\end{equation}
+with the Fourier transformed potential
+\begin{equation}
+  \TV(\v{q})
+  = \int\!\d^3r\,\e^{-i\v{q}\r}\TV(\r)
+\end{equation}
+and the scattering vector\footnote
+{With this choice of sign,
+\index{Sign convention!scattering vector}%
+$\hbar\q$ is the momentum
+\index{Momentum transfer|see {Scattering vector}}%
+\E{gained} by the scattered neutron,
+and \E{lost} by the sample.
+In much of the literature the opposite convention is prefered,
+since it emphasizes the sample physics over the scattering experiment.
+However, when working with two-dimensional detectors
+it is highly desirable to express pixel coordinates
+\index{Coordinate system}
+\index{Detector!pixel coordinate}
+and scattering vector components
+with respect to equally oriented coordinate axes,
+which can only be achieved by the convention~\cref{Eq}.}
+\index{Scattering!vector}%
+\begin{equation}\label{Eq}
+  \q\coloneqq \k_\sf-\k_\si.
+\end{equation}
+\nomenclature[2q040]{$\q$}{Scattering vector}%
+With all this, the cross section \cref{E1xsectiondef} becomes
+\begin{equation}\label{E1xsectiondef}
+  \xElas
+  = \frac{1}{16\pi^2} \braket{\v{\hat u}_\si\TV^+(\v{q})\v{P}\TV(\v{q})\v{\hat u}_\si}.
 \end{equation}
 
-Let us assume that the incident wave is normalized to unity, ${|\v\Phi_\si|}^2=1$.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Distorted-wave Born approximation}\label{SDWBA}
@@ -1098,6 +1104,39 @@ which can only be achieved by the convention~\cref{Eq}.}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Coherent vs incoherent scattering}\label{Scoherlen}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%===============================================================================
+\subsection{Density operator}\label{SdensityMatrix}
+%===============================================================================
+
+An eigenfunction of the vacuum wave operator~$\TDo$ is a plane wave
+with real wavevector~$\k$.
+\nomenclature[2k040]{$\k$}{Wavevector}%
+In the spinor or vector case, its polarization shall be expressed
+in an orthonormal base $\{\v{u}_\alpha\}$
+with $\alpha=1,2$
+(for spin 1/2 or for traverse electric field in vacuum).
+The corresponding eigenstate can be written as ket $\ket\ka$,
+the real-space coordinate representation as
+\begin{equation}\label{EvacWave}
+   \v\Psi_\ka(\r)
+   \equiv \braket{\r|\ka}
+   = {(2\pi)}^{-3/2} \v{u}_\alpha \e^{i\k\r}.
+\end{equation}
+The incident neutron beam in an actual scattering experiment
+is not such a \E{pure} state,
+\index{Pure quantum state}%
+\index{Quantum state!pure vs mixed}%
+but a statistical mixture of states,
+\index{Mixed quantum state}%
+and must therefore be described by the density operator
+\index{Density operator}%
+\nomenclature[1ρ020]{$\hat\rho$}{Density operator}%
+\begin{equation}\label{EdefRho}
+  \v\rho \coloneqq \sum_\ka p_\ka \ket\ka\bra\ka,
+\end{equation}
+where $p_\ka$ quantifies the contribution of pure state~$\ket\ka$.
+\nomenclature[2p022 2j000]{$p_\ka$}{Weight of state~$ket\ka$ in the density operator}%
 
 %===============================================================================
 \subsection{Coherence length}
