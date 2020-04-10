@@ -13,6 +13,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \def\hu{{\v{\hat u}}}
+\def\hz{{\v{\hat z}}}
 \def\ka{{\k\alpha}}
 \def\TD{\v{D}}
 \def\Td{\v{\delta}}
@@ -625,11 +626,55 @@ which can only be achieved by the convention~\cref{Eq}.}
 \end{equation}
 \nomenclature[2q040]{$\q$}{Scattering vector}%
 With all this, the cross section \cref{E1xsectiondef} becomes
-\begin{equation}\label{E1xsectiondef}
+\begin{equation}\label{Exsection}
   \xElas
   = \frac{1}{16\pi^2} \braket{\v{\hat u}_\si\TV^+(\v{q})\v{P}\TV(\v{q})\v{\hat u}_\si}.
 \end{equation}
 
+%===============================================================================
+\subsection{X-ray cross section and polarization factor}\label{Spolfac}
+%===============================================================================
+
+In the electromagnetic case,
+per \cref{SXwave} and~\cref{ETV},
+we only consider scalar potentials.
+There is, however, a nontrivial projector~$\v{P}$~\cref{EdefP}
+that ensures transversality.
+In consequence, the cross section~\cref{E1xsectiondef} can be written
+\begin{equation}\label{ExsectionX}
+  \xElas
+  = \frac{1}{16\pi^2} \tilde{P} |\TV(\v{q})|^2
+\end{equation}
+with the polarization factor
+\begin{equation}
+  \tilde{P}
+  \coloneqq \v{\hat u}_\si\v{P}\v{\hat u}_\si
+  = 1 - (\v{\hat k}_\sf\v{\hat u}_\si)^2.
+\end{equation}
+It will be evaluated later, % TODO in~\cref{},
+when we discuss grazing-incidence and reflectometry geometry.
+
+%===============================================================================
+\subsection{Neutron cross section and polarization analysis}\label{Spolan}
+%===============================================================================
+
+For neutrons, the projector~$\v{P}$~\cref{EdefP}
+is just the identity matrix,
+and therefore can be omitted from the cross section~\cref{E1xsectiondef}.
+In the absence of magnetic scattering, the potential is scalar,
+and the cross section is simply
+\begin{equation}\label{ExsectionN}
+  \xElas
+  = \frac{1}{16\pi^2} |V(\v{q})|^2.
+\end{equation}
+In the presence of magnetic scattering,
+additional insight can be gained by polarization analysis of the scattered radiation.
+If the polarization analyzer is set in direction~$\hu_\sf$,
+then instead of~\cref{Exsection} one finds
+\begin{equation}\label{ExsectionN}
+  \xElas
+  = \frac{1}{16\pi^2} |\hu_\si \TV(\v{q})\hu_\sf|^2.
+\end{equation}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Distorted-wave Born approximation}\label{SDWBA}
