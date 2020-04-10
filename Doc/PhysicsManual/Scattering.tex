@@ -749,13 +749,14 @@ into the \E{distorted wave operator}
 \begin{equation}\label{EdefD}
   \TD(\r) \coloneqq \TDo - \TL(\r)
 \end{equation}
-that governs the unperturbed distorted wave equation
+that governs the unperturbed distorted-wave equation
 \index{Unperturbed distorted wave equation}%
 \index{Distorted wave!wave equation}%
 \index{Wave equation!unperturbed distorted}%
 \begin{equation}\label{EDPsi0}
   \TD(\r)\v\Phi(\r) = 0.
 \end{equation}
+This equation is to be solved nonperturbatively by analytical or numerical means.
 The solutions~$\v\Phi$ are the \E{distorted} waves
 \index{Distorted wave}%
 \index{Wave!distorted}%
@@ -817,7 +818,7 @@ the average vertical refractive index profile~$\overline{n}(z)$.
 \index{Refractive index!profile}%
 
 %===============================================================================
-\subsection{Scattering cross section in DWBA}\label{SxDWBA}
+\subsection{Scattered wave}\label{SxDWBA}
 %===============================================================================
 
 With the conventions \cref{Edecompose,EdefD},
@@ -852,33 +853,42 @@ In analogy with~\cref{E1BornS}, the scattered wave far away from the sample is
 \subsection{The DWBA far-field Green function}\label{SDWGreen}
 %===============================================================================
 
-From \cref{SxDWBA}, the task is left over
-to determine the far-field Green function~$\TG^\infty$.
-Assume we know the Green function of the undistorted wave equation~\cref{EWave1},
-\begin{equation}\label{EdefG0}
-  \TGo\coloneqq\TDo^{-1}.
-\end{equation}
-Write the distorted wave equation~\cref{EWave2}
-as a Lippmann-Schwinger equation
+As said in~\cref{Sdecompose},
+ $\ket{\v\Phi_\si}$ is a nonperturbative solution
+of the distorted-wave equation~\cref{EDPsi0}.
+Its actual computation for multilayer systems will be discussed in \cref{sec:Multilayers}.
+Here, we consider a purely formal solution.
+We posit the Lippmann-Schwinger equation
 \begin{equation}\label{ELS2}
-  \ket{\v\Phi}
-  = \ket\ka + \TGo\TU\ket{\v\Phi}.
+  \ket{\v\Phi_\si}
+  = \ket{\v\Phi_\text{e}} + \TGo\TL\ket{\v\Phi_\si},
 \end{equation}
-To verify, operate with $\TDo$ from the left.
-Solve formally through simple algebraic manipulations,
+which implies~\cref{EDPsi0} and ensures the boundary condition that
+upstream the scattering target
+$\ket{\v\Phi_\si}$ coincide with the exciting wave~$\ket{\v\Phi_\text{e}}$.
+The latter obyes the vacuum wave equation
+\begin{equation}
+  \TDo\ket{\v\Phi_\text{e}}=0.
+\end{equation}
+The Lippmann-Schwinger equation can be algebraically inverted to
+yield the formal solution
 \begin{equation}\label{EPhi}
-  \ket{\v\Phi} = {(\v1-\TGo\TU)}^{-1}\ket\ka \eqqcolon \TR\ket\ka.
+  \ket{\v\Phi_\si} = {(\v1-\TGo\TL)}^{-1}\ket{\v\Phi_\text{e}}
+\end{equation}
+This motivates the introduction of the operator
+\begin{equation}
+  \TR \coloneqq {(\v1-\TGo\TL)}^{-1}.
 \end{equation}
 Following Dietrich and Wagner \cite{DiWa84,DiWa85,DiWa16},
 we note that the distorted-wave Green function~\cref{EdefG}
 also obeys a Lippmann-Schwinger equation,
 \begin{equation}
-   \TG = \TGo + \TGo\TU\TG.
+   \TG = \TGo + \TGo\TL\TG
 \end{equation}
-To verify, operate again with $\TDo$ from the left.
+[to verify, operate with $\TDo$ from the left, and reshuffle to recover $(\TDo-\TL)\TG=\v1$].
 Resolve algebraically for
 \begin{equation}
-  \TG  = {(\v1-\TGo\TU)}^{-1} \TGo \equiv \TR\TGo.
+  \TG  = {(\v1-\TGo\TL)}^{-1} \TGo \equiv \TR\TGo.
 \end{equation}
 To make use of~\cref{EPhi},
 we insert a complete projector,
