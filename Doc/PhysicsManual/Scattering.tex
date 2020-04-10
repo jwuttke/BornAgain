@@ -680,23 +680,19 @@ then instead of~\cref{Exsection} one finds
 \section{Distorted-wave Born approximation}\label{SDWBA}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-To describe scattering from a condensed-matter sample,
-\index{Scattering!target|see{Sample}}%
-\index{Target|see{Sample}}%
-\index{Sample}%
-the wave equation is solved through a perturbation expansion.
-The ordinary form of this expansion, the \E{Born approximation} (BA),
-\index{BA|see{Born approximation}}%
-\index{Born approximation}%
-describes the scattering of a plane wave.
+As we have seen in the preceding \cref{SBA},
+the Born approximation leads to particularly simple results when applied
+to the scattering of plane waves.
 Under grazing incidence, however,
 refraction
 \index{Refraction}%
 and reflection
 \index{Reflection}%
-can distort an incident plane wave
-quite substantially.
-This motivates the
+often distort the incoming and the scattered wave in ways
+that cannot be accounted for by perturbative scattering theory.
+One rather needs to compute these distortions by analytical or numerical means,
+then apply the Born approximation to the so obtained distorted wave fronts.
+This is called the
 \index{Distorted-wave Born approximation}%
 \E{distorted-wave Born approximation} (DWBA).\footnote
 {The DWBA was originally devised by Massey and Mott (ca 1933)
@@ -715,8 +711,6 @@ was provided by Dietrich and Wagner (1984/85)
 for X-rays \cite{DiWa84} and neutrons \cite{DiWa85}.
 Unfortunately, their work was overlooked in much of the later literature,
 which often fell back to less convincing derivations.}
-In this section, we provide a self-contained derivation
-based on the unified neutron and X-ray wave equation~\cref{EWAVE}.
 
 %===============================================================================
 \subsection{Distortion versus perturbation}\label{Sdecompose}
@@ -752,7 +746,7 @@ into the \E{distorted wave operator}
 \index{Distorted wave!operator}%
 \index{Wave!operator!distorted}%
 \nomenclature[2d138 2r040]{$\TD(\r)$}{Differential operator in the wave equation}%
-\begin{equation}
+\begin{equation}\label{EdefD}
   \TD(\r) \coloneqq \TDo - \TL(\r)
 \end{equation}
 that governs the unperturbed distorted wave equation
@@ -826,64 +820,25 @@ the average vertical refractive index profile~$\overline{n}(z)$.
 \subsection{Scattering cross section in DWBA}\label{SxDWBA}
 %===============================================================================
 
-Altogether, we need to consider three different wave equations,
-which we write here in function-space notation:
-The vacuum wave equation that is solved by plane-wave states \cref{EvacWave}
-\begin{equation}\label{EWave1}
-  \TDo \ket\ka = 0;
-\end{equation}
-the unperturbed distorted-wave equation \cref{EDPsi0},
-\begin{equation}\label{EWave2}
-  \TD\ket{\v\Phi} = 0;
-\end{equation}
-and the wave equation \cref{EWAVE} of the full, perturbed problem
+With the conventions \cref{Edecompose,EdefD},
+we rewrite the wave equation \cref{EWAVE} of the full, perturbed problem as
 \begin{equation}\label{EWave3}
   (\TD-\TU)\ket{\v\Psi} = 0.
 \end{equation}
-To solve~\cref{EWave3},
-we first transform it into a Lippmann-Schwinger equation,
+It is solved in perfect analogy with~\cref{SxBA}.
+In place of~\cref{E1LS3}, we have the Lippmann-Schwinger equation
 \index{Lippmann-Schwinger equation}%
 \begin{equation}\label{ELS3}
    \ket{\v\Psi} = \ket{\v\Phi_\si} + \TG\TU\ket{\v\Psi}
 \end{equation}
-with the Green function
+with the distorted-wave Green function
 \index{Green function}%
-\nomenclature[2g170 2r020 2r021]{$\TG(\r,\r')$}{Generic (possibly tensorial) Green function}%
+\nomenclature[2g170 2r020 2r021]{$\TG(\r,\r')$}{Distorted-wave Green function}%
 \begin{equation}\label{EdefG}
    \TG \coloneqq \TD^{-1}
 \end{equation}
-and with the incident distorted wave~$\ket{\v\Phi_\si}$.
-To see that the left-hand side of~\cref{ELS3}
-solves indeed the wave equation~\cref{EWave3},
-operate from the left with~$\TD$ on both sides of~\cref{ELS3}.
-
-The Lippmann-Schwinger equation can be resolved by iterative substitution
-into an infinite series,
-\begin{equation}\label{EBornSeries}
-  \ket{\v\Psi}
-  = \ket{\v\Phi_\si}
-  + \TG\TU \ket{\v\Phi_\si}
-  + \TG\TU \TG\TU  \ket{\v\Phi_\si}
- + \ldots
-\end{equation}
-\index{Perturbation expansion}%
-\index{Born!expansion (or series)}%
-This is the \E{Born expansion} or \E{Born series}.\footnote
-{Named after Max Born who introduced it in quantum mechanics.
-It is actually due to Lord Rayleigh who devised it for sound,
-and later also applied it to electromagnetic waves,
-which resulted in his famous explanation of the blue sky.}
-As long as $\TU$ is a small perturbation, the series converges quickly.
-In \E{first-order Born approximation},
-\index{Born approximation}%
-only the linear order in $\TU$ is retained,
-\begin{equation}\label{EBorn1}
-  \ket{\v\Psi}
-  = (1 + \TG\TU) \ket{\v\Phi_\si}.
-\end{equation}
-In scattering experiments we are only interested in the scattered
-wave at positions $\r$ that are far away from the sample ($r\to\infty$)
-and that are not illuminated by the distorted (refracted or reflected) incident beam,
+and with $\ket{\v\Phi_\si}$ now designating a distorted incident wave.
+In analogy with~\cref{E1BornS}, the scattered wave far away from the sample is
 \index{Scattered radiation!Born approximation}%
 \index{Wave!scattered}%
 \begin{equation}\label{EBornS}
@@ -892,25 +847,6 @@ and that are not illuminated by the distorted (refracted or reflected) incident 
 \end{equation}
 \nomenclature[1ψ034 2s000 0 2r040]{$\psi_\text{s}(\r)$}{Scattered wavefunction}%
 \nomenclature[2s000 0]{s}{Subscript ``scattered''}%
-This is the base for material investigations with X-rays or neutrons,
-where sample structures that modulate the perturbation potential $\TU$
-are deduced from the differential scattering cross section
-\index{Cross section}%
-\index{Scattering!cross section}%
-\index{Incident radiation!flux|(}%
-\index{Scattered radiation!flux}%
-\index{Born approximation!elastic scattering cross section}%
-\index{Distorted-wave Born approximation!elastic cross section}%
-\begin{equation}\label{Exsectiondef}
-  \xElas
-  \coloneqq  \frac{r^2 J_\sf(\r)}{J_\si}
-  = r^2 {|\v\Psi^\infty_\text{s}(\r)|}^2,
-\end{equation}
-\nomenclature[1ω120]{$\Omega$}{Solid angle}%
-\nomenclature[1σ020]{$\sigma$}{Scattering or absorption cross section}%
-assuming that the incident wave $\v\Phi_\si$, excited
-by a plane wave $\ket{\v\Phi^\infty_\si}=\ket{\k_\se\alpha_\se}$,
-is normalized to unity, ${|\v\Phi^\infty_\si|}^2=1$.
 
 %===============================================================================
 \subsection{The DWBA far-field Green function}\label{SDWGreen}
