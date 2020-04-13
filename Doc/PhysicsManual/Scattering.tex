@@ -716,8 +716,7 @@ which often fell back to less convincing derivations.}
 \subsection{Distortion versus perturbation}\label{Sdecompose}
 %===============================================================================
 
-To get started,
-we decompose the potential \cref{ETV}
+At the base of DWBA is the decomposition of the potential \cref{ETV}
 into a more regular and a more fluctuating part:
 \begin{equation}\label{Edecompose}
   \TV(\r) \eqqcolon \TL(\r) + \TU(\r).
@@ -740,28 +739,35 @@ $\TL(z)$ is responsible for refractions and reflections
 by multilayer structures,
 whereas $\TU(\r)$ accounts for all lateral fluctuations.
 
-The distortion field~$\TL$ is combined
-with the vacuum wave operator~$\TDo$ \cref{EDo}
-into the \E{distorted wave operator}
+In DWBA, we need to distinguish the \E{exciting} and the \E{incident} wave;
+in plane-wave Born approximation they coincide.
+The exiting wave $\v\Phi_\text{e}$ is prepared upstream of the sample by
+a radiation source and whatever optical devices;
+it is a solution of the vacuum wave equation $\TDo\v\Phi_\text{e}(\r)=0$.
+The incident wave $\v\Phi_\si$ is a solution of the
+distorted wave equation
+\index{Unperturbed distorted wave equation}%
+\index{Distorted wave!wave equation}%
+\index{Wave equation!unperturbed distorted}%
+\begin{equation}\label{EDPsi0}
+  \TD(\r)\v\Phi_\si(\r) = 0
+\end{equation}
+with
+the \E{distorted wave operator}
 \index{Distorted wave!operator}%
 \index{Wave!operator!distorted}%
 \nomenclature[2d138 2r040]{$\TD(\r)$}{Differential operator in the wave equation}%
 \begin{equation}\label{EdefD}
   \TD(\r) \coloneqq \TDo - \TL(\r)
 \end{equation}
-that governs the unperturbed distorted-wave equation
-\index{Unperturbed distorted wave equation}%
-\index{Distorted wave!wave equation}%
-\index{Wave equation!unperturbed distorted}%
-\begin{equation}\label{EDPsi0}
-  \TD(\r)\v\Phi(\r) = 0.
-\end{equation}
-This equation is to be solved nonperturbatively by analytical or numerical means.
-The solutions~$\v\Phi$ are the \E{distorted} waves
-\index{Distorted wave}%
-\index{Wave!distorted}%
-that are scattered by the perturbation $\v{U}$,
+and with the boundary condition that $\v\Phi_\si$
+matches $\v\Phi_\text{e}$ upstream of the sample.
+So $\v\Phi_\text{e}$ drives~$\v\Phi_\si$,
+whereas $\v\Phi_\si$ drives the scattering by the perturbation $\v{U}$,
 as developed below in Sect.~\ref{SxDWBA}.
+The distorted wave equation \cref{EDPsi0}
+is to be solved by nonperturbative analytical or numerical means.
+For our application field, this shall be studied in \cref{sec:Multilayers}.
 
 %===============================================================================
 \subsection{Refractive index}\label{Sri1}
@@ -838,7 +844,7 @@ with the distorted-wave Green function
 \begin{equation}\label{EdefG}
    \TG \coloneqq \TD^{-1}
 \end{equation}
-and with $\ket{\v\Phi_\si}$ now designating a distorted incident wave.
+and with the distorted incident wave $\v\Phi_\si$ introduced in~\cref{Sdecompose}.
 In analogy with~\cref{E1BornS}, the scattered wave far away from the sample is
 \index{Scattered radiation!Born approximation}%
 \index{Wave!scattered}%
@@ -849,78 +855,43 @@ In analogy with~\cref{E1BornS}, the scattered wave far away from the sample is
 \nomenclature[1ψ034 2s000 0 2r040]{$\psi_\text{s}(\r)$}{Scattered wavefunction}%
 \nomenclature[2s000 0]{s}{Subscript ``scattered''}%
 
-%===============================================================================
-\subsection{The DWBA far-field Green function}\label{SDWGreen}
-%===============================================================================
+In \cref{SvacGreen}, we computed the far-field vacuum Green function $\TGo^\infty$
+by explicitly taking the asymptote of $\TGo(\r,\r')$ for $r\to\infty$.
+Here, in the presence of a distortion field~$\TL(\r)$,
+there exists no simple and generic way to determine the Green function~$\TG$.
+We rather want a way to derive~$\TG^\infty$ without full knowledge of~$\TG$.
 
-As said in~\cref{Sdecompose},
- $\ket{\v\Phi_\si}$ is a nonperturbative solution
-of the distorted-wave equation~\cref{EDPsi0}.
-Its actual computation for multilayer systems will be discussed in \cref{sec:Multilayers}.
-Here, we consider a purely formal solution.
-We posit the Lippmann-Schwinger equation
-\begin{equation}\label{ELS2}
-  \ket{\v\Phi_\si}
-  = \ket{\v\Phi_\text{e}} + \TGo\TL\ket{\v\Phi_\si},
-\end{equation}
-which implies~\cref{EDPsi0} and ensures the boundary condition that
-upstream the scattering target
-$\ket{\v\Phi_\si}$ coincide with the exciting wave~$\ket{\v\Phi_\text{e}}$.
-The latter obyes the vacuum wave equation
-\begin{equation}
-  \TDo\ket{\v\Phi_\text{e}}=0.
-\end{equation}
-The Lippmann-Schwinger equation can be algebraically inverted to
-yield the formal solution
-\begin{equation}\label{EPhi}
-  \ket{\v\Phi_\si} = {(\v1-\TGo\TL)}^{-1}\ket{\v\Phi_\text{e}}
-\end{equation}
-This motivates the introduction of the operator
-\begin{equation}
-  \TR \coloneqq {(\v1-\TGo\TL)}^{-1}.
-\end{equation}
-Following Dietrich and Wagner \cite{DiWa84,DiWa85,DiWa16},
-we note that the distorted-wave Green function~\cref{EdefG}
-also obeys a Lippmann-Schwinger equation,
-\begin{equation}
-   \TG = \TGo + \TGo\TL\TG
-\end{equation}
-[to verify, operate with $\TDo$ from the left, and reshuffle to recover $(\TDo-\TL)\TG=\v1$].
-Resolve algebraically for
-\begin{equation}
-  \TG  = {(\v1-\TGo\TL)}^{-1} \TGo \equiv \TR\TGo.
-\end{equation}
-To make use of~\cref{EPhi},
-we insert a complete projector,
-\begin{equation}
-  \TG  = \sum_\alpha \int\!\d^3k\,\TR\ket\ka\bra{\ka}\TGo
-       = \sum_\alpha \int\!\d^3k\,\ket{\v\Phi_\ka}\bra{\ka}\TGo
-\end{equation}
-where the dependence of $\v\Phi$ on the boundary condition~$\ka$ is explicitly denoted.
-As $\TGo$ is known in real-space representation, we insert another projector,
-\begin{equation}
-  \TG  = \sum_\alpha \int\!\d^3k\int\!\d^3r''\, \ket{\v\Phi_\ka}\braket{\ka|\r''}\bra{r''}\TGo.
-\end{equation}
-In real-space coordinates,
-\begin{equation}\label{EGrspace}
-  \TG(\r,\r')
-  = (2\pi)^{-3} \sum_\alpha \int\!\d^3k\int\!\d^3r''\,
-        \v\Phi_\ka(\r)\otimes \hu_\alpha \e^{-i\k\r''} \TGo(\r'',\r').
-\end{equation}
-At this point, we need the vacuum Green function~$\TGo$.
+By definition, $\TG(\r,\r')$ describes the wave field at point~$\r$
+that is caused by a source at point~$\r'$.
+In vacuum,
+$\TGo(\r,\r')$ as function of~$\r$
+is just a spherical wave centered at~$\r'$.
+Under the wave equation~\cref{EWave3} considered here,
+the spherical wave emitted from~$\r'$
+is distorted by refraction and reflection whereever $\TL(\r)$ varies.
+From this we expect that the direct computation of~$\TG$
+is rather complicated, and to be avoided whenever possible.
 
-We apply reciprocity \cref{EGoReci}
-to \cref{EGoFar2,EGoFar1} and insert the resulting
+Help comes from source-sink reciprocity,
+\nomenclature[2r041 2d100]{$\rD$}{Position of detector}%
+\nomenclature[2r041 2s100]{$\rD$}{Position of source, locus of scattering}%
+\begin{equation}\label{Erecip}
+  \TG(\r,\r') = \TG(\r',\r).
+\end{equation}
+This is not a fundamental law of physics,
+but can be proven for certain wave equations, as will be discussed in \cref{SReci}.
+Reciprocity allows us to start the evaluation of~$\TG$ from the detector position~$\rD$.
+The detector is located in vacuum, far away from the scattering target.
+Halfway between the detector and the scattering target,
+$\TG(\r,\rD)$ as function of~$\r$ is a spherical wave and
+allows for the far-field approximation
 \begin{equation}
-  \TGo^\infty(\r,\r')=\v1\psi^*_\sf(\r)g(r')
+  \TG^\infty(\r,\rD)
+  = g(r_\text{D}) \v{P}  \e^{-i\k_\sf\r}
 \end{equation}
-into~\cref{EGrspace} to obtain
-\nomenclature[2g174 2far]{$\TG^\infty(\r,\r')$}{Far-field
-   approximation to the Green function $G(\r,\r')$}%
-\begin{equation}\label{EGresult}
-  \lim_{r'\to\infty}\TG(\r,\r')
-  = \sum_\alpha \v\Phi_{\k_\sf\alpha}(\r)\otimes \hu_\alpha g(r').
-\end{equation}
+with $\k_\sf\coloneqq K \v{\hat r}_\text{D}$.
+So we are only concerned with plane waves emanating from the scattering target
+(Fig.~\ref{Fgreen1}).
 
 %--------------------------------------------------------------------------------
 \begin{figure}[tb]
@@ -945,6 +916,27 @@ that all trajectories are practically parallel when they leave the sample.}
 \label{Fgreen1}
 \end{figure}
 %--------------------------------------------------------------------------------
+
+From here on, we consider the vectorial function
+\begin{equation}
+  \TG^\infty_\alpha(\r,\rD)
+  \coloneqq \TG^\infty(\r,\rD) \hu_\alpha
+  = g(r_\text{D}) (\v{P}\hu_\alpha)  \e^{-i\k_\sf\r}
+\end{equation}
+
+
+We apply reciprocity \cref{EGoReci}
+to \cref{EGoFar2,EGoFar1} and insert the resulting
+\begin{equation}
+  \TGo^\infty(\r,\r')=\v1\psi^*_\sf(\r)g(r')
+\end{equation}
+into~\cref{EGrspace} to obtain
+\nomenclature[2g174 2far]{$\TG^\infty(\r,\r')$}{Far-field
+   approximation to the Green function $G(\r,\r')$}%
+\begin{equation}\label{EGresult}
+  \lim_{r'\to\infty}\TG(\r,\r')
+  = \sum_\alpha \v\Phi_{\k_\sf\alpha}(\r)\otimes \hu_\alpha g(r').
+\end{equation}
 
 
 %===============================================================================
