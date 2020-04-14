@@ -966,7 +966,7 @@ This proof will be untertaken here for the different wave operators $\TD$~\cref{
 and for scalar and vectorial distortion fields~$\TL$.
 Readers not interested in mathematical details may skip the remainder of this section.
 
-Proof are greatly facilitated if energy conservation can be used.
+Proofs are greatly facilitated if energy conservation can be used.
 This shortcut shall not be taken here
 because BornAgain also supports scattering from absorbing media.
 
@@ -979,7 +979,7 @@ with source location~$\rS$ and detection point~$\rD$.
 \nomenclature[2r041 2d100]{$\rD$}{Position of detector}%
 \nomenclature[2r041 2s100]{$\rD$}{Position of source, locus of scattering}%
 We introduce the auxiliary vector field%
-\begin{equation}
+\begin{equation}\label{EdefX}
   \v{X}(\r,\rS,\rD)\coloneqq G(\r,\rD)\Nabla G(\r,\rS) - G(\r,\rS)\Nabla G(\r,\rD).
 \end{equation}
 %\nomenclature[2x150 2r040]{$\v{X}(\r,\rS,\rD)$}{Auxiliary vector field}%
@@ -991,8 +991,16 @@ and compute the volume integral
 \begin{equation}\label{Eprerecipro}
     I(\rS,\rD) \coloneqq \displaystyle\int_\Sphere\!\d^3r\,\Nabla \v{X}(\r,\rS,\rD).
 \end{equation}
-After a few steps, not entirely trivial, but not too difficult either,
-we obtain
+We apply $\Nabla$ to the right-hand side of~\cref{EdefX} and obtain
+\begin{equation}
+  \Nabla\v{X}(\r,\rS,\rD)
+  = G(\r,\rD)\Nabla^2 G(\r,\rS) - G(\r,\rS)\Nabla^2 G(\r,\rD).
+\end{equation}
+We use the wave equation
+\begin{equation}
+  [\Nabla^2+K^2-\Lambda(\r)]G(\r,\r') = \delta(\r-\r'),
+\end{equation}
+and carry out the integral to obtain
 \begin{equation}\label{EIBD}
   I(\rS,\rD) = G(\rS,\rD) - G(\rD,\rS).
 \end{equation}
@@ -1019,8 +1027,7 @@ The factorization of $G$ and $B$ and their common $R$ dependence imply that
        (\text{$R$-dependent})(ab-ba)
   = 0.
 \end{equation}
-Comparison with \cref{EIBD} yields \cref{Erecip2},
-which completes the proof.
+Comparison with \cref{EIBD} completes the proof of~\cref{Erecip2}.
 
 \index{Reciprocity|)}%
 \index{Green function!reciprocity|)}%
