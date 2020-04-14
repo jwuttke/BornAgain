@@ -51,8 +51,7 @@ In \Cref{SDWBA},
 it is solved in first-order distorted-wave Born approximation (DWBA).
 \index{DWBA|see {Distorted-wave Born approximation}}%
 \index{Distorted-wave Born approximation}%
-The chapter finishes with a qualitative discussion
-of coherence lengths in \Cref{Scoherlen}.
+%The chapter finishes with a qualitative discussion of coherence lengths in \Cref{Scoherlen}.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -459,7 +458,7 @@ Choose an incident plane wave $\v\Phi_\si$ that solves \cref{E1Wave3} in vacuum 
 With the Green function
 \index{Green function}%
 \nomenclature[2g170 2r020 2r021]{$\TGo(\r,\r')$}{Generic (possibly tensorial) Green function}%
-\begin{equation}\label{EdefG}
+\begin{equation}\label{EdefGo}
    \TGo \coloneqq \TDo^{-1}
 \end{equation}
 we can transform~\cref{E1Wave3} into a Lippmann-Schwinger equation,
@@ -519,7 +518,7 @@ we need the far-field Green function~$\TGo^\infty$.
 The retarded Green function describes the propagation of radiation
 that emanates from a point source.
 The retarded vacuum Green function~$\TGo$ obyes the differential equation
-\begin{equation}\label{EdefGo}
+\begin{equation}\label{EGoDGL}
   \TDo \TGo(\r,\r') = \v1 \delta(\r-\r'),
 \end{equation}
 plus a boundary condition to ensure that the solution is an \E{outgoing} wave.
@@ -575,7 +574,7 @@ The differential scattering cross section is defined as
 \index{Scattered radiation!flux}%
 \index{Born approximation!elastic scattering cross section}%
 \index{Distorted-wave Born approximation!elastic cross section}%
-\begin{equation}\label{E1xsectiondef}
+\begin{equation}\label{Exsectiondef}
   \xElas
   \coloneqq  \frac{r^2 J_\sf(\r)}{J_\si}.
 \end{equation}
@@ -583,7 +582,7 @@ The differential scattering cross section is defined as
 \nomenclature[1σ020]{$\sigma$}{Scattering or absorption cross section}%
 With fluxes given by~\cref{EFLUX}
 and with the scattered far-field denoted as in \cref{SxBA},
-\begin{equation}\label{E1xsectiondef}
+\begin{equation}\label{ExsectionPsi}
   \xElas
   = \frac{r^2 {|\v\Psi^\infty_\text{s}(\r)|}^2}{|\v\Phi_\si|^2}.
 \end{equation}
@@ -625,7 +624,7 @@ which can only be achieved by the convention~\cref{Eq}.}
   \q\coloneqq \k_\sf-\k_\si.
 \end{equation}
 \nomenclature[2q040]{$\q$}{Scattering vector}%
-With all this, the cross section \cref{E1xsectiondef} becomes
+With all this, the cross section \cref{ExsectionPsi} becomes
 \begin{equation}\label{Exsection}
   \xElas
   = \frac{1}{16\pi^2} \braket{\v{\hat u}_\si\TV^+(\v{q})\v{P}\TV(\v{q})\v{\hat u}_\si}.
@@ -640,7 +639,7 @@ per \cref{SXwave} and~\cref{ETV},
 we only consider scalar potentials.
 There is, however, a nontrivial projector~$\v{P}$~\cref{EdefP}
 that ensures transversality.
-In consequence, the cross section~\cref{E1xsectiondef} can be written
+In consequence, the cross section~\cref{ExsectionPsi} can be written
 \begin{equation}\label{ExsectionX}
   \xElas
   = \frac{1}{16\pi^2} \tilde{P} |\TV(\v{q})|^2
@@ -660,7 +659,7 @@ when we discuss grazing-incidence and reflectometry geometry.
 
 For neutrons, the projector~$\v{P}$~\cref{EdefP}
 is just the identity matrix,
-and therefore can be omitted from the cross section~\cref{E1xsectiondef}.
+and therefore can be omitted from the cross section~\cref{ExsectionPsi}.
 In the absence of magnetic scattering, the potential is scalar,
 and the cross section is simply
 \begin{equation}\label{ExsectionN}
@@ -671,7 +670,7 @@ In the presence of magnetic scattering,
 additional insight can be gained by polarization analysis of the scattered radiation.
 If the polarization analyzer is set in direction~$\hu_\sf$,
 then instead of~\cref{Exsection} one finds
-\begin{equation}\label{ExsectionN}
+\begin{equation}\label{ExsectionNpol}
   \xElas
   = \frac{1}{16\pi^2} |\hu_\si \TV(\v{q})\hu_\sf|^2.
 \end{equation}
@@ -947,6 +946,8 @@ and the scattering cross section
   \xElas\bigg|_{\hu_\sf}
   = \frac{1}{16\pi^2} |\braket{\v\Phi_\sf|\TU|\v\Phi_\si}|^2.
 \end{equation}
+In unpolarized measurements, one has to take the sum over
+the different polarization analyzer directions~$\hu_\sf$.
 
 %===============================================================================
 \subsection{Reciprocity of the Green function}\label{SReci}
@@ -968,7 +969,7 @@ that solves~\cref{EGREEN} and as function of~$\r$ represents an outgoing wave
 is invariant under an exchange of source location~$\rS$ and detection point~$\rD$:
 \nomenclature[2r041 2d100]{$\rD$}{Position of detector}%
 \nomenclature[2r041 2s100]{$\rD$}{Position of source, locus of scattering}%
-\begin{equation}\label{Erecip}
+\begin{equation}\label{Erecip2}
   G(\rS,\rD) = G(\rD,\rS).
 \end{equation}
 Readers not interested in mathematical details may skip the following \E{proof}:
@@ -1014,7 +1015,7 @@ The factorization of $G$ and $B$ and their common $R$ dependence imply that
        (\text{$R$-dependent})(ab-ba)
   = 0.
 \end{equation}
-Comparison with \cref{EIBD} yields \cref{Erecip},
+Comparison with \cref{EIBD} yields \cref{Erecip2},
 which completes the proof.
 
 \index{Reciprocity|)}%
@@ -1022,76 +1023,10 @@ which completes the proof.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\iffalse
 \section*{OLD STUFF}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%===============================================================================
-\subsection*{exciting vs incident wave}
-%===============================================================================
-
-The solution of the wave equation~\cref{EDPsi}
-starts with the determination of the incident wave~$\v\Psi_\si$.
-\nomenclature[1ψ074 2i000 2r040]{$\v\Psi_\si(\r)$}{Incident wavefunction}%
-\nomenclature[2i000]{i}{Subscript ``incident''}%
-\index{Incident radiation!Born approximation}%
-\index{Wave!incident}%
-\index{Radiation|seealso{Wave}}%
-\index{Incident wave!DWBA}%
-\index{Incident wave!vs exciting wave}%
-It is important to distinguish the \E{incident} from the \E{exciting} wave.
-\index{Exciting wave}%
-\index{Wave!exciting}%
-They coincide in ordinary Born approximation, but not in DWBA.
-\index{Born approximation}%,
-
-The \E{exciting wave}
-is prepared far
-outside the sample by a radiation source and some optical devices.
-\index{Radiation source}%
-It is a superposition of plane waves,
-as discussed later in the context of instrumental resolution effects
-(\cref{SInstr}).
-Here we will consider a single plane wave
-$\v\Psi_\se(\r)=\hu_\se\e^{i\k_\se\r}$.
-\nomenclature[1ψ134 2e000]{$\v\Psi_\se(\r)$}{Exciting wave}%
-This function is defined for all~$\r$,
-but is physical only along the primary beam, upstream of the sample.
-
-The \E{incident wave}~$\v\Psi_\si$
-\index{Incident wave!DWBA}%
-\index{Incident wave!vs exciting wave}%
-\index{Wave!incident}%
-is an exact solution of~\cref{EDPsi0}
-under the boundary condition that it match~$\v\Psi_\se$
-upstream of the sample.
-Inside the sample it undergoes refraction and reflection
-or other modifications under the influence of the distortion field~$\TL$.
-
-%===============================================================================
-\subsection*{Scattering vector $\v{q}$}
-%===============================================================================
-
- the \E{scattering vector}\footnote
-{With this choice of sign,
-\index{Sign convention!scattering vector}%
-$\hbar\q$ is the momentum
-\index{Momentum transfer|see {Scattering vector}}%
-\E{gained} by the scattered neutron,
-and \E{lost} by the sample.
-In much of the literature the opposite convention is prefered,
-since it emphasizes the sample physics over the scattering experiment.
-However, when working with two-dimensional detectors
-it is highly desirable to express pixel coordinates
-\index{Coordinate system}
-\index{Detector!pixel coordinate}
-and scattering vector components
-with respect to equally oriented coordinate axes,
-which can only be achieved by the convention~\cref{Eq}.}
-\index{Scattering!vector}%
-\begin{equation}\label{Eq}
-  \q\coloneqq \k_\sf-\k_\si.
-\end{equation}
-\nomenclature[2q040]{$\q$}{Scattering vector}%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Coherent vs incoherent scattering}\label{Scoherlen}
@@ -1266,3 +1201,5 @@ in $y$ or $z$ direction.\footnote
 % TODO: more about implementation !
 
 \index{Coherence length|)}%
+
+\fi
