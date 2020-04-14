@@ -883,16 +883,15 @@ but can be proven for certain wave equations, as will be discussed in \cref{SRec
 Reciprocity allows us to start the evaluation of~$\TG$ from the detector position~$\rD$.
 The detector is located in vacuum, far away from the scattering target.
 Halfway between the detector and the scattering target,
-$\TG(\r,\rD)$ as function of~$\r$ is a spherical wave and
-allows for the far-field approximation
-\begin{equation}
-  \TG^\infty(\r,\rD)
-  = g(r_\text{D}) \v{P}  \e^{-i\k_\sf\r}
+$\TG$ equals~$\TGo$
+and allows for the far-field approximation~\cref{EGoInfty}
+\begin{equation}\label{EGhalfway1}
+  \TGo^\infty(\r,\rD)
+  = g(r_\text{D}) \v{P}  \e^{-i\k_\sf\r}.
 \end{equation}
-with $\k_\sf\coloneqq K \v{\hat r}_\text{D}$.
-So we are only concerned with plane waves emanating from the scattering target
+As function of~$\r$, this is a plane wave that comes out of the scattering target
+and travels with wavevector $\k_\sf\coloneqq K \v{\hat r}_\text{D}$ towards the detector
 (Fig.~\ref{Fgreen1}).
-
 %--------------------------------------------------------------------------------
 \begin{figure}[tb]
 \begin{center}
@@ -916,28 +915,38 @@ that all trajectories are practically parallel when they leave the sample.}
 \label{Fgreen1}
 \end{figure}
 %--------------------------------------------------------------------------------
-
-From here on, we consider the vectorial function
+To work this out,
+we project onto a polarization analyzer direction~$\hu_\sf$,
 \begin{equation}
-  \TG^\infty_\alpha(\r,\rD)
-  \coloneqq \TG^\infty(\r,\rD) \hu_\alpha
-  = g(r_\text{D}) (\v{P}\hu_\alpha)  \e^{-i\k_\sf\r}
+  \hu_\sf^\intercal \TGo^\infty(\r,\rD)
+  = g(r_\text{D}) \v\Phi_\text{d}^\intercal(\r)
 \end{equation}
-
-
-We apply reciprocity \cref{EGoReci}
-to \cref{EGoFar2,EGoFar1} and insert the resulting
+with the plane wave
 \begin{equation}
-  \TGo^\infty(\r,\r')=\v1\psi^*_\sf(\r)g(r')
+  \v\Phi_\text{d}(\r) \coloneqq (\v{P}\hu_\sf)\e^{-i\k_\sf\r}.
 \end{equation}
-into~\cref{EGrspace} to obtain
-\nomenclature[2g174 2far]{$\TG^\infty(\r,\r')$}{Far-field
-   approximation to the Green function $G(\r,\r')$}%
-\begin{equation}\label{EGresult}
-  \lim_{r'\to\infty}\TG(\r,\r')
-  = \sum_\alpha \v\Phi_{\k_\sf\alpha}(\r)\otimes \hu_\alpha g(r').
+The analogous projection of the distorted-wave far-field Green function shall now be written
+\begin{equation}
+  \hu_\sf^\intercal \TG^\infty(\r,\rD)
+  = g(r_\text{D}) \v\Phi_\sf^\intercal(\r),
 \end{equation}
+where $\v\Phi_\sf$ obyes the distorted wave equation~$\TD\v\Phi_\sf=0$
+and matches $\v\Phi_\text{d}$ downstream of the scattering target.
+For given $\v\Phi_\text{d}$,
+$\v\Phi_\sf$ is to be determined by the same means
+as $\v\Phi_\si$ for given~$\v\Phi_\text{e}$ (\cref{Sdecompose}).
 
+Using reciprocity~\cref{Erecip},
+the polarization-analyzed scattered amplitude is
+\begin{equation}
+  \hu_\sf^\intercal \braket{\rD|\v\Psi_\text{s}^\infty}
+  = g(r_\text{D})\braket{\v\Phi_\sf|\TU|\v\Phi_\si},
+\end{equation}
+and the scattering cross section
+\begin{equation}\label{Exsection2}
+  \xElas\bigg|_{\hu_\sf}
+  = \frac{1}{16\pi^2} |\braket{\v\Phi_\sf|\TU|\v\Phi_\si}|^2.
+\end{equation}
 
 %===============================================================================
 \subsection{Reciprocity of the Green function}\label{SReci}
