@@ -115,7 +115,7 @@ not by its energy~$\hbar\omega$,
 but by its \E{vacuum wavenumber}~$K$,
 \index{Wavenumber!neutron}%
 \nomenclature[2k120]{$K$}{Wavenumber in vacuum}%
-given by the dispersion relation
+given by the dispersion relation%
 \index{Dispersion relation!neutron}%
 \begin{equation}
   \hbar\omega = \frac{(\hbar K)^2}{2m}.
@@ -350,7 +350,7 @@ the electron number density~$\rho(\r)$,
 \index{Density!electron}%
 \index{Number density|see{Density}}%
 and the vacuum wavenumber~$K$,
-given by the dispersion relation
+given by the dispersion relation%
 \begin{equation}
   K^2 = \mu_0\eps_0\omega^2 = \omega^2/c^2.
 \end{equation}
@@ -850,7 +850,7 @@ In analogy with~\cref{E1BornS}, the scattered wave far away from the sample is
 \begin{equation}\label{EBornS}
   \ket{\v\Psi^\infty_\text{s}}
   \coloneqq \TG^\infty\TU\ket{\v\Phi_\si}.
-\end{equation}
+\end{equation}%
 \nomenclature[1ψ034 2s000 0 2r040]{$\psi_\text{s}(\r)$}{Scattered wavefunction}%
 \nomenclature[2s000 0]{s}{Subscript ``scattered''}%
 
@@ -956,25 +956,29 @@ the different polarization analyzer directions~$\hu_\sf$.
 \index{Reciprocity|(}%
 \index{Green function!reciprocity|(}%
 
-Our computation of~$G_\infty$ will be based on a source-detector \E{reciprocity theorem}
-for the scalar Schrödinger equation.\footnote
-{There exists a confusing multitude of reciprocity theorems \cite{Pot04}.
-In the end, we found it simpler to provide a derivation taylored for our application case
-than to refer to the literature.}
-The theorem states:
-Any Green function $G(\r,\r')$
-that solves~\cref{EGREEN} and as function of~$\r$ represents an outgoing wave
-%(in accord with the Sommerfeld radiation condition)
-%\index{Sommerfeld radiation condition}%
-is invariant under an exchange of source location~$\rS$ and detection point~$\rD$:
+As we have seen, the simple form~\cref{Exsection2} of the DWBA cross section
+depends on the symmetry~\cref{Erecip} of the Green function.
+This is one of several forms of \E{reciprocity} in wave propagation
+\cite{Pot04,DeFu12a}.
+It is not a fundamental physical law,
+but must be proven case by case for each specific wave equation.
+This proof will be untertaken here for the different wave operators $\TD$~\cref{EDo}
+and for scalar and vectorial distortion fields~$\TL$.
+Readers not interested in mathematical details may skip the remainder of this section.
+
+Proof are greatly facilitated if energy conservation can be used.
+This shortcut shall not be taken here
+because BornAgain also supports scattering from absorbing media.
+
+For scalar neutron waves,
+we write the reciprocity theorem as
+\begin{equation}\label{Erecip2}
+  G(\rS,\rD) = G(\rD,\rS)
+\end{equation}
+with source location~$\rS$ and detection point~$\rD$.
 \nomenclature[2r041 2d100]{$\rD$}{Position of detector}%
 \nomenclature[2r041 2s100]{$\rD$}{Position of source, locus of scattering}%
-\begin{equation}\label{Erecip2}
-  G(\rS,\rD) = G(\rD,\rS).
-\end{equation}
-Readers not interested in mathematical details may skip the following \E{proof}:
-
-We introduce the auxiliary vector field
+We introduce the auxiliary vector field%
 \begin{equation}
   \v{X}(\r,\rS,\rD)\coloneqq G(\r,\rD)\Nabla G(\r,\rS) - G(\r,\rS)\Nabla G(\r,\rD).
 \end{equation}
