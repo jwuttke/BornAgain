@@ -45,7 +45,7 @@ std::unique_ptr<MultiLayer> createSampleSpheresDistribution(int nspheres)
     FormFactorFullSphere formFactor_1(10.0 * Units::nm);
     Particle particle_1(material_2, formFactor_1);
 
-    DistributionGaussian distr_1(10.0 * Units::nm, 1.0 * Units::nm);
+    DistributionGaussian distr_1("nm", 10.0 * Units::nm, 1.0 * Units::nm);
     ParameterDistribution par_distr_1("/Particle/FullSphere/Radius", distr_1, nspheres, 4.71,
                                       RealLimits::limited(5.0 * Units::nm, 15.0 * Units::nm));
     ParticleDistribution particleDistribution_1(particle_1, par_distr_1);
@@ -167,7 +167,7 @@ std::unique_ptr<Simulation> TestComponents::CreateWavelengthGISAS()
     result->setBeamParameters(1.0 * Units::angstrom, 0.2 * Units::degree, 0.0 * Units::degree);
 
     // create parameter distribution
-    DistributionLogNormal wavelength_distr(1.0 * Units::angstrom, 0.1);
+    DistributionLogNormal wavelength_distr("angstrom", 1.0 * Units::angstrom, 0.1);
     ParameterPattern pattern1;
     pattern1.beginsWith("*").add(BornAgain::BeamType).add(BornAgain::Wavelength);
     result->addParameterDistribution(pattern1.toStdString(), wavelength_distr, 1000);

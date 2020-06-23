@@ -54,7 +54,7 @@ MultiLayer* CylindersWithSizeDistributionBuilder::buildSample() const
     int n_samples(100);
     // to get radius_min = average - 2.0*FWHM:
     double n_sigma = 2.0 * 2.0 * std::sqrt(2.0 * std::log(2.0));
-    DistributionGaussian gauss(m_radius, sigma);
+    DistributionGaussian gauss("nm", m_radius, sigma);
     ParameterPattern pattern;
     pattern.add(BornAgain::ParticleType).add(BornAgain::FFCylinderType).add(BornAgain::Radius);
     ParameterDistribution par_distr(pattern.toStdString(), gauss, static_cast<size_t>(n_samples),
@@ -104,8 +104,8 @@ MultiLayer* TwoTypesCylindersDistributionBuilder::buildSample() const
     double sigma2 = m_radius2 * m_sigma2_ratio;
     // to have xmin=average-3*sigma
     double n_sigma = 3.0;
-    DistributionGaussian gauss1(m_radius1, sigma1);
-    DistributionGaussian gauss2(m_radius2, sigma2);
+    DistributionGaussian gauss1("nm", m_radius1, sigma1);
+    DistributionGaussian gauss2("nm", m_radius2, sigma2);
 
     // building distribution of nano particles
     ParameterPattern pattern1;
@@ -147,7 +147,7 @@ MultiLayer* RotatedPyramidsDistributionBuilder::buildSample() const
     pyramid.setRotation(RotationZ(m_zangle));
 
     // particle collection
-    DistributionGate gate(35.0 * Units::deg, 55.0 * Units::deg);
+    DistributionGate gate("deg", 35.0 * Units::deg, 55.0 * Units::deg);
     ParameterDistribution parameter_distr("/Particle/ZRotation/Angle", gate, 10, 2.0);
 
     ParticleDistribution collection(pyramid, parameter_distr);
@@ -181,7 +181,7 @@ MultiLayer* SpheresWithLimitsDistributionBuilder::buildSample() const
     Particle sphere(particle_material, ff);
 
     // particle collection
-    DistributionGaussian gauss(3.0 * Units::nm, 1.0 * Units::nm);
+    DistributionGaussian gauss("nm", 3.0 * Units::nm, 1.0 * Units::nm);
     ParameterDistribution parameter_distr("/Particle/FullSphere/Radius", gauss, 10, 20.0,
                                           RealLimits::limited(2.0, 4.0));
 
@@ -216,7 +216,7 @@ MultiLayer* ConesWithLimitsDistributionBuilder::buildSample() const
     Particle cone(particle_material, ff);
 
     // particle collection
-    DistributionGaussian gauss(60.0 * Units::deg, 6.0 * Units::deg);
+    DistributionGaussian gauss("deg", 60.0 * Units::deg, 6.0 * Units::deg);
     ParameterDistribution parameter_distr(
         "/Particle/Cone/Alpha", gauss, 5, 20.0,
         RealLimits::limited(55.0 * Units::deg, 65.0 * Units::deg));
@@ -250,7 +250,7 @@ MultiLayer* LinkedBoxDistributionBuilder::buildSample() const
     Particle box(particle_material, ff);
 
     // particle collection
-    DistributionGate gate(10.0 * Units::nm, 70.0 * Units::nm);
+    DistributionGate gate("nm", 10.0 * Units::nm, 70.0 * Units::nm);
     ParameterDistribution parameter_distr("/Particle/Box/Length", gate, 3, 0.0,
                                           RealLimits::limited(1.0 * Units::nm, 200.0 * Units::nm));
     parameter_distr.linkParameter("/Particle/Box/Width").linkParameter("/Particle/Box/Height");

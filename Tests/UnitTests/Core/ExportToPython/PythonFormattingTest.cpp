@@ -64,17 +64,17 @@ TEST_F(PythonFormattingTest, RealLimits)
 
 TEST_F(PythonFormattingTest, printDistribution)
 {
-    EXPECT_EQ(PythonFormatting::printDistribution(DistributionGate(1.0, 2.0)),
+    EXPECT_EQ(PythonFormatting::printDistribution(DistributionGate("", 1.0, 2.0)),
               "ba.DistributionGate(1.0, 2.0)");
 
-    EXPECT_EQ(PythonFormatting::printDistribution(DistributionGate(1.0, 2.0), BornAgain::UnitsNm),
+    EXPECT_EQ(PythonFormatting::printDistribution(DistributionGate("nm", 1.0, 2.0), BornAgain::UnitsNm),
               "ba.DistributionGate(1.0*nm, 2.0*nm)");
 
     EXPECT_EQ(PythonFormatting::printDistribution(
-                  DistributionGate(1.0 * Units::deg, 2.0 * Units::deg), BornAgain::UnitsRad),
+                  DistributionGate("deg", 1.0 * Units::deg, 2.0 * Units::deg), BornAgain::UnitsRad),
               "ba.DistributionGate(1.0*deg, 2.0*deg)");
 
-    EXPECT_EQ(PythonFormatting::printDistribution(DistributionLogNormal(1.0 * Units::deg, 0.01),
+    EXPECT_EQ(PythonFormatting::printDistribution(DistributionLogNormal("deg", 1.0 * Units::deg, 0.01),
                                                   BornAgain::UnitsRad),
               "ba.DistributionLogNormal(1.0*deg, 0.01)");
 }
@@ -82,7 +82,7 @@ TEST_F(PythonFormattingTest, printDistribution)
 TEST_F(PythonFormattingTest, printParameterDistribution)
 {
 
-    DistributionGate gate(1.0, 2.0);
+    DistributionGate gate("", 1.0, 2.0);
     ParameterDistribution dist("ParName", gate, 5, 2.0);
 
     // No RealLimits defined

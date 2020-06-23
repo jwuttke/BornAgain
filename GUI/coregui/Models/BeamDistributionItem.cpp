@@ -22,7 +22,7 @@
 
 const QString BeamDistributionItem::P_DISTRIBUTION = "Distribution";
 
-BeamDistributionItem::BeamDistributionItem(const QString& name, bool show_mean) : SessionItem(name)
+BeamDistributionItem::BeamDistributionItem(const QString& name, bool show_mean, const std::string& unit) : SessionItem(name), m_unit(unit)
 {
     addTranslator(DistributionNoneTranslator());
 
@@ -141,7 +141,7 @@ void BeamDistributionItem::register_distribution_group(const QString& group_type
 std::unique_ptr<IDistribution1D> BeamDistributionItem::createDistribution1D() const
 {
     if (auto distItem = dynamic_cast<DistributionItem*>(getGroupItem(P_DISTRIBUTION)))
-        return distItem->createDistribution(scaleFactor());
+        return distItem->createDistribution(m_unit, scaleFactor());
 
     return {};
 }

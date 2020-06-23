@@ -68,7 +68,7 @@ TEST_F(SpecularScanTest, FootprintAndWavelengthResolution)
 {
     AngularSpecScan scan(0.1, std::vector<double>{0.1, 0.2, 0.3});
     auto scan_res = std::unique_ptr<ScanResolution>(
-        ScanResolution::scanRelativeResolution(RangedDistributionGate(3, 2.0), 0.1));
+        ScanResolution::scanRelativeResolution(RangedDistributionGate("deg", 3, 2.0), 0.1));
     scan.setWavelengthResolution(*scan_res);
 
     const IFootprintFactor& f_factor = FootprintFactorGaussian(0.1);
@@ -96,10 +96,10 @@ TEST_F(SpecularScanTest, FootprintAndAllResolutions)
 {
     AngularSpecScan scan(0.1, std::vector<double>{0.1, 0.2, 0.3});
     auto wl_res = std::unique_ptr<ScanResolution>(
-        ScanResolution::scanRelativeResolution(RangedDistributionGate(2, 2.0), 0.1));
+        ScanResolution::scanRelativeResolution(RangedDistributionGate("deg", 2, 2.0), 0.1));
     scan.setWavelengthResolution(*wl_res);
     auto inc_res = std::unique_ptr<ScanResolution>(
-        ScanResolution::scanRelativeResolution(RangedDistributionGate(2, 2.0), 0.1));
+        ScanResolution::scanRelativeResolution(RangedDistributionGate("deg", 2, 2.0), 0.1));
     scan.setAngleResolution(*inc_res);
 
     const IFootprintFactor& f_factor = FootprintFactorGaussian(0.1);

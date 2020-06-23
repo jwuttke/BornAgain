@@ -17,6 +17,7 @@
 
 #include "ICloneable.h"
 #include "INode.h"
+#include "Unit.h"
 #include "RealLimits.h"
 #include <vector>
 
@@ -32,7 +33,8 @@ class ParameterSample;
 class BA_CORE_API_ IDistribution1D : public ICloneable, public INode
 {
 public:
-    IDistribution1D() {}
+    IDistribution1D() = delete;
+    IDistribution1D(const std::string& unit) : m_unit{unit} {}
     virtual ~IDistribution1D() {}
 
     virtual IDistribution1D* clone() const = 0;
@@ -79,6 +81,8 @@ protected:
     //! Returns weighted samples from given interpolation points and probabilityDensity().
     std::vector<ParameterSample>
     generateSamplesFromValues(const std::vector<double>& sample_values) const;
+
+    const Unit m_unit;
 };
 
 // ************************************************************************** //
@@ -91,11 +95,12 @@ protected:
 class BA_CORE_API_ DistributionGate : public IDistribution1D
 {
 public:
-    DistributionGate() : DistributionGate(0., 1.) {}
-    DistributionGate(double min, double max);
+    DistributionGate(const std::string& unit) : DistributionGate(unit, 0., 1.) {}
+    DistributionGate(const std::string& unit, double min, double max);
     virtual ~DistributionGate() {}
 
-    DistributionGate* clone() const final { return new DistributionGate(m_min, m_max); }
+    DistributionGate* clone() const final {
+        return new DistributionGate(m_unit.getName(), m_min, m_max); }
 
     double probabilityDensity(double x) const final;
     double getMean() const final { return (m_min + m_max) / 2.0; }
@@ -127,11 +132,12 @@ private:
 class BA_CORE_API_ DistributionLorentz : public IDistribution1D
 {
 public:
-    DistributionLorentz() : DistributionLorentz(0., 1.) {}
-    DistributionLorentz(double mean, double hwhm);
+    DistributionLorentz(const std::string& unit) : DistributionLorentz(unit, 0., 1.) {}
+    DistributionLorentz(const std::string& unit, double mean, double hwhm);
     virtual ~DistributionLorentz() {}
 
-    DistributionLorentz* clone() const final { return new DistributionLorentz(m_mean, m_hwhm); }
+    DistributionLorentz* clone() const final {
+        return new DistributionLorentz(m_unit.getName(), m_mean, m_hwhm); }
 
     double probabilityDensity(double x) const final;
     double getMean() const final { return m_mean; }
@@ -162,14 +168,12 @@ private:
 class BA_CORE_API_ DistributionGaussian : public IDistribution1D
 {
 public:
-    DistributionGaussian() : DistributionGaussian(0., 1.) {}
-    DistributionGaussian(double mean, double std_dev);
+    DistributionGaussian(const std::string& unit) : DistributionGaussian(unit, 0., 1.) {}
+    DistributionGaussian(const std::string& unit, double mean, double std_dev);
     virtual ~DistributionGaussian() {}
 
-    DistributionGaussian* clone() const final
-    {
-        return new DistributionGaussian(m_mean, m_std_dev);
-    }
+    DistributionGaussian* clone() const final {
+        return new DistributionGaussian(m_unit.getName(), m_mean, m_std_dev); }
 
     double probabilityDensity(double x) const final;
     double getMean() const final { return m_mean; }
@@ -200,14 +204,13 @@ private:
 class BA_CORE_API_ DistributionLogNormal : public IDistribution1D
 {
 public:
-    DistributionLogNormal(double scale_param) : DistributionLogNormal(1., scale_param) {}
-    DistributionLogNormal(double median, double scale_param);
+    DistributionLogNormal(const std::string& unit, double scale_param)
+        : DistributionLogNormal(unit, 1., scale_param) {}
+    DistributionLogNormal(const std::string& unit, double median, double scale_param);
     virtual ~DistributionLogNormal() {}
 
-    DistributionLogNormal* clone() const final
-    {
-        return new DistributionLogNormal(m_median, m_scale_param);
-    }
+    DistributionLogNormal* clone() const final {
+        return new DistributionLogNormal(m_unit.getName(), m_median, m_scale_param); }
 
     double probabilityDensity(double x) const final;
     double getMean() const final;
@@ -241,11 +244,12 @@ private:
 class BA_CORE_API_ DistributionCosine : public IDistribution1D
 {
 public:
-    DistributionCosine() : DistributionCosine(0., 1.) {}
-    DistributionCosine(double mean, double sigma);
+    DistributionCosine(const std::string& unit) : DistributionCosine(unit, 0., 1.) {}
+    DistributionCosine(const std::string& unit, double mean, double sigma);
     virtual ~DistributionCosine() {}
 
-    DistributionCosine* clone() const final { return new DistributionCosine(m_mean, m_sigma); }
+    DistributionCosine* clone() const final {
+        return new DistributionCosine(m_unit.getName(), m_mean, m_sigma); }
 
     double probabilityDensity(double x) const final;
     double getMean() const final { return m_mean; }
@@ -276,15 +280,14 @@ private:
 class BA_CORE_API_ DistributionTrapezoid : public IDistribution1D
 {
 public:
-    DistributionTrapezoid() : DistributionTrapezoid(0., 0., 1., 0.) {}
-    DistributionTrapezoid(double center, double left_width, double middle_width,
-                          double right_width);
+    DistributionTrapezoid(const std::string& unit) : DistributionTrapezoid(unit, 0., 0., 1., 0.) {}
+    DistributionTrapezoid(
+        const std::string& unit, double center, double left_width, double middle_width,
+        double right_width);
     virtual ~DistributionTrapezoid() {}
 
-    DistributionTrapezoid* clone() const final
-    {
-        return new DistributionTrapezoid(m_center, m_left, m_middle, m_right);
-    }
+    DistributionTrapezoid* clone() const final {
+        return new DistributionTrapezoid(m_unit.getName(), m_center, m_left, m_middle, m_right); }
 
     double probabilityDensity(double x) const final;
     double getMean() const final { return m_center; }

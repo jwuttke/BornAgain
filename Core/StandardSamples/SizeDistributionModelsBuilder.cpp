@@ -187,7 +187,7 @@ MultiLayer* CylindersInSSCABuilder::buildSample() const
     FormFactorCylinder ff_cylinder(5.0 * Units::nanometer, 5.0 * Units::nanometer);
     Particle particle_prototype(particle_material, ff_cylinder);
 
-    DistributionGaussian gauss(5.0 * Units::nanometer, 1.25 * Units::nanometer);
+    DistributionGaussian gauss("nm", 5.0 * Units::nanometer, 1.25 * Units::nanometer);
     ParameterPattern pattern_radius;
     pattern_radius.add(BornAgain::ParticleType)
         .add(BornAgain::FFCylinderType)

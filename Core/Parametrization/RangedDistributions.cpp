@@ -20,32 +20,34 @@
 
 namespace
 {
-template <class T> std::unique_ptr<T> makeCopy(const T& item);
+template <class T> std::unique_ptr<T> makeCopy(const T& item)
+{
+    return std::make_unique<T>(item.unitName(), item.nSamples(), item.sigmaFactor(), item.limits());
+}
 
 const double gate_stddev_factor = 2.0 * std::sqrt(3.0);
 } // namespace
 
-RangedDistribution::RangedDistribution()
-    : m_n_samples(5), m_sigma_factor(2.0), m_limits(RealLimits::limitless())
+RangedDistribution::RangedDistribution(const std::string& unit)
+    : m_unit(unit), m_n_samples(5), m_sigma_factor(2.0), m_limits(RealLimits::limitless())
 {
     checkInitialization();
 }
 
-RangedDistribution::RangedDistribution(size_t n_samples, double sigma_factor,
+RangedDistribution::RangedDistribution(const std::string& unit,
+                                       size_t n_samples, double sigma_factor,
                                        const RealLimits& limits)
-    : m_n_samples(n_samples), m_sigma_factor(sigma_factor), m_limits(limits)
+    : m_unit(unit), m_n_samples(n_samples), m_sigma_factor(sigma_factor), m_limits(limits)
 {
     checkInitialization();
 }
 
-RangedDistribution::RangedDistribution(size_t n_samples, double sigma_factor, double min,
+RangedDistribution::RangedDistribution(const std::string& unit, size_t n_samples, double sigma_factor, double min,
                                        double max)
-    : m_n_samples(n_samples), m_sigma_factor(sigma_factor), m_limits(RealLimits::limited(min, max))
+    : m_unit(unit), m_n_samples(n_samples), m_sigma_factor(sigma_factor), m_limits(RealLimits::limited(min, max))
 {
     checkInitialization();
 }
-
-RangedDistribution::~RangedDistribution() = default;
 
 std::vector<ParameterSample> RangedDistribution::generateSamples(double mean, double stddev) const
 {
@@ -114,17 +116,18 @@ void RangedDistribution::checkInitialization()
                                  "shall not exceed the upper one.");
 }
 
-RangedDistributionGate::RangedDistributionGate() : RangedDistribution() {}
 
-RangedDistributionGate::RangedDistributionGate(size_t n_samples, double sigma_factor,
+RangedDistributionGate::RangedDistributionGate(const std::string& unit) : RangedDistribution(unit) {}
+
+RangedDistributionGate::RangedDistributionGate(const std::string& unit, size_t n_samples, double sigma_factor,
                                                const RealLimits& limits)
-    : RangedDistribution(n_samples, sigma_factor, limits)
+    : RangedDistribution(unit, n_samples, sigma_factor, limits)
 {
 }
 
-RangedDistributionGate::RangedDistributionGate(size_t n_samples, double sigma_factor, double min,
+RangedDistributionGate::RangedDistributionGate(const std::string& unit, size_t n_samples, double sigma_factor, double min,
                                                double max)
-    : RangedDistribution(n_samples, sigma_factor, min, max)
+    : RangedDistribution(unit, n_samples, sigma_factor, min, max)
 {
 }
 
@@ -143,20 +146,21 @@ std::unique_ptr<IDistribution1D> RangedDistributionGate::distribution_impl(doubl
 {
     const double x_min = mean - gate_stddev_factor * stddev;
     const double x_max = mean + gate_stddev_factor * stddev;
-    return std::make_unique<DistributionGate>(x_min, x_max);
+    return std::make_unique<DistributionGate>(m_unit.getName(), x_min, x_max);
 }
 
-RangedDistributionLorentz::RangedDistributionLorentz() : RangedDistribution() {}
 
-RangedDistributionLorentz::RangedDistributionLorentz(size_t n_samples, double hwhm_factor,
+RangedDistributionLorentz::RangedDistributionLorentz(const std::string& unit) : RangedDistribution(unit) {}
+
+RangedDistributionLorentz::RangedDistributionLorentz(const std::string& unit, size_t n_samples, double hwhm_factor,
                                                      const RealLimits& limits)
-    : RangedDistribution(n_samples, hwhm_factor, limits)
+    : RangedDistribution(unit, n_samples, hwhm_factor, limits)
 {
 }
 
-RangedDistributionLorentz::RangedDistributionLorentz(size_t n_samples, double hwhm_factor,
+RangedDistributionLorentz::RangedDistributionLorentz(const std::string& unit, size_t n_samples, double hwhm_factor,
                                                      double min, double max)
-    : RangedDistribution(n_samples, hwhm_factor, min, max)
+    : RangedDistribution(unit, n_samples, hwhm_factor, min, max)
 {
 }
 
@@ -170,23 +174,24 @@ std::string RangedDistributionLorentz::name() const
     return "ba.RangedDistributionLorentz";
 }
 
-std::unique_ptr<IDistribution1D> RangedDistributionLorentz::distribution_impl(double median,
-                                                                              double hwhm) const
+std::unique_ptr<IDistribution1D> RangedDistributionLorentz::distribution_impl(
+    double median, double hwhm) const
 {
-    return std::make_unique<DistributionLorentz>(median, hwhm);
+    return std::make_unique<DistributionLorentz>(m_unit.getName(), median, hwhm);
 }
 
-RangedDistributionGaussian::RangedDistributionGaussian() : RangedDistribution() {}
 
-RangedDistributionGaussian::RangedDistributionGaussian(size_t n_samples, double sigma_factor,
+RangedDistributionGaussian::RangedDistributionGaussian(const std::string& unit) : RangedDistribution(unit) {}
+
+RangedDistributionGaussian::RangedDistributionGaussian(const std::string& unit, size_t n_samples, double sigma_factor,
                                                        const RealLimits& limits)
-    : RangedDistribution(n_samples, sigma_factor, limits)
+    : RangedDistribution(unit, n_samples, sigma_factor, limits)
 {
 }
 
-RangedDistributionGaussian::RangedDistributionGaussian(size_t n_samples, double sigma_factor,
+RangedDistributionGaussian::RangedDistributionGaussian(const std::string& unit, size_t n_samples, double sigma_factor,
                                                        double min, double max)
-    : RangedDistribution(n_samples, sigma_factor, min, max)
+    : RangedDistribution(unit, n_samples, sigma_factor, min, max)
 {
 }
 
@@ -203,20 +208,21 @@ std::string RangedDistributionGaussian::name() const
 std::unique_ptr<IDistribution1D> RangedDistributionGaussian::distribution_impl(double mean,
                                                                                double stddev) const
 {
-    return std::make_unique<DistributionGaussian>(mean, stddev);
+    return std::make_unique<DistributionGaussian>(m_unit.getName(), mean, stddev);
 }
 
-RangedDistributionLogNormal::RangedDistributionLogNormal() : RangedDistribution() {}
 
-RangedDistributionLogNormal::RangedDistributionLogNormal(size_t n_samples, double sigma_factor,
+RangedDistributionLogNormal::RangedDistributionLogNormal(const std::string& unit) : RangedDistribution(unit) {}
+
+RangedDistributionLogNormal::RangedDistributionLogNormal(const std::string& unit, size_t n_samples, double sigma_factor,
                                                          const RealLimits& limits)
-    : RangedDistribution(n_samples, sigma_factor, limits)
+    : RangedDistribution(unit, n_samples, sigma_factor, limits)
 {
 }
 
-RangedDistributionLogNormal::RangedDistributionLogNormal(size_t n_samples, double sigma_factor,
+RangedDistributionLogNormal::RangedDistributionLogNormal(const std::string& unit, size_t n_samples, double sigma_factor,
                                                          double min, double max)
-    : RangedDistribution(n_samples, sigma_factor, min, max)
+    : RangedDistribution(unit, n_samples, sigma_factor, min, max)
 {
 }
 
@@ -240,20 +246,24 @@ std::unique_ptr<IDistribution1D> RangedDistributionLogNormal::distribution_impl(
 
     const double scale = std::sqrt(std::log(stddev * stddev / mean_2 + 1.0));
     const double median = mean * std::exp(-scale * scale / 2.0);
-    return std::make_unique<DistributionLogNormal>(median, scale);
+    return std::make_unique<DistributionLogNormal>(m_unit.getName(), median, scale);
 }
 
-RangedDistributionCosine::RangedDistributionCosine() : RangedDistribution() {}
 
-RangedDistributionCosine::RangedDistributionCosine(size_t n_samples, double sigma_factor,
+RangedDistributionCosine::RangedDistributionCosine(const std::string& unit)
+    : RangedDistribution(unit) {}
+
+RangedDistributionCosine::RangedDistributionCosine(
+    const std::string& unit,
+                                                   size_t n_samples, double sigma_factor,
                                                    const RealLimits& limits)
-    : RangedDistribution(n_samples, sigma_factor, limits)
+    : RangedDistribution(unit, n_samples, sigma_factor, limits)
 {
 }
 
-RangedDistributionCosine::RangedDistributionCosine(size_t n_samples, double sigma_factor,
+RangedDistributionCosine::RangedDistributionCosine(const std::string& unit, size_t n_samples, double sigma_factor,
                                                    double min, double max)
-    : RangedDistribution(n_samples, sigma_factor, min, max)
+    : RangedDistribution(unit, n_samples, sigma_factor, min, max)
 {
 }
 
@@ -270,13 +280,5 @@ std::string RangedDistributionCosine::name() const
 std::unique_ptr<IDistribution1D> RangedDistributionCosine::distribution_impl(double mean,
                                                                              double stddev) const
 {
-    return std::make_unique<DistributionCosine>(mean, stddev);
+    return std::make_unique<DistributionCosine>(m_unit.getName(), mean, stddev);
 }
-
-namespace
-{
-template <class T> std::unique_ptr<T> makeCopy(const T& item)
-{
-    return std::make_unique<T>(item.nSamples(), item.sigmaFactor(), item.limits());
-}
-} // namespace

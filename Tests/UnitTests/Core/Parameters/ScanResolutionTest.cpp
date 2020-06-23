@@ -28,7 +28,7 @@ void ScanResolutionTest::compareResults(const DistrOutput& lhs, const DistrOutpu
 
 TEST_F(ScanResolutionTest, RelativeSingleValued)
 {
-    RangedDistributionGate distr(3, 1.0);
+    RangedDistributionGate distr("", 3, 1.0);
     std::unique_ptr<ScanResolution> resolution(ScanResolution::scanRelativeResolution(distr, 0.1));
 
     std::vector<double> coordinates = {1.0, 2.0, 3.0};
@@ -50,7 +50,7 @@ TEST_F(ScanResolutionTest, RelativeSingleValued)
 
 TEST_F(ScanResolutionTest, AbsoluteSingleValued)
 {
-    RangedDistributionGate distr(3, 1.0);
+    RangedDistributionGate distr("", 3, 1.0);
     std::unique_ptr<ScanResolution> resolution(ScanResolution::scanAbsoluteResolution(distr, 0.1));
 
     std::vector<double> coordinates = {1.0, 2.0, 3.0};
@@ -64,7 +64,7 @@ TEST_F(ScanResolutionTest, AbsoluteSingleValued)
     compareResults(ref_result, actual);
 
     std::stringstream print_ref;
-    print_ref << "    distribution = ba.RangedDistributionGate(3, 1.0)\n"
+    print_ref << "    distribution = ba.RangedDistributionGate("", 3, 1.0)\n"
               << "    resolution = ba.ScanAbsoluteResolution(distribution, 0.1)";
     EXPECT_EQ(print_ref.str(), resolution->print());
     EXPECT_THROW(resolution->generateSamples(std::vector<double>()), std::runtime_error);
@@ -72,7 +72,7 @@ TEST_F(ScanResolutionTest, AbsoluteSingleValued)
 
 TEST_F(ScanResolutionTest, RelativeVectorValued)
 {
-    RangedDistributionGate distr(3, 1.0);
+    RangedDistributionGate distr("", 3, 1.0);
     EXPECT_THROW(ScanResolution::scanRelativeResolution(distr, std::vector<double>()),
                  std::runtime_error);
     std::unique_ptr<ScanResolution> resolution(
@@ -98,7 +98,7 @@ TEST_F(ScanResolutionTest, RelativeVectorValued)
 
 TEST_F(ScanResolutionTest, AbsoluteVectorValued)
 {
-    RangedDistributionGate distr(3, 1.0);
+    RangedDistributionGate distr("", 3, 1.0);
     EXPECT_THROW(ScanResolution::scanAbsoluteResolution(distr, std::vector<double>()),
                  std::runtime_error);
     std::unique_ptr<ScanResolution> resolution(

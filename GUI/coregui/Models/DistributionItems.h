@@ -29,7 +29,7 @@ public:
     static const QString P_LIMITS;
     explicit DistributionItem(const QString& name);
 
-    virtual std::unique_ptr<IDistribution1D> createDistribution(double scale = 1.0) const = 0;
+    virtual std::unique_ptr<IDistribution1D> createDistribution(const std::string& unit, double scale = 1.0) const = 0;
     void init_parameters(double value, const RealLimits& limits = RealLimits::limitless());
     void init_limits_group(const RealLimits& limits, double factor = 1.0);
     virtual void showMean(bool) = 0;
@@ -49,7 +49,7 @@ public:
     explicit SymmetricDistributionItem(const QString& name);
     void showMean(bool flag) override;
 
-    virtual std::unique_ptr<RangedDistribution> createRangedDistribution(double scale) const = 0;
+    virtual std::unique_ptr<RangedDistribution> createRangedDistribution(const std::string& unit, double scale) const = 0;
     virtual double deviation(double scale) const = 0;
 };
 
@@ -59,7 +59,7 @@ class BA_CORE_API_ DistributionNoneItem : public SymmetricDistributionItem
 public:
     DistributionNoneItem();
 
-    std::unique_ptr<IDistribution1D> createDistribution(double scale = 1.0) const override;
+    std::unique_ptr<IDistribution1D> createDistribution(const std::string& unit, double scale = 1.0) const override;
     std::unique_ptr<RangedDistribution> createRangedDistribution(double scale) const override;
     double deviation(double scale) const override;
     void init_distribution(double value) override;
@@ -72,7 +72,7 @@ public:
     static const QString P_MAX;
     DistributionGateItem();
 
-    std::unique_ptr<IDistribution1D> createDistribution(double scale = 1.0) const override;
+    std::unique_ptr<IDistribution1D> createDistribution(const std::string& unit, double scale = 1.0) const override;
     void init_distribution(double value) override;
     void showMean(bool) override {}
 };
@@ -83,7 +83,7 @@ public:
     static const QString P_HWHM;
     DistributionLorentzItem();
 
-    std::unique_ptr<IDistribution1D> createDistribution(double scale = 1.0) const override;
+    std::unique_ptr<IDistribution1D> createDistribution(const std::string& unit, double scale = 1.0) const override;
     std::unique_ptr<RangedDistribution> createRangedDistribution(double scale) const override;
     double deviation(double scale) const override;
     void init_distribution(double value) override;

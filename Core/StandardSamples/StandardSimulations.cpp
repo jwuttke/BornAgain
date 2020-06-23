@@ -107,9 +107,9 @@ GISASSimulation* StandardSimulations::MiniGISASBeamDivergence()
 {
     GISASSimulation* result = MiniGISAS();
 
-    DistributionLogNormal wavelength_distr(1.0 * Units::angstrom, 0.1);
-    DistributionGaussian alpha_distr(0.2 * Units::degree, 0.1 * Units::degree);
-    DistributionGate phi_distr(-0.1 * Units::degree, 0.1 * Units::degree);
+    DistributionLogNormal wavelength_distr("angstrom", 1.0 * Units::angstrom, 0.1);
+    DistributionGaussian alpha_distr("deg", 0.2 * Units::degree, 0.1 * Units::degree);
+    DistributionGate phi_distr("deg", -0.1 * Units::degree, 0.1 * Units::degree);
 
     ParameterPattern pattern1;
     pattern1.beginsWith("*").add(BornAgain::BeamType).add(BornAgain::Wavelength);
@@ -483,11 +483,11 @@ SpecularSimulation* StandardSimulations::SpecularDivergentBeam()
     const double ang_stddev = 0.1 * Units::degree;
     AngularSpecScan scan(wavelength, FixedBinAxis("axis", number_of_bins, min_angle, max_angle));
 
-    RangedDistributionGaussian wl_distr(n_integration_points, /*sigma_factor = */ 2.0);
+    RangedDistributionGaussian wl_distr("anstrom", n_integration_points, /*sigma_factor = */ 2.0);
     std::unique_ptr<ScanResolution> wl_res(
         ScanResolution::scanAbsoluteResolution(wl_distr, wl_stddev));
 
-    RangedDistributionGaussian alpha_distr(n_integration_points, /*sigma_factor = */ 2.0);
+    RangedDistributionGaussian alpha_distr("deg", n_integration_points, /*sigma_factor = */ 2.0);
     std::unique_ptr<ScanResolution> ang_res(
         ScanResolution::scanAbsoluteResolution(alpha_distr, ang_stddev));
 
@@ -504,7 +504,7 @@ SpecularSimulation* StandardSimulations::TOFRWithRelativeResolution()
 {
     FixedBinAxis qs("axis", 500, 0.0, 1.0);
     QSpecScan q_scan(qs);
-    q_scan.setRelativeQResolution(RangedDistributionGaussian(20, 2.0), 0.03);
+    q_scan.setRelativeQResolution(RangedDistributionGaussian("1/nm", 20, 2.0), 0.03);
 
     std::unique_ptr<SpecularSimulation> result(new SpecularSimulation());
     result->setScan(q_scan);
@@ -522,7 +522,7 @@ SpecularSimulation* StandardSimulations::TOFRWithPointwiseResolution()
     auto qs_vector = qs.getBinCenters();
     std::for_each(qs_vector.begin(), qs_vector.end(),
                   [&resolutions](double q_val) { resolutions.push_back(0.03 * q_val); });
-    q_scan.setAbsoluteQResolution(RangedDistributionGaussian(20, 2.0), resolutions);
+    q_scan.setAbsoluteQResolution(RangedDistributionGaussian("1/nm", 20, 2.0), resolutions);
 
     std::unique_ptr<SpecularSimulation> result(new SpecularSimulation());
     result->setScan(q_scan);

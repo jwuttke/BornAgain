@@ -6256,8 +6256,8 @@ class DistributionGate(IDistribution1D):
 
     def __init__(self, *args):
         r"""
-        __init__(DistributionGate self) -> DistributionGate
-        __init__(DistributionGate self, double min, double max) -> DistributionGate
+        __init__(DistributionGate self, std::string const & unit) -> DistributionGate
+        __init__(DistributionGate self, std::string const & unit, double min, double max) -> DistributionGate
         DistributionGate::DistributionGate(double min, double max)
 
         """
@@ -6356,8 +6356,8 @@ class DistributionLorentz(IDistribution1D):
 
     def __init__(self, *args):
         r"""
-        __init__(DistributionLorentz self) -> DistributionLorentz
-        __init__(DistributionLorentz self, double mean, double hwhm) -> DistributionLorentz
+        __init__(DistributionLorentz self, std::string const & unit) -> DistributionLorentz
+        __init__(DistributionLorentz self, std::string const & unit, double mean, double hwhm) -> DistributionLorentz
         DistributionLorentz::DistributionLorentz(double mean, double hwhm)
 
         """
@@ -6448,8 +6448,8 @@ class DistributionGaussian(IDistribution1D):
 
     def __init__(self, *args):
         r"""
-        __init__(DistributionGaussian self) -> DistributionGaussian
-        __init__(DistributionGaussian self, double mean, double std_dev) -> DistributionGaussian
+        __init__(DistributionGaussian self, std::string const & unit) -> DistributionGaussian
+        __init__(DistributionGaussian self, std::string const & unit, double mean, double std_dev) -> DistributionGaussian
         DistributionGaussian::DistributionGaussian(double mean, double std_dev)
 
         """
@@ -6540,8 +6540,8 @@ class DistributionLogNormal(IDistribution1D):
 
     def __init__(self, *args):
         r"""
-        __init__(DistributionLogNormal self, double scale_param) -> DistributionLogNormal
-        __init__(DistributionLogNormal self, double median, double scale_param) -> DistributionLogNormal
+        __init__(DistributionLogNormal self, std::string const & unit, double scale_param) -> DistributionLogNormal
+        __init__(DistributionLogNormal self, std::string const & unit, double median, double scale_param) -> DistributionLogNormal
         DistributionLogNormal::DistributionLogNormal(double median, double scale_param)
 
         """
@@ -6650,8 +6650,8 @@ class DistributionCosine(IDistribution1D):
 
     def __init__(self, *args):
         r"""
-        __init__(DistributionCosine self) -> DistributionCosine
-        __init__(DistributionCosine self, double mean, double sigma) -> DistributionCosine
+        __init__(DistributionCosine self, std::string const & unit) -> DistributionCosine
+        __init__(DistributionCosine self, std::string const & unit, double mean, double sigma) -> DistributionCosine
         DistributionCosine::DistributionCosine(double mean, double sigma)
 
         """
@@ -6742,8 +6742,8 @@ class DistributionTrapezoid(IDistribution1D):
 
     def __init__(self, *args):
         r"""
-        __init__(DistributionTrapezoid self) -> DistributionTrapezoid
-        __init__(DistributionTrapezoid self, double center, double left_width, double middle_width, double right_width) -> DistributionTrapezoid
+        __init__(DistributionTrapezoid self, std::string const & unit) -> DistributionTrapezoid
+        __init__(DistributionTrapezoid self, std::string const & unit, double center, double left_width, double middle_width, double right_width) -> DistributionTrapezoid
         DistributionTrapezoid::DistributionTrapezoid(double center, double left_width, double middle_width, double right_width)
 
         """
@@ -21807,8 +21807,8 @@ class RangedDistributionGate(object):
 
     def __init__(self, *args):
         r"""
-        __init__(RangedDistributionGate self) -> RangedDistributionGate
-        __init__(RangedDistributionGate self, size_t n_samples, double sigma_factor, RealLimits limits=RealLimits::limitless()) -> RangedDistributionGate
+        __init__(RangedDistributionGate self, std::string const & unit) -> RangedDistributionGate
+        __init__(RangedDistributionGate self, std::string const & unit, size_t n_samples, double sigma_factor, RealLimits limits=RealLimits::limitless()) -> RangedDistributionGate
         __init__(RangedDistributionGate self, size_t n_samples, double sigma_factor, double min, double max) -> RangedDistributionGate
         RangedDistributionGate::RangedDistributionGate(size_t n_samples, double sigma_factor, double min, double max)
 
@@ -21881,8 +21881,8 @@ class RangedDistributionGaussian(object):
 
     def __init__(self, *args):
         r"""
-        __init__(RangedDistributionGaussian self) -> RangedDistributionGaussian
-        __init__(RangedDistributionGaussian self, size_t n_samples, double sigma_factor, RealLimits limits=RealLimits::limitless()) -> RangedDistributionGaussian
+        __init__(RangedDistributionGaussian self, std::string const & unit) -> RangedDistributionGaussian
+        __init__(RangedDistributionGaussian self, std::string const & unit, size_t n_samples, double sigma_factor, RealLimits limits=RealLimits::limitless()) -> RangedDistributionGaussian
         __init__(RangedDistributionGaussian self, size_t n_samples, double sigma_factor, double min, double max) -> RangedDistributionGaussian
         RangedDistributionGaussian::RangedDistributionGaussian(size_t n_samples, double sigma_factor, double min, double max)
 
@@ -21955,8 +21955,8 @@ class RangedDistributionCosine(object):
 
     def __init__(self, *args):
         r"""
-        __init__(RangedDistributionCosine self) -> RangedDistributionCosine
-        __init__(RangedDistributionCosine self, size_t n_samples, double sigma_factor, RealLimits limits=RealLimits::limitless()) -> RangedDistributionCosine
+        __init__(RangedDistributionCosine self, std::string const & unit) -> RangedDistributionCosine
+        __init__(RangedDistributionCosine self, std::string const & unit, size_t n_samples, double sigma_factor, RealLimits limits=RealLimits::limitless()) -> RangedDistributionCosine
         __init__(RangedDistributionCosine self, size_t n_samples, double sigma_factor, double min, double max) -> RangedDistributionCosine
         RangedDistributionCosine::RangedDistributionCosine(size_t n_samples, double sigma_factor, double min, double max)
 

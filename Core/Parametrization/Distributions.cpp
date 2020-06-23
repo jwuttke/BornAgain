@@ -126,7 +126,8 @@ IDistribution1D::generateSamplesFromValues(const std::vector<double>& sample_val
 // class DistributionGate
 // ************************************************************************** //
 
-DistributionGate::DistributionGate(double min, double max) : m_min(min), m_max(max)
+DistributionGate::DistributionGate(const std::string& unit, double min, double max)
+    : IDistribution1D{unit}, m_min{min}, m_max{max}
 {
     setName(BornAgain::DistributionGateType);
     checkInitialization();
@@ -175,7 +176,8 @@ bool DistributionGate::checkInitialization() const
 // class DistributionLorentz
 // ************************************************************************** //
 
-DistributionLorentz::DistributionLorentz(double mean, double hwhm) : m_mean(mean), m_hwhm(hwhm)
+DistributionLorentz::DistributionLorentz(const std::string& unit, double mean, double hwhm)
+    : IDistribution1D{unit}, m_mean{mean}, m_hwhm{hwhm}
 {
     setName(BornAgain::DistributionLorentzType);
     checkInitialization();
@@ -223,8 +225,8 @@ bool DistributionLorentz::checkInitialization() const
 // class DistributionGaussian
 // ************************************************************************** //
 
-DistributionGaussian::DistributionGaussian(double mean, double std_dev)
-    : m_mean(mean), m_std_dev(std_dev)
+DistributionGaussian::DistributionGaussian(const std::string& unit, double mean, double std_dev)
+    : IDistribution1D{unit}, m_mean{mean}, m_std_dev{std_dev}
 {
     setName(BornAgain::DistributionGaussianType);
     checkInitialization();
@@ -273,8 +275,9 @@ bool DistributionGaussian::checkInitialization() const
 // class DistributionLogNormal
 // ************************************************************************** //
 
-DistributionLogNormal::DistributionLogNormal(double median, double scale_param)
-    : m_median(median), m_scale_param(scale_param)
+DistributionLogNormal::DistributionLogNormal(
+    const std::string& unit, double median, double scale_param)
+    : IDistribution1D{unit}, m_median{median}, m_scale_param{scale_param}
 {
     setName(BornAgain::DistributionLogNormalType);
     checkInitialization();
@@ -341,7 +344,8 @@ bool DistributionLogNormal::checkInitialization() const
 // class DistributionCosine
 // ************************************************************************** //
 
-DistributionCosine::DistributionCosine(double mean, double sigma) : m_mean(mean), m_sigma(sigma)
+DistributionCosine::DistributionCosine(const std::string& unit, double mean, double sigma)
+    : IDistribution1D{unit}, m_mean{mean}, m_sigma{sigma}
 {
     setName(BornAgain::DistributionCosineType);
     checkInitialization();
@@ -391,9 +395,11 @@ bool DistributionCosine::checkInitialization() const
 // class DistributionTrapezoidal
 // ************************************************************************** //
 
-DistributionTrapezoid::DistributionTrapezoid(double center, double left_width, double middle_width,
-                                             double right_width)
-    : m_center(center), m_left(left_width), m_middle(middle_width), m_right(right_width)
+DistributionTrapezoid::DistributionTrapezoid(
+    const std::string& unit, double center, double left_width, double middle_width,
+    double right_width)
+    : IDistribution1D{unit}, m_center{center}, m_left{left_width}
+    , m_middle{middle_width}, m_right{right_width}
 {
     setName(BornAgain::DistributionTrapezoidType);
     checkInitialization();

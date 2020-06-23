@@ -223,7 +223,7 @@ TEST_F(SpecularSimulationTest, SimulationClone)
 TEST_F(SpecularSimulationTest, AddingBeamDistributions)
 {
     auto sim = defaultSimulation();
-    DistributionGaussian distribution(1.0, 2.0);
+    DistributionGaussian distribution("angstrom", 1.0, 2.0);
 
     ParameterPattern wl_pattern;
     wl_pattern.beginsWith("*").add(BornAgain::BeamType).add(BornAgain::Wavelength);
@@ -240,7 +240,7 @@ TEST_F(SpecularSimulationTest, AddingBeamDistributions)
 
     checkBeamState(*sim);
 
-    DistributionGaussian distribution2(0.0, 2.0);
+    DistributionGaussian distribution2("deg", 0.0, 2.0);
     EXPECT_NO_THROW(
         sim->addParameterDistribution(incl_ang_pattern.toStdString(), distribution2, 5));
 

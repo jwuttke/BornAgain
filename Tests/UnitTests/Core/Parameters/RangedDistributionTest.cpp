@@ -115,7 +115,7 @@ template <class T> void RangedDistributionTest::checkZeroWidth()
 
 TEST_F(RangedDistributionTest, GateDistribution)
 {
-    checkDefaults(RangedDistributionGate());
+    checkDefaults(RangedDistributionGate(""));
     checkThrows<RangedDistributionGate>();
     checkStandardSampling<RangedDistributionGate>();
     checkPrinting<RangedDistributionGate>("RangedDistributionGate");
@@ -124,7 +124,7 @@ TEST_F(RangedDistributionTest, GateDistribution)
 
 TEST_F(RangedDistributionTest, LorentzDistribution)
 {
-    checkDefaults(RangedDistributionLorentz());
+    checkDefaults(RangedDistributionLorentz(""));
     checkThrows<RangedDistributionLorentz>();
     checkStandardSampling<RangedDistributionLorentz>();
     checkPrinting<RangedDistributionLorentz>("RangedDistributionLorentz");
@@ -133,7 +133,7 @@ TEST_F(RangedDistributionTest, LorentzDistribution)
 
 TEST_F(RangedDistributionTest, GaussianDistribution)
 {
-    checkDefaults(RangedDistributionGaussian());
+    checkDefaults(RangedDistributionGaussian(""));
     checkThrows<RangedDistributionGaussian>();
     checkStandardSampling<RangedDistributionGaussian>();
     checkPrinting<RangedDistributionGaussian>("RangedDistributionGaussian");
@@ -142,7 +142,7 @@ TEST_F(RangedDistributionTest, GaussianDistribution)
 
 TEST_F(RangedDistributionTest, LogNormalDistribution)
 {
-    checkDefaults(RangedDistributionLogNormal());
+    checkDefaults(RangedDistributionLogNormal(""));
     checkThrows<RangedDistributionLogNormal>();
     checkStandardSampling<RangedDistributionLogNormal>();
     checkPrinting<RangedDistributionLogNormal>("RangedDistributionLogNormal");
@@ -154,7 +154,7 @@ TEST_F(RangedDistributionTest, LogNormalDistribution)
 
 TEST_F(RangedDistributionTest, CosineDistribution)
 {
-    checkDefaults(RangedDistributionCosine());
+    checkDefaults(RangedDistributionCosine(""));
     checkThrows<RangedDistributionCosine>();
     checkStandardSampling<RangedDistributionCosine>();
     checkPrinting<RangedDistributionCosine>("RangedDistributionCosine");

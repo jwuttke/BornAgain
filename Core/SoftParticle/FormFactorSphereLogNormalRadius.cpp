@@ -24,7 +24,7 @@ FormFactorSphereLogNormalRadius::FormFactorSphereLogNormalRadius(double mean, do
     : m_mean(mean), m_scale_param(scale_param), m_n_samples(n_samples)
 {
     setName(BornAgain::FormFactorSphereLogNormalRadiusType);
-    mP_distribution.reset(new DistributionLogNormal(mean, scale_param));
+    mP_distribution.reset(new DistributionLogNormal("nm", mean, scale_param));
     registerParameter(BornAgain::MeanRadius, &m_mean).setUnit(BornAgain::UnitsNm).setNonnegative();
     registerParameter(BornAgain::ScaleParameter, &m_scale_param);
     if (!mP_distribution)

@@ -194,7 +194,6 @@ TEST_F(DepthProbeSimulationTest, SimulationClone)
 TEST_F(DepthProbeSimulationTest, AddingBeamDistributions)
 {
     auto sim = defaultSimulation();
-    DistributionGaussian distribution(1.0, 2.0);
 
     ParameterPattern wl_pattern;
     wl_pattern.beginsWith("*").add(BornAgain::BeamType).add(BornAgain::Wavelength);
@@ -203,15 +202,18 @@ TEST_F(DepthProbeSimulationTest, AddingBeamDistributions)
     ParameterPattern beam_pattern;
     beam_pattern.beginsWith("*").add(BornAgain::BeamType).add("*");
 
-    EXPECT_THROW(sim->addParameterDistribution(incl_ang_pattern.toStdString(), distribution, 5),
+    EXPECT_THROW(sim->addParameterDistribution(incl_ang_pattern.toStdString(),
+                                               DistributionGaussian("deg", 1., 2.), 5),
                  std::runtime_error);
-    EXPECT_THROW(sim->addParameterDistribution(beam_pattern.toStdString(), distribution, 5),
+    EXPECT_THROW(sim->addParameterDistribution(beam_pattern.toStdString(),
+                                               DistributionGaussian("", 1., 2.), 5),
                  std::runtime_error);
-    EXPECT_NO_THROW(sim->addParameterDistribution(wl_pattern.toStdString(), distribution, 5));
+    EXPECT_NO_THROW(sim->addParameterDistribution(wl_pattern.toStdString(),
+                                                  DistributionGaussian("angstrom", 1., 2.), 5));
 
     checkBeamState(*sim);
 
-    DistributionGaussian distribution2(0.0, 2.0);
+    DistributionGaussian distribution2("deg", 0.0, 2.0);
     EXPECT_NO_THROW(
         sim->addParameterDistribution(incl_ang_pattern.toStdString(), distribution2, 5));
 

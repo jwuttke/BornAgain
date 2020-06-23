@@ -52,7 +52,7 @@ def get_simulation():
 
     xi_min = 0.0*deg
     xi_max = 240.0*deg
-    xi_distr = ba.DistributionGate(xi_min, xi_max)
+    xi_distr = ba.DistributionGate("nm", xi_min, xi_max)
 
     # assigns distribution with 3 equidistant points to lattice rotation angle
     simulation.addParameterDistribution("*/SquareLattice/Xi", xi_distr, 3)

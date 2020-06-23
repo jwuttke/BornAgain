@@ -17,6 +17,7 @@
 
 #include "ICloneable.h"
 #include "RealLimits.h"
+#include "Unit.h"
 #include <memory>
 #include <vector>
 
@@ -36,17 +37,18 @@ class ParameterSample;
 class BA_CORE_API_ RangedDistribution : public ICloneable
 {
 public:
-    RangedDistribution();
-    RangedDistribution(size_t n_samples, double sigma_factor,
+    RangedDistribution() = delete;
+    RangedDistribution(const std::string& unit);
+    RangedDistribution(const std::string& unit, size_t n_samples, double sigma_factor,
                        const RealLimits& limits = RealLimits::limitless());
     //! Initializes Ranged distribution with given number of samples, sigma factor
     //! (range in standard deviations to take into account during sample generation)
     //! and limits (either RealLimits object or just min and max limits).
     //! By default _n_samples_ = 5, _sigma_factor_ = 2.0, while the limits are (-inf, +inf).
-    RangedDistribution(size_t n_samples, double sigma_factor, double min, double max);
+    RangedDistribution(const std::string& unit, size_t n_samples, double sigma_factor, double min, double max);
     RangedDistribution* clone() const override = 0;
 
-    ~RangedDistribution() override;
+    ~RangedDistribution() override = default;
 
     std::vector<ParameterSample> generateSamples(double mean, double stddev) const;
     //! Generates list of sampled values with their weights from given means and standard
@@ -73,6 +75,8 @@ public:
     //! Prints python-formatted definition of the distribution
     std::string print() const;
 
+    const std::string unitName() const { return m_unit.getName(); }
+
 protected:
     //! Returns distribution name for python-formatted text.
     virtual std::string name() const = 0;
@@ -80,12 +84,15 @@ protected:
     virtual std::unique_ptr<IDistribution1D> distribution_impl(double mean,
                                                                double stddev) const = 0;
 
+    const Unit m_unit;
+
 private:
     void checkInitialization();
 
     size_t m_n_samples;
     double m_sigma_factor;
     RealLimits m_limits;
+
 };
 
 // ************************************************************************** //
@@ -98,14 +105,15 @@ private:
 class BA_CORE_API_ RangedDistributionGate : public RangedDistribution
 {
 public:
-    RangedDistributionGate();
-    RangedDistributionGate(size_t n_samples, double sigma_factor,
+    RangedDistributionGate() = delete;
+    RangedDistributionGate(const std::string& unit);
+    RangedDistributionGate(const std::string& unit, size_t n_samples, double sigma_factor,
                            const RealLimits& limits = RealLimits::limitless());
     //! Initializes Ranged distribution with given number of samples, sigma factor
     //! (range in standard deviations to take into account during sample generation)
     //! and limits (either RealLimits object or just min and max limits).
     //! By default _n_samples_ = 5, _sigma_factor_ = 2.0, while the limits are (-inf, +inf).
-    RangedDistributionGate(size_t n_samples, double sigma_factor, double min, double max);
+    RangedDistributionGate(const std::string& unit, size_t n_samples, double sigma_factor, double min, double max);
 
     RangedDistributionGate* clone() const override;
     ~RangedDistributionGate() override = default;
@@ -117,20 +125,21 @@ protected:
     std::unique_ptr<IDistribution1D> distribution_impl(double mean, double stddev) const override;
 };
 
+
 //! Lorentz distribution with median and hwhm.
 //! @ingroup paramDistribution
 
 class BA_CORE_API_ RangedDistributionLorentz : public RangedDistribution
 {
 public:
-    RangedDistributionLorentz();
-    RangedDistributionLorentz(size_t n_samples, double hwhm_factor,
+    RangedDistributionLorentz(const std::string& unit);
+    RangedDistributionLorentz(const std::string& unit, size_t n_samples, double hwhm_factor,
                               const RealLimits& limits = RealLimits::limitless());
     //! Initializes Ranged distribution with given number of samples, sigma factor
     //! (range in standard deviations to take into account during sample generation)
     //! and limits (either RealLimits object or just min and max limits).
     //! By default _n_samples_ = 5, _hwhm_factor_ = 2.0, while the limits are (-inf, +inf).
-    RangedDistributionLorentz(size_t n_samples, double hwhm_factor, double min, double max);
+    RangedDistributionLorentz(const std::string& unit, size_t n_samples, double hwhm_factor, double min, double max);
 
     RangedDistributionLorentz* clone() const override;
     ~RangedDistributionLorentz() override = default;
@@ -142,20 +151,22 @@ protected:
     std::unique_ptr<IDistribution1D> distribution_impl(double median, double hwhm) const override;
 };
 
+
 //! Gaussian distribution with standard deviation std_dev.
 //! @ingroup paramDistribution
 
 class BA_CORE_API_ RangedDistributionGaussian : public RangedDistribution
 {
 public:
-    RangedDistributionGaussian();
-    RangedDistributionGaussian(size_t n_samples, double sigma_factor,
+    RangedDistributionGaussian() = delete;
+    RangedDistributionGaussian(const std::string& unit);
+    RangedDistributionGaussian(const std::string& unit, size_t n_samples, double sigma_factor,
                                const RealLimits& limits = RealLimits::limitless());
     //! Initializes Ranged distribution with given number of samples, sigma factor
     //! (range in standard deviations to take into account during sample generation)
     //! and limits (either RealLimits object or just min and max limits).
     //! By default _n_samples_ = 5, _sigma_factor_ = 2.0, while the limits are (-inf, +inf).
-    RangedDistributionGaussian(size_t n_samples, double sigma_factor, double min, double max);
+    RangedDistributionGaussian(const std::string& unit, size_t n_samples, double sigma_factor, double min, double max);
 
     RangedDistributionGaussian* clone() const override;
     ~RangedDistributionGaussian() override = default;
@@ -173,14 +184,14 @@ protected:
 class BA_CORE_API_ RangedDistributionLogNormal : public RangedDistribution
 {
 public:
-    RangedDistributionLogNormal();
-    RangedDistributionLogNormal(size_t n_samples, double sigma_factor,
+    RangedDistributionLogNormal(const std::string& unit);
+    RangedDistributionLogNormal(const std::string& unit, size_t n_samples, double sigma_factor,
                                 const RealLimits& limits = RealLimits::limitless());
     //! Initializes Ranged distribution with given number of samples, sigma factor
     //! (range in standard deviations to take into account during sample generation)
     //! and limits (either RealLimits object or just min and max limits).
     //! By default _n_samples_ = 5, _sigma_factor_ = 2.0, while the limits are (-inf, +inf).
-    RangedDistributionLogNormal(size_t n_samples, double sigma_factor, double min, double max);
+    RangedDistributionLogNormal(const std::string& unit, size_t n_samples, double sigma_factor, double min, double max);
 
     RangedDistributionLogNormal* clone() const override;
     ~RangedDistributionLogNormal() override = default;
@@ -192,20 +203,22 @@ protected:
     std::unique_ptr<IDistribution1D> distribution_impl(double mean, double stddev) const override;
 };
 
+
 //! Cosine distribution.
 //! @ingroup paramDistribution
 
 class BA_CORE_API_ RangedDistributionCosine : public RangedDistribution
 {
 public:
-    RangedDistributionCosine();
-    RangedDistributionCosine(size_t n_samples, double sigma_factor,
+    RangedDistributionCosine() = delete;
+    RangedDistributionCosine(const std::string& unit);
+    RangedDistributionCosine(const std::string& unit, size_t n_samples, double sigma_factor,
                              const RealLimits& limits = RealLimits::limitless());
     //! Initializes Ranged distribution with given number of samples, sigma factor
     //! (range in standard deviations to take into account during sample generation)
     //! and limits (either RealLimits object or just min and max limits).
     //! By default _n_samples_ = 5, _sigma_factor_ = 2.0, while the limits are (-inf, +inf).
-    RangedDistributionCosine(size_t n_samples, double sigma_factor, double min, double max);
+    RangedDistributionCosine(const std::string& unit, size_t n_samples, double sigma_factor, double min, double max);
 
     RangedDistributionCosine* clone() const override;
     ~RangedDistributionCosine() override = default;

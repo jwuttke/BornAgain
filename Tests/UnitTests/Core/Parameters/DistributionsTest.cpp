@@ -20,7 +20,7 @@ DistributionsTest::~DistributionsTest() = default;
 
 TEST_F(DistributionsTest, DistributionGateDefaultConstructor)
 {
-    std::unique_ptr<DistributionGate> P_distr_gate{new DistributionGate()};
+    std::unique_ptr<DistributionGate> P_distr_gate{new DistributionGate("")};
     EXPECT_EQ(0.5, P_distr_gate->getMean());
     EXPECT_EQ(0.0, P_distr_gate->getMin());
     EXPECT_EQ(1.0, P_distr_gate->getMax());
@@ -41,7 +41,7 @@ TEST_F(DistributionsTest, DistributionGateDefaultConstructor)
 TEST_F(DistributionsTest, DistributionGateConstructor)
 {
     // Throw error when m_min > m_max:
-    EXPECT_THROW(DistributionGate(1.1, 1.0), Exceptions::ClassInitializationException);
+    EXPECT_THROW(DistributionGate("", 1.1, 1.0), Exceptions::ClassInitializationException);
 
     // When m_min == m_max, only one sample is generated (the mean):
     DistributionGate distr1(1.0, 1.0);
@@ -50,7 +50,7 @@ TEST_F(DistributionsTest, DistributionGateConstructor)
     EXPECT_EQ(1.0, list1[0]);
 
     // Test distribution with m_min < m_max:
-    DistributionGate distr2(1.0, 2.0);
+    DistributionGate distr2(""< 1.0, 2.0);
     EXPECT_EQ(1.5, distr2.getMean());
     EXPECT_EQ(1.0, distr2.getMin());
     EXPECT_EQ(2.0, distr2.getMax());
@@ -79,7 +79,7 @@ TEST_F(DistributionsTest, DistributionGateConstructor)
 
 TEST_F(DistributionsTest, DistributionGateParameters)
 {
-    DistributionGate gate(2.0, 3.0);
+    DistributionGate gate("", 2.0, 3.0);
     EXPECT_EQ(gate.getMin(), gate.parameter(BornAgain::Minimum)->value());
     EXPECT_EQ(gate.getMax(), gate.parameter(BornAgain::Maximum)->value());
 
@@ -97,7 +97,7 @@ TEST_F(DistributionsTest, DistributionGateParameters)
 
 TEST_F(DistributionsTest, DistributionGateClone)
 {
-    DistributionGate gate(2.0, 3.0);
+    DistributionGate gate("", 2.0, 3.0);
     DistributionGate* clone = gate.clone();
     EXPECT_EQ(gate.getName(), clone->getName());
     EXPECT_EQ(gate.getMean(), clone->getMean());
@@ -208,7 +208,7 @@ TEST_F(DistributionsTest, DistributionLorentzSamples)
 
 TEST_F(DistributionsTest, DistributionGaussianDefaultConstructor)
 {
-    std::unique_ptr<DistributionGaussian> P_distr_gauss{new DistributionGaussian()};
+    std::unique_ptr<DistributionGaussian> P_distr_gauss{new DistributionGaussian("")};
     EXPECT_EQ(0.0, P_distr_gauss->getMean());
     EXPECT_EQ(1.0, P_distr_gauss->getStdDev());
     EXPECT_EQ(std::exp(-1.0 / 2.0) / std::sqrt(M_TWOPI), P_distr_gauss->probabilityDensity(1.0));
@@ -225,7 +225,7 @@ TEST_F(DistributionsTest, DistributionGaussianDefaultConstructor)
 TEST_F(DistributionsTest, DistributionGaussianConstructor)
 {
     // When std_dev == 0.0, only one sample is generated (the mean):
-    DistributionGaussian distr1(1.0, 0.0);
+    DistributionGaussian distr1("", 1.0, 0.0);
     std::vector<double> list1 = distr1.equidistantPoints(5, 0.0);
     EXPECT_EQ(size_t(1), list1.size());
     EXPECT_EQ(1.0, list1[0]);
@@ -247,7 +247,7 @@ TEST_F(DistributionsTest, DistributionGaussianConstructor)
 
 TEST_F(DistributionsTest, DistributionGaussianParameters)
 {
-    DistributionGaussian gaussian(2.0, 3.0);
+    DistributionGaussian gaussian("", 2.0, 3.0);
     EXPECT_EQ(gaussian.getMean(), gaussian.parameter(BornAgain::Mean)->value());
     EXPECT_EQ(gaussian.getStdDev(), gaussian.parameter(BornAgain::StdDeviation)->value());
 
@@ -261,7 +261,7 @@ TEST_F(DistributionsTest, DistributionGaussianParameters)
 
 TEST_F(DistributionsTest, DistributionGaussianClone)
 {
-    std::unique_ptr<DistributionGaussian> P_distr_gauss{new DistributionGaussian(1.0, 1.0)};
+    std::unique_ptr<DistributionGaussian> P_distr_gauss{new DistributionGaussian("", 1.0, 1.0)};
     std::unique_ptr<DistributionGaussian> P_clone{P_distr_gauss->clone()};
     EXPECT_EQ(1.0, P_clone->getMean());
     EXPECT_EQ(1.0, P_clone->getStdDev());

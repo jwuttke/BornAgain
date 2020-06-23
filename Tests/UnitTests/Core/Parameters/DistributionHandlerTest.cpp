@@ -18,7 +18,7 @@ DistributionHandlerTest::~DistributionHandlerTest() = default;
 TEST_F(DistributionHandlerTest, DistributionHandlerConstructor)
 {
     DistributionHandler handler;
-    DistributionGate distribution(1.0, 2.0);
+    DistributionGate distribution("", 1.0, 2.0);
     std::string paraName = "value";
 
     EXPECT_EQ(size_t(1), handler.getTotalNumberOfSamples());
