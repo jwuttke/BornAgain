@@ -3,61 +3,12 @@
 ############################################################################
 set(library_name BornAgainGUI)
 
-# --- source and include files ---
-set(include_dirs
-    ${CMAKE_CURRENT_SOURCE_DIR}/mainwindow
-    ${CMAKE_CURRENT_SOURCE_DIR}/utils
-    ${CMAKE_CURRENT_SOURCE_DIR}/Models
-    ${CMAKE_CURRENT_SOURCE_DIR}/Views
-    ${CMAKE_CURRENT_SOURCE_DIR}/Views/SampleDesigner
-    ${CMAKE_CURRENT_SOURCE_DIR}/Views/JobWidgets
-    ${CMAKE_CURRENT_SOURCE_DIR}/Views/IntensityDataWidgets
-    ${CMAKE_CURRENT_SOURCE_DIR}/Views/InfoWidgets
-    ${CMAKE_CURRENT_SOURCE_DIR}/Views/MaterialEditor
-    ${CMAKE_CURRENT_SOURCE_DIR}/Views/InstrumentWidgets
-    ${CMAKE_CURRENT_SOURCE_DIR}/Views/SimulationWidgets
-    ${CMAKE_CURRENT_SOURCE_DIR}/Views/FitWidgets
-    ${CMAKE_CURRENT_SOURCE_DIR}/Views/PropertyEditor
-    ${CMAKE_CURRENT_SOURCE_DIR}/Views/MaskWidgets
-    ${CMAKE_CURRENT_SOURCE_DIR}/Views/AccordionWidget
-    ${CMAKE_CURRENT_SOURCE_DIR}/Views/ImportDataWidgets
-    ${CMAKE_CURRENT_SOURCE_DIR}/Views/ImportDataWidgets/CsvImportAssistant
-    ${CMAKE_CURRENT_SOURCE_DIR}/Views/CommonWidgets
-    ${CMAKE_CURRENT_SOURCE_DIR}/Views/RealSpaceWidgets
-    ${CMAKE_CURRENT_SOURCE_DIR}/Views/SpecularDataWidgets
-)
 
+file(GLOB_RECURSE sources ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/*.h)
 
-set(source_files)
-set(include_files)
-
-foreach(dir ${include_dirs})
-    file(GLOB source ${dir}/*.cpp)
-    file(GLOB include ${dir}/*.h)
-    list(APPEND source_files ${source})
-    list(APPEND include_files ${include})
-endforeach()
-
-set(source_widgetbox
-    "Views/widgetbox/widgetboxcategorylistview.cpp"
-    "Views/widgetbox/widgetboxtreewidget.cpp"
-    "Views/widgetbox/widgetbox.cpp"
-)
-list(APPEND source_files ${source_widgetbox})
-
-set(include_widgetbox
-    "Views/widgetbox/widgetboxcategorylistview.h"
-    "Views/widgetbox/widgetboxtreewidget.h"
-    "Views/widgetbox/widgetbox.h"
-    "Views/widgetbox/widgetbox_global.h"
-)
 if(WIN32)
 	add_definitions(-DQDESIGNER_UILIB_LIBRARY)
 endif()
-
-list(APPEND include_files ${include_widgetbox})
-
-list(APPEND include_dirs ${CMAKE_CURRENT_SOURCE_DIR}/Views/widgetbox)
 
 set(resource_files
     "coregui.qrc"
@@ -83,9 +34,9 @@ endif()
 
 # --- making library ---------
 
-add_library(${library_name} SHARED ${source_files} ${RC_SRCS} ${include_files})
+add_library(${library_name} SHARED ${sources} ${RC_SRCS})
 set_target_properties(${library_name} PROPERTIES PREFIX ${libprefix} SUFFIX ${libsuffix})
-set(${library_name}_LIBRARY_TYPE SHARED)
+
 # exposing library name and list of include directories outside
 set(${library_name}_INCLUDE_DIRS ${include_dirs} PARENT_SCOPE)
 set(${library_name}_LIBRARY ${library_name} PARENT_SCOPE)
@@ -93,9 +44,10 @@ set(${library_name}_LIBRARY ${library_name} PARENT_SCOPE)
 
 # --- dependencies ---------
 target_include_directories(${library_name} PUBLIC ${QtAddOn_INCLUDE_DIRS} ${CMAKE_SOURCE_DIR})
-target_include_directories(${library_name} PUBLIC ${include_dirs})
-target_link_libraries(${library_name} ${QtAddOn_LIBRARIES} ${BornAgainCore_LIBRARY} ${ba3d_LIBRARY})
 target_link_libraries(${library_name}
+    ${QtAddOn_LIBRARIES}
+    ${BornAgainCore_LIBRARY}
+    ${ba3d_LIBRARY}
     Qt5::Widgets
     Qt5::Core
     Qt5::Gui

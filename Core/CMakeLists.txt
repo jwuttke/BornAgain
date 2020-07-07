@@ -13,8 +13,8 @@ if(BORNAGAIN_TIDY)
 endif()
 
 # --- source and include files ---------
-file(GLOB source_files "*/*.cpp")
-file(GLOB include_files "*/*.h")
+file(GLOB_RECURSE source_files *.cpp)
+file(GLOB include_files *.h)
 
 if(BORNAGAIN_PYTHON)
 
@@ -117,11 +117,9 @@ endif()
 
 
 # --- making library ---------
-add_library(${library_name} SHARED ${source_files})
+add_library(${library_name} SHARED ${source_files} ${include_files})
 
 set_target_properties(${library_name} PROPERTIES PREFIX ${libprefix} SUFFIX ${libsuffix})
-set(${library_name}_LIBRARY_TYPE SHARED)
-
 
 if(BORNAGAIN_PYTHON)
     add_dependencies(${library_name} ${library_name}_python ${library_name}_runtime)

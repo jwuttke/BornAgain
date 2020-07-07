@@ -84,7 +84,6 @@ endif()
 # --- making library ---------
 add_library(${lib} SHARED ${source_files})
 set_target_properties(${lib} PROPERTIES PREFIX ${libprefix} SUFFIX ${libsuffix})
-set(${lib}_LIBRARY_TYPE SHARED)
 
 if(BORNAGAIN_PYTHON)
     add_dependencies(${lib} ${lib}_python)

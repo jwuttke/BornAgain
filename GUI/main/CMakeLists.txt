@@ -1,10 +1,9 @@
 ###############################################################################
 # Builds BornAgain/GUI main executable
 ###############################################################################
-set(executable_name BornAgain)
+set(app BornAgain)
 
 set(source_files main.cpp appoptions.cpp)
-set(include_files appoptions.h)
 
 # -----------------------------------------------------------------------------
 # Qt configuration
@@ -35,7 +34,7 @@ endif()
 # -----------------------------------------------------------------------------
 # executable
 # -----------------------------------------------------------------------------
-add_executable(${executable_name}
+add_executable(${app}
                ${executable_options}
                ${source_files}
                ${system_addons})
@@ -44,16 +43,15 @@ add_executable(${executable_name}
 # -----------------------------------------------------------------------------
 # dependencies
 # -----------------------------------------------------------------------------
-target_link_libraries(${executable_name} ${BornAgainGUI_LIBRARY})
-
+target_link_libraries(${app} ${BornAgainGUI_LIBRARY})
 
 # -----------------------------------------------------------------------------
 # extra target properties
 # -----------------------------------------------------------------------------
 if(WIN32)
-    set_target_properties( ${executable_name} PROPERTIES LINK_FLAGS "/ENTRY:mainCRTStartup" )
+    set_target_properties( ${app} PROPERTIES LINK_FLAGS "/ENTRY:mainCRTStartup" )
     if(win32_console)
-        set_target_properties( ${executable_name} PROPERTIES COMPILE_DEFINITIONS "_CONSOLE" )
+        set_target_properties( ${app} PROPERTIES COMPILE_DEFINITIONS "_CONSOLE" )
     endif()
 endif()
 
@@ -61,7 +59,7 @@ if(APPLE)
     set(MACOSX_BUNDLE_IDENTIFIER "org.bornagainproject.BornAgain")
     configure_file("${TEMPLATE_DIR}/MacOSXBundleInfo.plist.in" "${BUILD_VAR_DIR}/Info.plist" @ONLY)
 
-    set_target_properties(${executable_name}
+    set_target_properties(${app}
         PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${BUILD_VAR_DIR}/Info.plist)
 
     if(BORNAGAIN_APPLE_BUNDLE)
@@ -71,7 +69,7 @@ if(APPLE)
     else()
         set(link_flags "-Wl,-rpath,@loader_path/../../../lib/BornAgain-${BornAgain_VERSION_MAJOR}.${BornAgain_VERSION_MINOR}/")
     endif()
-    set_target_properties(${executable_name} PROPERTIES LINK_FLAGS ${link_flags})
+    set_target_properties(${app} PROPERTIES LINK_FLAGS ${link_flags})
 endif()
 
 
@@ -86,7 +84,7 @@ else()
     set(executable_destination DESTINATION "${destination_gui}/exec")
 endif()
 #message(STATUS "Executable destination is ${executable_destination}")
-install (TARGETS ${executable_name} ${executable_destination} COMPONENT Applications)
+install (TARGETS ${app} ${executable_destination} COMPONENT Applications)
 
 set(image_files
     ${CMAKE_SOURCE_DIR}/GUI/main/BornAgain.ico
