@@ -64,8 +64,7 @@ endif()
 include(BornAgainConfiguration)
 include(BornAgainPolicy)
 include(GeneratePythonDocs)
-include(PyExamplesLineLength)
-include(CheckCode)
+include(BALineLength)
 
 # debug optimization
 if(BORNAGAIN_DEBUG_OPTIMIZATION)
