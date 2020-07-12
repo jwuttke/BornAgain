@@ -23,12 +23,10 @@ else()
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4244 /wd4267")
 endif()
 
-add_library(${library_name} STATIC ${source_files})
-# For the time being, it has to be STATIC
-# because we don't have a DLL for the GSL library yet.
-#   (at least not up to date and from reliable source
-#    TODO: try https://www.nuget.org/packages/gsl-msvc14-x64)
+add_library(${library_name} SHARED ${source_files})
 # The ROOT code in directory mathcore depends on GSL.
+# So if RootMinimizers are to be build as a shared library,
+# then we need to provide GSL as shared libraries.
 
 set(${library_name}_INCLUDE_DIRS ${include_dirs} CACHE INTERNAL "")
 set(${library_name}_LIBRARY ${library_name} CACHE INTERNAL "")
